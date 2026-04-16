@@ -3,22 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>800 - Estación Barista Pro</title>
+    <title>800 - La Química del Aroma</title>
     <style>
         body { font-family: 'Helvetica Neue', sans-serif; background-color: #1a1a1a; color: #e0e0e0; display: flex; justify-content: center; padding: 15px; margin: 0; min-height: 100vh; align-items: center; }
         .card { background: #2d2d2d; padding: 25px; border-radius: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); max-width: 420px; width: 100%; border: 1px solid #444; }
         
-        /* Contenedor del Logo */
+        /* Contenedor del Logo con tu foto */
         .logo-container {
             text-align: center;
             margin-bottom: 20px;
         }
         .brand-logo {
-            max-width: 150px; /* Ajusta el tamaño aquí */
-            height: auto;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%; /* La hace circular */
+            object-fit: cover;   /* Evita que se deforme la foto */
+            border: 3px solid #d4a373; /* Borde dorado 800 */
+            box-shadow: 0 0 15px rgba(212, 163, 115, 0.3);
         }
 
-        h1 { color: #d4a373; text-align: center; font-size: 1.4em; text-transform: uppercase; letter-spacing: 2px; margin-top: 0; margin-bottom: 5px; }
+        h1 { color: #d4a373; text-align: center; font-size: 1.4em; text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; margin-bottom: 5px; }
         .molienda-tip { text-align: center; font-style: italic; color: #999; font-size: 0.85em; margin-bottom: 20px; min-height: 1.2em; }
         label { display: block; margin-top: 15px; color: #a0a0a0; font-size: 0.9em; font-weight: bold; }
         input, select { width: 100%; padding: 12px; margin-top: 5px; border: 2px solid #444; border-radius: 12px; background: #3d3d3d; color: white; font-size: 16px; box-sizing: border-box; }
@@ -37,7 +41,7 @@
 
 <div class="card">
     <div class="logo-container">
-        <img src="logo_800.png" alt="800 La Química del Aroma Logo" class="brand-logo">
+        <img src="IMG_5892.jpeg" alt="800 La Química del Aroma" class="brand-logo">
     </div>
 
     <h1>Estación Barista</h1>
@@ -127,10 +131,10 @@
         btn.style.background = "#d4a373";
     }
 
-    // Inicializar al cargar
     window.onload = cambiarRatio;
 </script>
 
 </body>
 </html>
+
 
