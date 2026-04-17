@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>800 - La Química del Aroma</title>
+    <title>800 La Química del Aroma</title>
     <style>
         body {
             font-family: 'Helvetica Neue', sans-serif;
@@ -22,7 +22,7 @@
             padding: 25px;
             border-radius: 25px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            max-width: 420px;
+            max-width: 440px;
             width: 100%;
             text-align: center;
             border: 1px solid #444;
@@ -43,15 +43,21 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 10px 0;
-            font-size: 1.5em;
+            font-size: 1.4em;
         }
 
-        #molienda-info {
-            font-style: italic;
-            color: #aaa;
-            margin-bottom: 25px;
-            font-size: 0.9em;
+        .info-box {
+            background: #383838;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 0.85em;
+            line-height: 1.4;
+            border-left: 4px solid #c5a059;
+            text-align: left;
         }
+
+        .info-box strong { color: #c5a059; }
 
         .input-group {
             display: grid;
@@ -81,10 +87,10 @@
         }
 
         .total-agua {
-            font-size: 1.4em;
+            font-size: 1.5em;
             color: #c5a059;
             font-weight: bold;
-            margin: 20px 0;
+            margin: 15px 0;
             padding: 10px;
             border-top: 1px solid #444;
         }
@@ -94,20 +100,6 @@
             padding: 20px;
             border-radius: 15px;
             margin-top: 10px;
-        }
-
-        .meta-inputs {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .meta-inputs input {
-            width: 65px;
-            text-align: center;
-            font-size: 1.2em;
         }
 
         #display {
@@ -131,13 +123,10 @@
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
-            font-size: 1em;
         }
 
         .btn-start { background: #c5a059; color: #1a1a1a; }
         .btn-reset { background: #444; color: white; }
-        button:active { transform: scale(0.95); }
-
         .active-timer { color: #c5a059 !important; text-shadow: 0 0 15px #c5a059 !important; }
     </style>
 </head>
@@ -147,16 +136,23 @@
     <img src="IMG_5892.jpeg" alt="800 Logo" class="profile-pic">
     
     <h2>800 <span style="font-weight: normal; opacity: 0.8;">La Química del Aroma</span></h2>
-    <div id="molienda-info">Molienda: Media-Fina (como sal fina)</div>
+    
+    <div class="info-box" id="guia-metodo">
+        <strong>Molienda:</strong> <span id="txt-molienda">Selecciona un método</span><br>
+        <strong>Temperatura:</strong> <span id="txt-temp">--</span>
+    </div>
 
     <div class="input-group" style="grid-template-columns: 1fr;">
         <div>
-            <label>Cafetera:</label>
-            <select id="metodo" onchange="actualizarTodo()">
+            <label>Método de Extracción:</label>
+            <select id="metodo" onchange="actualizarMetodo()">
                 <option value="V60">Hario V60</option>
                 <option value="AeroPress">AeroPress</option>
+                <option value="EvaSolo">Eva Solo</option>
                 <option value="Prensa">Prensa Francesa</option>
                 <option value="Chemex">Chemex</option>
+                <option value="Espresso">Espresso</option>
+                <option value="Moka">Moka Italiana</option>
             </select>
         </div>
     </div>
@@ -164,26 +160,19 @@
     <div class="input-group">
         <div>
             <label>Café (g):</label>
-            <input type="number" id="cafe" value="20" oninput="calcularAgua()">
+            <input type="number" id="cafe" value="20" oninput="calcular()">
         </div>
         <div>
             <label>Ratio (1:X):</label>
-            <input type="number" id="ratio" value="15" oninput="calcularAgua()">
+            <input type="number" id="ratio" value="15" oninput="calcular()">
         </div>
     </div>
 
-    <div class="total-agua">Total Agua: <span id="resultado">300</span>g</div>
+    <div class="total-agua">Agua: <span id="resultado">300</span>g</div>
 
     <div class="timer-section">
-        <label style="text-align:center">Meta de Tiempo (Min:Seg)</label>
-        <div class="meta-inputs">
-            <input type="number" id="metaMin" value="02" min="0" max="59">
-            <span>:</span>
-            <input type="number" id="metaSeg" value="30" min="0" max="59">
-        </div>
-
+        <label style="text-align:center; display:block">Meta: <span id="meta-display">02:30</span></label>
         <div id="display">00:00</div>
-
         <div class="btn-container">
             <button class="btn-start" id="startBtn" onclick="toggleTimer()">INICIAR</button>
             <button class="btn-reset" onclick="resetTimer()">RESETEAR</button>
@@ -192,90 +181,98 @@
 </div>
 
 <script>
-    // FÓRMULA DE CALCULO CORREGIDA
-    function calcularAgua() {
-        const grCafe = document.getElementById('cafe').value;
-        const grRatio = document.getElementById('ratio').value;
-        const total = Math.round(grCafe * grRatio);
-        document.getElementById('resultado').innerText = total;
+    const configuraciones = {
+        'V60': { 
+            molienda: 'Media-fina (sal de mesa fina). Cuanto más fino, más lenta la extracción.',
+            temp: '90–96°C', ratio: 15, tiempo: '02:30' 
+        },
+        'AeroPress': { 
+            molienda: 'Media-fina (sal de mesa gruesa). Mucho margen para experimentar.',
+            temp: '85–92°C', ratio: 16, tiempo: '01:30' 
+        },
+        'EvaSolo': { 
+            molienda: 'Media (azúcar moreno granulado). Similar a la prensa con filtro de tela.',
+            temp: '90–94°C', ratio: 15, tiempo: '04:00' 
+        },
+        'Prensa': { 
+            molienda: 'Gruesa (sal marina gruesa o panela granulada). Clave para evitar amargor.',
+            temp: '92–96°C', ratio: 12, tiempo: '04:00' 
+        },
+        'Chemex': { 
+            molienda: 'Media-gruesa (entre sal marina y azúcar moreno). El filtro ya ralentiza el proceso.',
+            temp: '90–96°C', ratio: 14, tiempo: '03:30' 
+        },
+        'Espresso': { 
+            molienda: 'Muy fina (harina de maíz, casi polvo). Muy sensible a cada gramo.',
+            temp: '90–93°C', ratio: 2, tiempo: '00:25' 
+        },
+        'Moka': { 
+            molienda: 'Fina (maicena con algo de grano). Usa agua ya caliente en la base.',
+            temp: '80–85°C (en base)', ratio: 10, tiempo: '01:00' 
+        }
+    };
+
+    function calcular() {
+        const c = parseFloat(document.getElementById('cafe').value) || 0;
+        const r = parseFloat(document.getElementById('ratio').value) || 0;
+        document.getElementById('resultado').innerText = Math.round(c * r);
     }
 
-    // ACTUALIZACIÓN DE MÉTODOS
-    function actualizarTodo() {
-        const metodo = document.getElementById('metodo').value;
-        const info = document.getElementById('molienda-info');
-        const metas = {
-            'V60': { txt: 'Molienda: Media-Fina (como sal fina)', min: '02', seg: '30', r: 15 },
-            'AeroPress': { txt: 'Molienda: Fina (como azúcar)', min: '01', seg: '30', r: 16 },
-            'Prensa': { txt: 'Molienda: Gruesa (como sal marina)', min: '04', seg: '00', r: 12 },
-            'Chemex': { txt: 'Molienda: Media (como arena gruesa)', min: '03', seg: '30', r: 14 }
-        };
+    function actualizarMetodo() {
+        const m = document.getElementById('metodo').value;
+        const conf = configuraciones[m];
         
-        info.innerText = metas[metodo].txt;
-        document.getElementById('metaMin').value = metas[metodo].min;
-        document.getElementById('metaSeg').value = metas[metodo].seg;
-        document.getElementById('ratio').value = metas[metodo].r;
-        calcularAgua();
+        document.getElementById('txt-molienda').innerText = conf.molienda;
+        document.getElementById('txt-temp').innerText = conf.temp;
+        document.getElementById('ratio').value = conf.ratio;
+        document.getElementById('meta-display').innerText = conf.tiempo;
+        calcular();
     }
 
-    // LÓGICA DEL CRONÓMETRO
     let startTime, elapsedTime = 0, timerInterval;
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    function beep(freq = 600, duration = 400) {
+    function beep() {
         const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.frequency.value = freq;
-        osc.start();
-        setTimeout(() => osc.stop(), duration);
-    }
-
-    function timeToString(time) {
-        let diffInMin = time / (1000 * 60);
-        let mm = Math.floor(diffInMin);
-        let diffInSec = (diffInMin - mm) * 60;
-        let ss = Math.floor(diffInSec);
-        return mm.toString().padStart(2, '0') + ":" + ss.toString().padStart(2, '0');
+        const g = audioCtx.createGain();
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.frequency.value = 600; osc.start();
+        setTimeout(() => osc.stop(), 400);
     }
 
     function toggleTimer() {
         if (audioCtx.state === 'suspended') audioCtx.resume();
-        
         if (!timerInterval) {
             startTime = Date.now() - elapsedTime;
-            timerInterval = setInterval(function() {
+            timerInterval = setInterval(() => {
                 elapsedTime = Date.now() - startTime;
-                const currentStr = timeToString(elapsedTime);
-                document.getElementById('display').innerText = currentStr;
-
-                const mMin = document.getElementById('metaMin').value.padStart(2,'0');
-                const mSeg = document.getElementById('metaSeg').value.padStart(2,'0');
-                if (currentStr === (mMin + ":" + mSeg)) {
+                let m = Math.floor(elapsedTime / 60000);
+                let s = Math.floor((elapsedTime % 60000) / 1000);
+                let displayStr = m.toString().padStart(2,'0') + ":" + s.toString().padStart(2,'0');
+                document.getElementById('display').innerText = displayStr;
+                if (displayStr === document.getElementById('meta-display').innerText) {
                     document.getElementById('display').classList.add('active-timer');
-                    beep(); 
+                    beep();
                 }
-            }, 1000);
+            }, 100);
             document.getElementById('startBtn').innerText = "PAUSAR";
             document.getElementById('startBtn').style.background = "#ff4444";
         } else {
-            clearInterval(timerInterval);
-            timerInterval = null;
+            clearInterval(timerInterval); timerInterval = null;
             document.getElementById('startBtn').innerText = "CONTINUAR";
             document.getElementById('startBtn').style.background = "#c5a059";
         }
     }
 
     function resetTimer() {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        elapsedTime = 0;
+        clearInterval(timerInterval); timerInterval = null; elapsedTime = 0;
         document.getElementById('display').innerText = "00:00";
         document.getElementById('display').classList.remove('active-timer');
         document.getElementById('startBtn').innerText = "INICIAR";
         document.getElementById('startBtn').style.background = "#c5a059";
     }
+
+    window.onload = actualizarMetodo;
 </script>
 </body>
 </html>
