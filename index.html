@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>800 - Estación Barista Pro</title>
+    <title>800 - La Química del Aroma</title>
     <style>
         body {
             font-family: 'Helvetica Neue', sans-serif;
@@ -14,12 +14,12 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
         }
 
         .barista-card {
             background: #2d2d2d;
-            padding: 30px;
+            padding: 25px;
             border-radius: 25px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
             max-width: 420px;
@@ -43,6 +43,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 10px 0;
+            font-size: 1.5em;
         }
 
         #molienda-info {
@@ -104,7 +105,7 @@
         }
 
         .meta-inputs input {
-            width: 60px;
+            width: 65px;
             text-align: center;
             font-size: 1.2em;
         }
@@ -143,15 +144,15 @@
 <body>
 
 <div class="barista-card">
-    <img src="IMG_5892.jpeg" alt="800 La Química del Aroma" class="profile-pic">
+    <img src="IMG_5892.jpeg" alt="800 Logo" class="profile-pic">
     
-    <h2>Estación Barista</h2>
+    <h2>800 <span style="font-weight: normal; opacity: 0.8;">La Química del Aroma</span></h2>
     <div id="molienda-info">Molienda: Media-Fina (como sal fina)</div>
 
     <div class="input-group" style="grid-template-columns: 1fr;">
         <div>
             <label>Cafetera:</label>
-            <select id="metodo" onchange="actualizarMolienda()">
+            <select id="metodo" onchange="actualizarTodo()">
                 <option value="V60">Hario V60</option>
                 <option value="AeroPress">AeroPress</option>
                 <option value="Prensa">Prensa Francesa</option>
@@ -163,11 +164,11 @@
     <div class="input-group">
         <div>
             <label>Café (g):</label>
-            <input type="number" id="cafe" value="20" oninput="calcular()">
+            <input type="number" id="cafe" value="20" oninput="calcularAgua()">
         </div>
         <div>
             <label>Ratio (1:X):</label>
-            <input type="number" id="ratio" value="15" oninput="calcular()">
+            <input type="number" id="ratio" value="15" oninput="calcularAgua()">
         </div>
     </div>
 
@@ -191,30 +192,37 @@
 </div>
 
 <script>
-    function calcular() {
-        const cafe = document.getElementById('cafe').value;
-        const ratio = document.getElementById('ratio').value;
-        document.getElementById('resultado').innerText = Math.round(cafe * ratio);
+    // FÓRMULA DE CALCULO CORREGIDA
+    function calcularAgua() {
+        const grCafe = document.getElementById('cafe').value;
+        const grRatio = document.getElementById('ratio').value;
+        const total = Math.round(grCafe * grRatio);
+        document.getElementById('resultado').innerText = total;
     }
 
-    function actualizarMolienda() {
+    // ACTUALIZACIÓN DE MÉTODOS
+    function actualizarTodo() {
         const metodo = document.getElementById('metodo').value;
         const info = document.getElementById('molienda-info');
         const metas = {
-            'V60': { txt: 'Molienda: Media-Fina (como sal fina)', min: '02', seg: '30' },
-            'AeroPress': { txt: 'Molienda: Fina (como azúcar)', min: '01', seg: '30' },
-            'Prensa': { txt: 'Molienda: Gruesa (como sal marina)', min: '04', seg: '00' },
-            'Chemex': { txt: 'Molienda: Media (como arena gruesa)', min: '03', seg: '30' }
+            'V60': { txt: 'Molienda: Media-Fina (como sal fina)', min: '02', seg: '30', r: 15 },
+            'AeroPress': { txt: 'Molienda: Fina (como azúcar)', min: '01', seg: '30', r: 16 },
+            'Prensa': { txt: 'Molienda: Gruesa (como sal marina)', min: '04', seg: '00', r: 12 },
+            'Chemex': { txt: 'Molienda: Media (como arena gruesa)', min: '03', seg: '30', r: 14 }
         };
+        
         info.innerText = metas[metodo].txt;
         document.getElementById('metaMin').value = metas[metodo].min;
         document.getElementById('metaSeg').value = metas[metodo].seg;
+        document.getElementById('ratio').value = metas[metodo].r;
+        calcularAgua();
     }
 
+    // LÓGICA DEL CRONÓMETRO
     let startTime, elapsedTime = 0, timerInterval;
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    function beep(freq = 440, duration = 200) {
+    function beep(freq = 600, duration = 400) {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.connect(gain);
@@ -229,7 +237,7 @@
         let mm = Math.floor(diffInMin);
         let diffInSec = (diffInMin - mm) * 60;
         let ss = Math.floor(diffInSec);
-        return ${mm.toString().padStart(2, '0')}:${ss.toString().padStart(2, '0')};
+        return mm.toString().padStart(2, '0') + ":" + ss.toString().padStart(2, '0');
     }
 
     function toggleTimer() {
@@ -237,16 +245,16 @@
         
         if (!timerInterval) {
             startTime = Date.now() - elapsedTime;
-            timerInterval = setInterval(() => {
+            timerInterval = setInterval(function() {
                 elapsedTime = Date.now() - startTime;
                 const currentStr = timeToString(elapsedTime);
                 document.getElementById('display').innerText = currentStr;
 
-                const mMin = document.getElementById('metaMin').value;
-                const mSeg = document.getElementById('metaSeg').value;
-                if (currentStr === ${mMin.padStart(2,'0')}:${mSeg.padStart(2,'0')}) {
+                const mMin = document.getElementById('metaMin').value.padStart(2,'0');
+                const mSeg = document.getElementById('metaSeg').value.padStart(2,'0');
+                if (currentStr === (mMin + ":" + mSeg)) {
                     document.getElementById('display').classList.add('active-timer');
-                    beep(600, 500); 
+                    beep(); 
                 }
             }, 1000);
             document.getElementById('startBtn').innerText = "PAUSAR";
@@ -269,6 +277,5 @@
         document.getElementById('startBtn').style.background = "#c5a059";
     }
 </script>
-
 </body>
 </html>
