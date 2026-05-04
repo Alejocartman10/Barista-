@@ -1,278 +1,1737 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>800 La Química del Aroma</title>
-    <style>
-        body {
-            font-family: 'Helvetica Neue', sans-serif;
-            background-color: #1a1a1a;
-            color: #e0e0e0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 15px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>800 — La Química del Aroma</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --oro: #c5a059;
+    --oro-light: #d4b47a;
+    --oro-dim: rgba(197,160,89,0.15);
+    --bg: #111;
+    --surface: #1a1a1a;
+    --surface2: #222;
+    --border: rgba(255,255,255,0.07);
+    --text: #ede8e0;
+    --text-dim: rgba(237,232,224,0.45);
+    --green: #5cb88a;
+    --red: #e06060;
+}
 
-        .barista-card {
-            background: #2d2d2d;
-            padding: 25px;
-            border-radius: 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            max-width: 440px;
-            width: 100%;
-            text-align: center;
-            border: 1px solid #444;
-        }
+- { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-        .profile-pic {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #c5a059;
-            margin-bottom: 15px;
-            background-color: #333;
-        }
+html, body {
+height: 100%;
+background: var(–bg);
+color: var(–text);
+font-family: ‘DM Mono’, monospace;
+overflow-x: hidden;
+}
 
-        h2 {
-            color: #c5a059;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 10px 0;
-            font-size: 1.4em;
-        }
+/* ── SCREENS ── */
+.screen {
+display: none;
+min-height: 100vh;
+padding: 0 0 40px;
+animation: fadeUp 0.35s ease both;
+}
+.screen.active { display: block; }
 
-        .info-box {
-            background: #383838;
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            font-size: 0.85em;
-            line-height: 1.4;
-            border-left: 4px solid #c5a059;
-            text-align: left;
-        }
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(14px); }
+to   { opacity: 1; transform: translateY(0); }
+}
 
-        .info-box strong { color: #c5a059; }
+/* ── BACK NAV ── */
+.topbar {
+display: flex;
+align-items: center;
+padding: 20px 24px 0;
+gap: 12px;
+}
+.btn-back {
+background: none;
+border: none;
+color: var(–oro);
+font-family: ‘DM Mono’, monospace;
+font-size: 0.75em;
+letter-spacing: 2px;
+cursor: pointer;
+padding: 0;
+display: flex;
+align-items: center;
+gap: 6px;
+}
+.topbar-title {
+font-size: 0.65em;
+letter-spacing: 3px;
+color: var(–text-dim);
+text-transform: uppercase;
+}
 
-        .input-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-            text-align: left;
-        }
+/* ══════════════════════════════
+PANTALLA 1 — INICIO
+══════════════════════════════ */
+#screen-home {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 48px 28px 60px;
+min-height: 100vh;
+position: relative;
+}
 
-        label {
-            display: block;
-            color: #c5a059;
-            font-size: 0.8em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+/* grain overlay */
+#screen-home::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 0;
+opacity: 0.6;
+}
 
-        input, select {
-            width: 100%;
-            padding: 12px;
-            background: #3d3d3d;
-            border: 1px solid #555;
-            border-radius: 10px;
-            color: white;
-            font-size: 1em;
-            box-sizing: border-box;
-        }
+.home-content { position: relative; z-index: 1; width: 100%; max-width: 380px; }
 
-        .total-agua {
-            font-size: 1.5em;
-            color: #c5a059;
-            font-weight: bold;
-            margin: 15px 0;
-            padding: 10px;
-            border-top: 1px solid #444;
-        }
+.brand {
+text-align: center;
+margin-bottom: 52px;
+}
 
-        .timer-section {
-            background: #252525;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 10px;
-        }
+.brand-number {
+font-family: ‘Playfair Display’, serif;
+font-size: 5.5em;
+font-weight: 700;
+color: var(–oro);
+line-height: 1;
+letter-spacing: -2px;
+}
 
-        #display {
-            font-size: 3.5em;
-            font-family: monospace;
-            margin: 10px 0;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(197, 160, 89, 0.3);
-        }
+.brand-name {
+font-family: ‘Playfair Display’, serif;
+font-style: italic;
+font-size: 0.95em;
+color: var(–text-dim);
+letter-spacing: 1px;
+margin-top: 4px;
+}
 
-        .btn-container {
-            display: flex;
-            gap: 10px;
-        }
+.brand-line {
+width: 40px;
+height: 1px;
+background: var(–oro);
+margin: 16px auto 0;
+opacity: 0.4;
+}
 
-        button {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+/* Method selector */
+.step-label {
+font-size: 0.6em;
+letter-spacing: 3px;
+color: var(–text-dim);
+margin-bottom: 12px;
+text-transform: uppercase;
+}
 
-        .btn-start { background: #c5a059; color: #1a1a1a; }
-        .btn-reset { background: #444; color: white; }
-        .active-timer { color: #c5a059 !important; text-shadow: 0 0 15px #c5a059 !important; }
-    </style>
+.methods-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+margin-bottom: 28px;
+}
+
+.method-btn {
+padding: 14px 10px;
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 14px;
+color: var(–text-dim);
+font-family: ‘DM Mono’, monospace;
+font-size: 0.72em;
+letter-spacing: 1px;
+cursor: pointer;
+transition: all 0.2s;
+text-align: center;
+}
+
+.method-btn.selected {
+background: var(–oro-dim);
+border-color: var(–oro);
+color: var(–oro);
+}
+
+/* Objective selector */
+.objectives {
+display: flex;
+flex-direction: column;
+gap: 8px;
+margin-bottom: 32px;
+}
+
+.obj-btn {
+display: flex;
+align-items: center;
+gap: 14px;
+padding: 16px 18px;
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 14px;
+cursor: pointer;
+transition: all 0.2s;
+text-align: left;
+width: 100%;
+}
+
+.obj-btn.selected {
+background: var(–oro-dim);
+border-color: var(–oro);
+}
+
+.obj-emoji { font-size: 1.4em; }
+
+.obj-info { flex: 1; }
+
+.obj-name {
+color: var(–text);
+font-size: 0.8em;
+letter-spacing: 1px;
+display: block;
+font-weight: 500;
+}
+
+.obj-btn.selected .obj-name { color: var(–oro); }
+
+.obj-desc {
+color: var(–text-dim);
+font-size: 0.65em;
+letter-spacing: 0.5px;
+display: block;
+margin-top: 2px;
+}
+
+.obj-check {
+width: 18px;
+height: 18px;
+border-radius: 50%;
+border: 1px solid var(–border);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 0.6em;
+transition: all 0.2s;
+flex-shrink: 0;
+}
+
+.obj-btn.selected .obj-check {
+background: var(–oro);
+border-color: var(–oro);
+color: #111;
+}
+
+/* CTA */
+.btn-preparar {
+width: 100%;
+padding: 18px;
+background: var(–oro);
+border: none;
+border-radius: 16px;
+font-family: ‘DM Mono’, monospace;
+font-size: 0.8em;
+font-weight: 500;
+letter-spacing: 3px;
+color: #111;
+cursor: pointer;
+transition: all 0.2s;
+opacity: 0.35;
+pointer-events: none;
+}
+
+.btn-preparar.ready {
+opacity: 1;
+pointer-events: auto;
+}
+
+.btn-preparar.ready:active { transform: scale(0.98); }
+
+/* Mis recetas link */
+.mis-recetas-link {
+text-align: center;
+margin-top: 24px;
+}
+
+.btn-mis-recetas {
+background: none;
+border: none;
+font-family: ‘DM Mono’, monospace;
+font-size: 0.65em;
+letter-spacing: 2px;
+color: var(–text-dim);
+cursor: pointer;
+text-decoration: underline;
+text-underline-offset: 4px;
+}
+
+/* ══════════════════════════════
+PANTALLA 2 — LISTA
+══════════════════════════════ */
+#screen-list { padding-bottom: 80px; }
+
+.list-header {
+padding: 28px 24px 20px;
+border-bottom: 1px solid var(–border);
+margin-bottom: 20px;
+}
+
+.list-combo {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-bottom: 6px;
+}
+
+.combo-method {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.6em;
+color: var(–text);
+}
+
+.combo-sep { color: var(–text-dim); font-size: 0.8em; }
+
+.combo-obj {
+font-family: ‘Playfair Display’, serif;
+font-style: italic;
+font-size: 1.3em;
+color: var(–oro);
+}
+
+.list-sub {
+font-size: 0.6em;
+letter-spacing: 2px;
+color: var(–text-dim);
+}
+
+.recipe-cards {
+padding: 0 20px;
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+
+.rcard {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 18px;
+padding: 20px;
+cursor: pointer;
+transition: all 0.2s;
+display: flex;
+align-items: center;
+gap: 16px;
+}
+
+.rcard:active { transform: scale(0.99); background: var(–surface2); }
+
+.rcard-left { flex: 1; }
+
+.rcard-name {
+font-family: ‘Playfair Display’, serif;
+font-size: 1.2em;
+color: var(–text);
+margin-bottom: 5px;
+line-height: 1.2;
+}
+
+.rcard-desc {
+font-size: 0.65em;
+color: var(–text-dim);
+line-height: 1.5;
+letter-spacing: 0.3px;
+}
+
+.rcard-meta {
+display: flex;
+gap: 6px;
+margin-top: 10px;
+flex-wrap: wrap;
+}
+
+.rpill {
+font-size: 0.58em;
+padding: 3px 8px;
+border-radius: 6px;
+background: var(–surface2);
+border: 1px solid var(–border);
+color: var(–text-dim);
+letter-spacing: 0.5px;
+}
+
+.rpill span { color: var(–oro); }
+
+.rcard-arrow {
+color: var(–oro);
+font-size: 1em;
+opacity: 0.5;
+flex-shrink: 0;
+}
+
+/* user card */
+.rcard.user-card {
+border-left: 3px solid var(–green);
+}
+
+.rcard-badge {
+font-size: 0.55em;
+padding: 2px 7px;
+border-radius: 5px;
+margin-left: 8px;
+vertical-align: middle;
+letter-spacing: 1px;
+}
+.badge-800 { background: var(–oro-dim); color: var(–oro); border: 1px solid rgba(197,160,89,0.3); }
+.badge-user { background: rgba(92,184,138,0.1); color: var(–green); border: 1px solid rgba(92,184,138,0.3); }
+
+.section-divider {
+padding: 24px 24px 10px;
+font-size: 0.6em;
+letter-spacing: 3px;
+color: var(–text-dim);
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.section-divider::after {
+content: ‘’;
+flex: 1;
+height: 1px;
+background: var(–border);
+}
+
+/* FAB */
+.fab {
+position: fixed;
+bottom: 28px;
+right: 24px;
+width: 50px;
+height: 50px;
+border-radius: 50%;
+background: var(–oro);
+border: none;
+color: #111;
+font-size: 1.5em;
+cursor: pointer;
+box-shadow: 0 4px 24px rgba(197,160,89,0.35);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 10;
+transition: transform 0.2s;
+}
+.fab:active { transform: scale(0.93); }
+
+/* empty */
+.empty {
+text-align: center;
+padding: 36px 20px;
+color: var(–text-dim);
+font-size: 0.7em;
+letter-spacing: 1px;
+line-height: 1.8;
+}
+
+/* ══════════════════════════════
+PANTALLA 3 — DETALLE
+══════════════════════════════ */
+#screen-detail { padding-bottom: 60px; }
+
+.detail-hero {
+padding: 28px 24px 24px;
+border-bottom: 1px solid var(–border);
+}
+
+.detail-name {
+font-family: ‘Playfair Display’, serif;
+font-size: 2em;
+line-height: 1.15;
+color: var(–text);
+margin-bottom: 8px;
+}
+
+.detail-desc {
+font-size: 0.72em;
+color: var(–text-dim);
+line-height: 1.7;
+margin-bottom: 16px;
+}
+
+.detail-pills {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+}
+
+.detail-pill {
+font-size: 0.62em;
+padding: 5px 12px;
+border-radius: 8px;
+background: var(–surface2);
+border: 1px solid var(–border);
+color: var(–text-dim);
+letter-spacing: 0.5px;
+}
+.detail-pill span { color: var(–oro); }
+
+/* flavor bars */
+.flavor-section {
+padding: 20px 24px;
+border-bottom: 1px solid var(–border);
+}
+
+.flavor-row {
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 10px;
+}
+.flavor-row:last-child { margin-bottom: 0; }
+
+.flabel {
+font-size: 0.58em;
+letter-spacing: 2px;
+color: var(–text-dim);
+width: 56px;
+flex-shrink: 0;
+}
+
+.fbar {
+flex: 1;
+height: 2px;
+background: var(–border);
+border-radius: 2px;
+overflow: hidden;
+}
+
+.ffill {
+height: 100%;
+background: linear-gradient(90deg, var(–oro-dim) 0%, var(–oro) 100%);
+border-radius: 2px;
+transition: width 0.6s cubic-bezier(.23,1,.32,1);
+}
+
+/* steps */
+.steps-section {
+padding: 20px 24px;
+}
+
+.steps-title {
+font-size: 0.6em;
+letter-spacing: 3px;
+color: var(–text-dim);
+margin-bottom: 16px;
+}
+
+.step {
+display: flex;
+gap: 14px;
+margin-bottom: 18px;
+position: relative;
+}
+
+.step:not(:last-child)::after {
+content: ‘’;
+position: absolute;
+left: 13px;
+top: 28px;
+bottom: -10px;
+width: 1px;
+background: var(–border);
+}
+
+.step-dot {
+width: 28px;
+height: 28px;
+border-radius: 50%;
+border: 1px solid var(–oro-dim);
+background: var(–surface);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 0.6em;
+color: var(–oro);
+flex-shrink: 0;
+z-index: 1;
+}
+
+.step-body { flex: 1; padding-top: 4px; }
+
+.step-title {
+font-size: 0.7em;
+letter-spacing: 1.5px;
+color: var(–oro);
+margin-bottom: 4px;
+}
+
+.step-desc {
+font-family: ‘Playfair Display’, serif;
+font-size: 0.92em;
+color: var(–text-dim);
+line-height: 1.6;
+}
+
+.step-desc strong { color: var(–text); font-weight: 400; }
+
+/* timer */
+.timer-section {
+margin: 8px 24px 0;
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 20px;
+padding: 24px 20px 20px;
+}
+
+.timer-label {
+font-size: 0.58em;
+letter-spacing: 3px;
+color: var(–text-dim);
+text-align: center;
+margin-bottom: 8px;
+}
+
+.timer-meta {
+font-size: 0.62em;
+color: var(–text-dim);
+text-align: center;
+margin-bottom: 4px;
+letter-spacing: 1px;
+}
+
+.timer-meta span { color: var(–oro); }
+
+#timer-display {
+font-family: ‘Playfair Display’, serif;
+font-size: 4em;
+text-align: center;
+color: var(–text);
+letter-spacing: 4px;
+line-height: 1;
+margin: 8px 0 16px;
+transition: color 0.3s;
+}
+
+#timer-display.done { color: var(–oro); }
+
+.timer-btns {
+display: flex;
+gap: 8px;
+}
+
+.btn-timer-start {
+flex: 2;
+padding: 14px;
+background: var(–oro);
+border: none;
+border-radius: 12px;
+font-family: ‘DM Mono’, monospace;
+font-size: 0.72em;
+font-weight: 500;
+letter-spacing: 2px;
+color: #111;
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.btn-timer-reset {
+flex: 1;
+padding: 14px;
+background: var(–surface2);
+border: 1px solid var(–border);
+border-radius: 12px;
+font-family: ‘DM Mono’, monospace;
+font-size: 0.72em;
+letter-spacing: 2px;
+color: var(–text-dim);
+cursor: pointer;
+}
+
+/* ══════════════════════════════
+PANTALLA 4 — MIS RECETAS
+══════════════════════════════ */
+#screen-myrecipes { padding-bottom: 100px; }
+
+/* ══════════════════════════════
+PANTALLA 5 — NUEVA RECETA
+══════════════════════════════ */
+#screen-new { padding-bottom: 60px; }
+
+.new-body { padding: 20px 24px; }
+
+.fgroup { margin-bottom: 18px; }
+
+.flabel-form {
+display: block;
+font-size: 0.58em;
+letter-spacing: 2.5px;
+color: var(–oro);
+margin-bottom: 7px;
+}
+
+.finput {
+width: 100%;
+padding: 13px 14px;
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 12px;
+color: var(–text);
+font-family: ‘DM Mono’, monospace;
+font-size: 0.78em;
+letter-spacing: 0.5px;
+transition: border-color 0.2s;
+}
+
+.finput:focus { outline: none; border-color: var(–oro-dim); }
+.finput::placeholder { color: var(–text-dim); }
+
+textarea.finput { resize: vertical; min-height: 72px; line-height: 1.6; }
+
+.frow { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+.flavor-form {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 14px;
+padding: 16px;
+}
+
+.sl-row {
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 12px;
+}
+.sl-row:last-child { margin-bottom: 0; }
+
+.sl-label {
+font-size: 0.58em;
+letter-spacing: 1.5px;
+color: var(–text-dim);
+width: 56px;
+flex-shrink: 0;
+}
+
+input[type=range] {
+flex: 1;
+appearance: none;
+height: 2px;
+background: var(–border);
+border-radius: 2px;
+outline: none;
+cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+appearance: none;
+width: 16px;
+height: 16px;
+border-radius: 50%;
+background: var(–oro);
+cursor: pointer;
+transition: transform 0.15s;
+}
+input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); }
+
+.sl-val {
+font-size: 0.7em;
+color: var(–oro);
+width: 14px;
+text-align: right;
+}
+
+.btn-save {
+width: 100%;
+padding: 16px;
+background: var(–green);
+border: none;
+border-radius: 14px;
+font-family: ‘DM Mono’, monospace;
+font-size: 0.78em;
+font-weight: 500;
+letter-spacing: 3px;
+color: #111;
+cursor: pointer;
+margin-top: 8px;
+transition: opacity 0.2s;
+}
+.btn-save:active { opacity: 0.85; }
+
+</style>
 </head>
 <body>
 
-<div class="barista-card">
-    <img src="IMG_5892.jpeg" alt="800 Logo" class="profile-pic">
-    
-    <h2>800 <span style="font-weight: normal; opacity: 0.8;">La Química del Aroma</span></h2>
-    
-    <div class="info-box" id="guia-metodo">
-        <strong>Molienda:</strong> <span id="txt-molienda">Selecciona un método</span><br>
-        <strong>Temperatura:</strong> <span id="txt-temp">--</span>
+<!-- ══ PANTALLA 1: INICIO ══ -->
+
+<div class="screen active" id="screen-home">
+<div class="home-content">
+
+```
+<div class="brand">
+    <div class="brand-number">800</div>
+    <div class="brand-name">La Química del Aroma</div>
+    <div class="brand-line"></div>
+</div>
+
+<div class="step-label">MÉTODO DE EXTRACCIÓN</div>
+<div class="methods-grid">
+    <button class="method-btn" onclick="selectMethod(this,'V60')">Hario V60</button>
+    <button class="method-btn" onclick="selectMethod(this,'AeroPress')">AeroPress</button>
+    <button class="method-btn" onclick="selectMethod(this,'Chemex')">Chemex</button>
+    <button class="method-btn" onclick="selectMethod(this,'Prensa')">Prensa Francesa</button>
+    <button class="method-btn" onclick="selectMethod(this,'EvaSolo')">Eva Solo</button>
+    <button class="method-btn" onclick="selectMethod(this,'Espresso')">Espresso</button>
+    <button class="method-btn" onclick="selectMethod(this,'Moka')" style="grid-column: span 2;">Moka Italiana</button>
+</div>
+
+<div class="step-label">OBJETIVO</div>
+<div class="objectives">
+    <button class="obj-btn" onclick="selectObj(this,'dulce')">
+        <span class="obj-emoji">🍯</span>
+        <div class="obj-info">
+            <span class="obj-name">DULCE</span>
+            <span class="obj-desc">Caramelo, panela, notas redondas</span>
+        </div>
+        <div class="obj-check">✓</div>
+    </button>
+    <button class="obj-btn" onclick="selectObj(this,'acido')">
+        <span class="obj-emoji">🍋</span>
+        <div class="obj-info">
+            <span class="obj-name">ÁCIDO</span>
+            <span class="obj-desc">Cítrico, frutal, vivo y brillante</span>
+        </div>
+        <div class="obj-check">✓</div>
+    </button>
+    <button class="obj-btn" onclick="selectObj(this,'balanceado')">
+        <span class="obj-emoji">⚖️</span>
+        <div class="obj-info">
+            <span class="obj-name">BALANCEADO</span>
+            <span class="obj-desc">Sin extremos, armónico y limpio</span>
+        </div>
+        <div class="obj-check">✓</div>
+    </button>
+</div>
+
+<button class="btn-preparar" id="btn-preparar" onclick="goToList()">PREPARAR CAFÉ →</button>
+
+<div class="mis-recetas-link">
+    <button class="btn-mis-recetas" onclick="goTo('screen-myrecipes')">⭐ Mis recetas guardadas</button>
+</div>
+```
+
+</div>
+</div>
+
+<!-- ══ PANTALLA 2: LISTA ══ -->
+
+<div class="screen" id="screen-list">
+    <div class="topbar">
+        <button class="btn-back" onclick="goTo('screen-home')">← VOLVER</button>
+    </div>
+    <div class="list-header">
+        <div class="list-combo">
+            <span class="combo-method" id="lc-method">V60</span>
+            <span class="combo-sep">+</span>
+            <span class="combo-obj" id="lc-obj">Dulce</span>
+        </div>
+        <div class="list-sub" id="lc-sub">3 RECETAS SELECCIONADAS</div>
     </div>
 
-    <div class="input-group" style="grid-template-columns: 1fr;">
-        <div>
-            <label>Método de Extracción:</label>
-            <select id="metodo" onchange="actualizarMetodo()">
-                <option value="V60">Hario V60</option>
-                <option value="AeroPress">AeroPress</option>
-                <option value="EvaSolo">Eva Solo</option>
-                <option value="Prensa">Prensa Francesa</option>
-                <option value="Chemex">Chemex</option>
-                <option value="Espresso">Espresso</option>
-                <option value="Moka">Moka Italiana</option>
-            </select>
+```
+<div class="recipe-cards" id="curated-cards"></div>
+
+<div class="section-divider" id="user-divider">MIS RECETAS</div>
+<div class="recipe-cards" id="user-cards"></div>
+
+<button class="fab" onclick="goTo('screen-new')">+</button>
+```
+
+</div>
+
+<!-- ══ PANTALLA 3: DETALLE ══ -->
+
+<div class="screen" id="screen-detail">
+    <div class="topbar">
+        <button class="btn-back" id="detail-back" onclick="goTo('screen-list')">← RECETAS</button>
+    </div>
+
+```
+<div class="detail-hero">
+    <div class="detail-name" id="d-name">—</div>
+    <div class="detail-desc" id="d-desc">—</div>
+    <div class="detail-pills" id="d-pills"></div>
+</div>
+
+<div class="flavor-section" id="d-flavor"></div>
+
+<div class="steps-section">
+    <div class="steps-title">PREPARACIÓN</div>
+    <div id="d-steps"></div>
+</div>
+
+<div class="timer-section">
+    <div class="timer-label">TIEMPO DE EXTRACCIÓN</div>
+    <div class="timer-meta">META <span id="t-meta">00:00</span></div>
+    <div id="timer-display">00:00</div>
+    <div class="timer-btns">
+        <button class="btn-timer-start" id="t-start" onclick="toggleTimer()">INICIAR</button>
+        <button class="btn-timer-reset" onclick="resetTimer()">RESETEAR</button>
+    </div>
+</div>
+```
+
+</div>
+
+<!-- ══ PANTALLA 4: MIS RECETAS ══ -->
+
+<div class="screen" id="screen-myrecipes">
+    <div class="topbar">
+        <button class="btn-back" onclick="goTo('screen-home')">← INICIO</button>
+        <span class="topbar-title">MIS RECETAS</span>
+    </div>
+    <div style="padding: 16px 20px 0;">
+        <div class="recipe-cards" id="all-user-cards"></div>
+    </div>
+    <button class="fab" onclick="goTo('screen-new')">+</button>
+</div>
+
+<!-- ══ PANTALLA 5: NUEVA RECETA ══ -->
+
+<div class="screen" id="screen-new">
+    <div class="topbar">
+        <button class="btn-back" id="new-back" onclick="goTo('screen-list')">← VOLVER</button>
+        <span class="topbar-title">NUEVA RECETA</span>
+    </div>
+    <div class="new-body">
+
+```
+    <div class="fgroup">
+        <label class="flabel-form">NOMBRE</label>
+        <input class="finput" type="text" id="f-nombre" placeholder="Ej: Mi V60 de domingo">
+    </div>
+
+    <div class="fgroup">
+        <label class="flabel-form">MÉTODO</label>
+        <select class="finput" id="f-metodo">
+            <option value="V60">Hario V60</option>
+            <option value="AeroPress">AeroPress</option>
+            <option value="Chemex">Chemex</option>
+            <option value="Prensa">Prensa Francesa</option>
+            <option value="EvaSolo">Eva Solo</option>
+            <option value="Espresso">Espresso</option>
+            <option value="Moka">Moka Italiana</option>
+        </select>
+    </div>
+
+    <div class="fgroup">
+        <label class="flabel-form">OBJETIVO</label>
+        <select class="finput" id="f-obj">
+            <option value="dulce">🍯 Dulce</option>
+            <option value="acido">🍋 Ácido</option>
+            <option value="balanceado">⚖️ Balanceado</option>
+        </select>
+    </div>
+
+    <div class="fgroup">
+        <label class="flabel-form">DESCRIPCIÓN</label>
+        <textarea class="finput" id="f-desc" placeholder="¿Qué hace especial esta receta?"></textarea>
+    </div>
+
+    <div class="fgroup">
+        <div class="frow">
+            <div>
+                <label class="flabel-form">RATIO 1:X</label>
+                <input class="finput" type="number" id="f-ratio" value="15">
+            </div>
+            <div>
+                <label class="flabel-form">TEMP</label>
+                <input class="finput" type="text" id="f-temp" placeholder="92°C">
+            </div>
+            <div>
+                <label class="flabel-form">TIEMPO</label>
+                <input class="finput" type="text" id="f-tiempo" placeholder="02:30">
+            </div>
         </div>
     </div>
 
-    <div class="input-group">
-        <div>
-            <label>Café (g):</label>
-            <input type="number" id="cafe" value="20" oninput="calcular()">
-        </div>
-        <div>
-            <label>Ratio (1:X):</label>
-            <input type="number" id="ratio" value="15" oninput="calcular()">
+    <div class="fgroup">
+        <label class="flabel-form">PERFIL DE TAZA</label>
+        <div class="flavor-form">
+            <div class="sl-row">
+                <span class="sl-label">DULZOR</span>
+                <input type="range" min="1" max="5" value="3" oninput="updSl(this,'sv-d')">
+                <span class="sl-val" id="sv-d">3</span>
+            </div>
+            <div class="sl-row">
+                <span class="sl-label">ACIDEZ</span>
+                <input type="range" min="1" max="5" value="3" oninput="updSl(this,'sv-a')">
+                <span class="sl-val" id="sv-a">3</span>
+            </div>
+            <div class="sl-row">
+                <span class="sl-label">CUERPO</span>
+                <input type="range" min="1" max="5" value="3" oninput="updSl(this,'sv-c')">
+                <span class="sl-val" id="sv-c">3</span>
+            </div>
         </div>
     </div>
 
-    <div class="total-agua">Agua: <span id="resultado">300</span>g</div>
+    <button class="btn-save" onclick="saveReceta()">GUARDAR RECETA</button>
+</div>
+```
 
-    <div class="timer-section">
-        <label style="text-align:center; display:block">Meta: <span id="meta-display">02:30</span></label>
-        <div id="display">00:00</div>
-        <div class="btn-container">
-            <button class="btn-start" id="startBtn" onclick="toggleTimer()">INICIAR</button>
-            <button class="btn-reset" onclick="resetTimer()">RESETEAR</button>
-        </div>
-    </div>
 </div>
 
 <script>
-    const configuraciones = {
-        'V60': { 
-            molienda: 'Media-fina (sal de mesa fina). Cuanto más fino, más lenta la extracción.',
-            temp: '90–96°C', ratio: 15, tiempo: '02:30' 
-        },
-        'AeroPress': { 
-            molienda: 'Media-fina (sal de mesa gruesa). Mucho margen para experimentar.',
-            temp: '85–92°C', ratio: 16, tiempo: '01:30' 
-        },
-        'EvaSolo': { 
-            molienda: 'Media (azúcar moreno granulado). Similar a la prensa con filtro de tela.',
-            temp: '90–94°C', ratio: 15, tiempo: '04:00' 
-        },
-        'Prensa': { 
-            molienda: 'Gruesa (sal marina gruesa o panela granulada). Clave para evitar amargor.',
-            temp: '92–96°C', ratio: 12, tiempo: '04:00' 
-        },
-        'Chemex': { 
-            molienda: 'Media-gruesa (entre sal marina y azúcar moreno). El filtro ya ralentiza el proceso.',
-            temp: '90–96°C', ratio: 14, tiempo: '03:30' 
-        },
-        'Espresso': { 
-            molienda: 'Muy fina (harina de maíz, casi polvo). Muy sensible a cada gramo.',
-            temp: '90–93°C', ratio: 2, tiempo: '00:25' 
-        },
-        'Moka': { 
-            molienda: 'Fina (maicena con algo de grano). Usa agua ya caliente en la base.',
-            temp: '80–85°C (en base)', ratio: 10, tiempo: '01:00' 
-        }
-    };
+// ── DATA ──────────────────────────────────────────────
+const RECETAS = {
+  V60: {
+    dulce: [
+      { nombre: 'Panela & Chocolate', desc: 'Vertido lento en cuatro tiempos para resaltar azúcares naturales del grano. Ideal para tuestes medios de Colombia o Brasil.', ratio:15, temp:'93°C', tiempo:'02:30', sabor:{d:4,a:2,c:3}, pasos:[
+        {t:'BLOOM', d:'Vierte <strong>40g de agua</strong> sobre el café. Espera 30 segundos. El CO₂ escapa y el café se asienta.'},
+        {t:'PRIMER VERTIDO', d:'A los 30s, vierte <strong>lentamente hasta 120g</strong> en espirales desde el centro.'},
+        {t:'SEGUNDO VERTIDO', d:'A 1:15, completa hasta <strong>200g</strong>. Mantén movimientos circulares lentos.'},
+        {t:'TERCER VERTIDO', d:'A 1:45, completa hasta <strong>300g</strong>. El café debe terminar antes de 2:30.'}
+      ]},
+      { nombre: 'Miel Tostada', desc: 'Molienda ligeramente más gruesa y temperatura reducida para extraer solo los azúcares. Sin amargor.', ratio:14, temp:'90°C', tiempo:'03:00', sabor:{d:5,a:1,c:3}, pasos:[
+        {t:'TEMPERATURA', d:'Usa <strong>agua a 90°C</strong>. Más caliente puede opaca el dulzor.'},
+        {t:'BLOOM', d:'<strong>50g</strong> de agua. Espera 45 segundos. Esta receta necesita más tiempo de pre-infusión.'},
+        {t:'VERTIDO ÚNICO', d:'Vierte el resto <strong>en un solo movimiento continuo</strong>, muy despacio, en espiral.'},
+        {t:'DRENAR', d:'Deja que el filtro drene solo. <strong>No toques el dripper</strong>. La gravedad hace el trabajo.'}
+      ]},
+      { nombre: 'Caramelo de Altura', desc: 'Para cafés de alturas sobre 1800 msnm. Resalta el dulzor complejo de granos cultivados en frío.', ratio:15, temp:'94°C', tiempo:'02:45', sabor:{d:4,a:3,c:2}, pasos:[
+        {t:'PRECALENTAR', d:'Enjuaga el filtro con agua muy caliente. <strong>Descarta el agua</strong> del servidor.'},
+        {t:'BLOOM', d:'<strong>40g</strong> de agua. Agita el V60 suavemente para humedecer todo el café.'},
+        {t:'VERTIDOS', d:'Tres vertidos de <strong>~85g cada uno</strong> a intervalos de 30 segundos.'},
+        {t:'FINALIZAR', d:'El tiempo total debe estar entre <strong>2:30 y 2:45</strong>. Ajusta molienda si no lo logras.'}
+      ]}
+    ],
+    acido: [
+      { nombre: 'Cítrico Etíope', desc: 'Temperatura baja y contacto mínimo para preservar la acidez brillante de los granos africanos.', ratio:16, temp:'86°C', tiempo:'02:00', sabor:{d:2,a:5,c:1}, pasos:[
+        {t:'AGUA A 86°C', d:'Fundamental. <strong>No subas la temperatura.</strong> Cada grado extra opaca la acidez.'},
+        {t:'BLOOM CORTO', d:'Solo <strong>30g de agua</strong> y 20 segundos. No necesita más.'},
+        {t:'VERTIDO CONTINUO', d:'Vierte los <strong>270g restantes sin parar</strong>, en un chorro constante y delgado.'},
+        {t:'SIN AGITAR', d:'<strong>Nunca revuelvas</strong>. El movimiento extra extrae notas amargas que tapan la acidez.'}
+      ]},
+      { nombre: 'Frambuesa Kenia', desc: 'El doble bloom activa la acidez en capas. Para granos AA de Kenia con notas a frutos rojos.', ratio:15, temp:'88°C', tiempo:'02:20', sabor:{d:3,a:5,c:2}, pasos:[
+        {t:'PRIMER BLOOM', d:'<strong>35g de agua</strong>. Espera 20 segundos.'},
+        {t:'SEGUNDO BLOOM', d:'Añade <strong>otros 35g</strong>. Espera 20 segundos más. Dos blooms, más acidez liberada.'},
+        {t:'VERTIDO PRINCIPAL', d:'Vierte hasta <strong>300g totales</strong> en movimiento continuo y suave.'},
+        {t:'TIEMPO', d:'Apunta a <strong>2:10–2:20</strong>. Si pasa de 2:30, muele más grueso.'}
+      ]},
+      { nombre: 'Maracuyá & Té', desc: 'Molienda muy fina con agua fría. Extracción rápida para una taza translúcida y aromática.', ratio:17, temp:'84°C', tiempo:'01:50', sabor:{d:1,a:5,c:1}, pasos:[
+        {t:'MOLIENDA', d:'Muele <strong>más fino de lo usual</strong> para compensar la temperatura baja.'},
+        {t:'AGUA FRÍA-CALIENTE', d:'Mezcla agua hirviendo con fría para llegar exactamente a <strong>84°C</strong>.'},
+        {t:'VERTIDO RÁPIDO', d:'Vierte todos los <strong>340g en menos de 40 segundos</strong>. Velocidad = acidez.'},
+        {t:'RESULTADO', d:'La taza será <strong>translúcida y aromática</strong>. Si está astringente, baja la temperatura.'}
+      ]}
+    ],
+    balanceado: [
+      { nombre: 'V60 Clásico', desc: 'El método estándar de referencia. Funciona con casi cualquier origen y tueste medio.', ratio:15, temp:'93°C', tiempo:'02:30', sabor:{d:3,a:3,c:3}, pasos:[
+        {t:'BLOOM', d:'<strong>40g de agua</strong>. Espera exactamente 30 segundos.'},
+        {t:'TRES VERTIDOS', d:'Vierte en tres tiempos hasta <strong>300g totales</strong>. Cada 30 segundos.'},
+        {t:'AGITACIÓN', d:'Al terminar, da <strong>una vuelta suave</strong> al V60 para asentar los finos.'},
+        {t:'META', d:'Termina en <strong>2:20–2:40</strong>. Es la ventana de extracción balanceada.'}
+      ]},
+      { nombre: 'Hoffmann 4:6', desc: 'El método de James Hoffmann. Los primeros dos vertidos controlan dulzor/acidez. Los siguientes, la concentración.', ratio:15, temp:'93°C', tiempo:'03:30', sabor:{d:3,a:3,c:3}, pasos:[
+        {t:'VERTIDO 1 (40%)', d:'<strong>120g</strong> de agua. Espera hasta que caiga completamente.'},
+        {t:'VERTIDO 2 (40%)', d:'Otros <strong>120g</strong>. Espera de nuevo. Estos dos definen el perfil de sabor.'},
+        {t:'VERTIDOS 3, 4, 5', d:'Divide los <strong>60g restantes en 3 partes iguales</strong>. Cada 45 segundos.'},
+        {t:'RESULTADO', d:'Un café <strong>sorprendentemente consistente</strong>. Experimenta con los primeros dos vertidos.'}
+      ]},
+      { nombre: 'Lento & Constante', desc: 'Un solo vertido continuo durante 2 minutos. Requiere paciencia pero da una extracción muy uniforme.', ratio:15, temp:'91°C', tiempo:'02:45', sabor:{d:3,a:3,c:3}, pasos:[
+        {t:'BLOOM', d:'<strong>40g</strong>. Espera 30 segundos.'},
+        {t:'VERTIDO ÚNICO', d:'Vierte los <strong>260g restantes en exactamente 2 minutos</strong>. Sin parar nunca.'},
+        {t:'ALTURA', d:'Mantén el chorro de agua <strong>siempre a la misma altura</strong> sobre el café. Consistencia.'},
+        {t:'MOLIENDA', d:'Si la extracción pasa de 3 minutos, <strong>muele más grueso</strong>.'}
+      ]}
+    ]
+  },
+  AeroPress: {
+    dulce: [
+      { nombre: 'Tropical Invertido', desc: 'Técnica invertida con temperatura baja para resaltar el dulzor de tuestes medios de origen único.', ratio:14, temp:'88°C', tiempo:'01:45', sabor:{d:5,a:2,c:3}, pasos:[
+        {t:'INVERTIDO', d:'Coloca el AeroPress <strong>boca abajo</strong> con el émbolo empujado.'},
+        {t:'CAFÉ', d:'Agrega <strong>15g de café</strong> molido punto media-fina.'},
+        {t:'AGUA', d:'Vierte <strong>200g a 88°C</strong>. Revuelve 5 veces.'},
+        {t:'PRESIONAR', d:'A 1:30, coloca el filtro, da vuelta y presiona <strong>suavemente en 15 segundos</strong>.'}
+      ]},
+      { nombre: 'Agave & Vainilla', desc: 'Tiempo de contacto largo para extraer los azúcares más complejos. Resultado denso y redondo.', ratio:13, temp:'90°C', tiempo:'02:30', sabor:{d:5,a:1,c:4}, pasos:[
+        {t:'CAFÉ', d:'<strong>18g de café</strong>. Molienda media, más gruesa que lo habitual en AeroPress.'},
+        {t:'AGUA', d:'<strong>200g a 90°C</strong> de una vez. No revuelvas aún.'},
+        {t:'ESPERA', d:'Deja reposar <strong>2 minutos completos</strong> sin tocar.'},
+        {t:'PRESIONAR', d:'Presiona <strong>muy lentamente en 30 segundos</strong>. La resistencia es normal.'}
+      ]},
+      { nombre: 'Melaza Oscura', desc: 'Para granos de tueste oscuro. Extrae el cuerpo y el dulzor sin amargor.', ratio:12, temp:'85°C', tiempo:'02:00', sabor:{d:4,a:1,c:5}, pasos:[
+        {t:'TEMPERATURA BAJA', d:'<strong>85°C es clave</strong>. El tueste oscuro ya tiene más amargor base.'},
+        {t:'MOLIENDA', d:'Muele <strong>ligeramente más grueso</strong> que lo usual para AeroPress.'},
+        {t:'AGUA', d:'<strong>180g</strong>. Llena hasta la marca 3 del AeroPress.'},
+        {t:'PRESIONAR', d:'A 1:45, presiona <strong>en 15 segundos constantes</strong>. Para antes del silbido.'}
+      ]}
+    ],
+    acido: [
+      { nombre: 'Etiope Flash', desc: 'Extracción ultrarrápida para capturar los aromas florales antes de que se pierdan.', ratio:16, temp:'83°C', tiempo:'01:00', sabor:{d:2,a:5,c:1}, pasos:[
+        {t:'AGUA MUY FRÍA', d:'<strong>83°C</strong>. Parece bajo, pero con AeroPress la presión compensa.'},
+        {t:'CAFÉ FINO', d:'Muele <strong>más fino de lo normal</strong>. Necesitas extracción rápida.'},
+        {t:'VERTIDO RÁPIDO', d:'Vierte <strong>150g en 10 segundos</strong>. Sin bloom previo.'},
+        {t:'PRESIONAR YA', d:'Presiona <strong>inmediatamente en 20 segundos</strong>. Total: 1 minuto.'}
+      ]},
+      { nombre: 'Kenia Express', desc: 'Dos filtraciones para una acidez limpia y sin sedimento. Taza translúcida.', ratio:15, temp:'86°C', tiempo:'01:30', sabor:{d:2,a:5,c:2}, pasos:[
+        {t:'DOS FILTROS', d:'Usa <strong>dos filtros de papel</strong> apilados. Elimina todo el sedimento.'},
+        {t:'BLOOM', d:'<strong>30g de agua</strong>. Espera 20 segundos.'},
+        {t:'RESTO', d:'Vierte los <strong>180g restantes</strong> continuamente.'},
+        {t:'PRESIÓN SUAVE', d:'Presiona con <strong>poca fuerza</strong>. La doble filtración ya ralentiza el paso.'}
+      ]},
+      { nombre: 'Acidez Viva', desc: 'Método estándar optimizado para acidez. El ratio alto y temperatura baja hacen el trabajo.', ratio:17, temp:'84°C', tiempo:'01:20', sabor:{d:1,a:5,c:2}, pasos:[
+        {t:'RATIO ALTO', d:'<strong>12g de café</strong> para 200g de agua. Más agua = más acidez expresada.'},
+        {t:'AGUA FRÍA', d:'<strong>84°C exactos</strong>. Usa termómetro si puedes.'},
+        {t:'AGITACIÓN SUAVE', d:'Revuelve <strong>solo 3 veces</strong> muy suavemente. No más.'},
+        {t:'PRESIÓN', d:'Presiona a los <strong>60 segundos</strong>, en 20 segundos constantes.'}
+      ]}
+    ],
+    balanceado: [
+      { nombre: 'AeroPress Clásico', desc: 'El método de referencia. Consistente, rápido y perdona errores de molienda.', ratio:15, temp:'90°C', tiempo:'01:30', sabor:{d:3,a:3,c:3}, pasos:[
+        {t:'CAFÉ', d:'<strong>15g de café</strong> molido punto medio.'},
+        {t:'AGUA', d:'<strong>220g a 90°C</strong>. Revuelve 10 veces.'},
+        {t:'ESPERAR', d:'Espera <strong>1 minuto completo</strong>. Sin tocar.'},
+        {t:'PRESIONAR', d:'Presiona en <strong>20-30 segundos</strong>. Para al primer silbido.'}
+      ]},
+      { nombre: 'Nordic Style', desc: 'Inspirado en los campeones escandinavos. Molienda fina, tiempo corto, resultado limpio.', ratio:15, temp:'95°C', tiempo:'01:15', sabor:{d:3,a:4,c:2}, pasos:[
+        {t:'TEMPERATURA ALTA', d:'<strong>95°C</strong>. Contraintuitivo, pero la extracción es más corta.'},
+        {t:'MOLIENDA FINA', d:'Muele <strong>bastante fino</strong>. Similar a espresso pero no tanto.'},
+        {t:'AGUA DE UNA VEZ', d:'Vierte <strong>todos los 220g de golpe</strong>. Tapa sin presionar.'},
+        {t:'PRESIONAR A 45s', d:'A los 45 segundos, presiona <strong>en 30 segundos</strong>. Taza limpia y brillante.'}
+      ]},
+      { nombre: 'Todo Terreno', desc: 'Funciona con cualquier origen, tueste o molienda aproximada. El AeroPress más tolerante.', ratio:14, temp:'88°C', tiempo:'02:00', sabor:{d:3,a:2,c:4}, pasos:[
+        {t:'SIN PRECISIÓN', d:'Esta receta no requiere gramos exactos. <strong>Una cucharada de café</strong>.'},
+        {t:'AGUA', d:'Llena el AeroPress hasta la <strong>marca 2</strong>. Temperatura entre 85 y 92°C.'},
+        {t:'REVOLVER', d:'Revuelve <strong>15 veces</strong>. Más agitación = más extracción.'},
+        {t:'PRESIONAR', d:'A los 90 segundos, presiona. <strong>Lento o rápido</strong>, el resultado es muy similar.'}
+      ]}
+    ]
+  },
+  Chemex: {
+    dulce: [
+      { nombre: 'Caramelo Lento', desc: 'El filtro grueso del Chemex elimina aceites y finos, dejando solo los azúcares más nobles del grano.', ratio:14, temp:'94°C', tiempo:'03:30', sabor:{d:4,a:2,c:1}, pasos:[
+        {t:'FILTRO', d:'Dobla el filtro con <strong>tres capas hacia el pico</strong>. Enjuaga con agua caliente.'},
+        {t:'BLOOM', d:'<strong>50g de agua</strong>. Espera 45 segundos. El Chemex necesita más tiempo de bloom.'},
+        {t:'VERTIDOS', d:'Cuatro vertidos de <strong>~75g cada uno</strong>, cada 30 segundos.'},
+        {t:'DRENAR', d:'Deja drenar completamente. <strong>No presiones</strong> el filtro ni toques el café.'}
+      ]},
+      { nombre: 'Panela Colombiana', desc: 'Para cafés de Colombia o Guatemala. Resalta las notas a fruta seca y azúcar moreno.', ratio:15, temp:'92°C', tiempo:'04:00', sabor:{d:5,a:1,c:2}, pasos:[
+        {t:'MOLIENDA', d:'Muele <strong>más grueso de lo usual</strong> para Chemex. Casi como prensa francesa.'},
+        {t:'BLOOM LARGO', d:'<strong>60g de agua</strong>. Espera <strong>60 segundos completos</strong>.'},
+        {t:'VERTIDO CONTINUO', d:'Vierte los <strong>340g restantes sin parar</strong>, muy despacio, en espiral.'},
+        {t:'PACIENCIA', d:'El Chemex no se apura. <strong>Déjalo drenar solo</strong> hasta el final.'}
+      ]},
+      { nombre: 'Chocolate & Nuez', desc: 'Temperatura media y extracción larga para cafés de Brasil o tuestes oscuros con notas a cacao.', ratio:13, temp:'91°C', tiempo:'04:30', sabor:{d:4,a:1,c:3}, pasos:[
+        {t:'RATIO BAJO', d:'<strong>Más café, menos agua</strong>. Para un Chemex de 6 tazas: 40g de café.'},
+        {t:'BLOOM', d:'<strong>80g de agua</strong>. Espera 45 segundos.'},
+        {t:'TRES VERTIDOS', d:'Divide el agua restante en <strong>tres partes iguales</strong>, cada 60 segundos.'},
+        {t:'RESULTADO', d:'Será una taza <strong>muy limpia pero con cuerpo</strong>. El Chemex puede sorprender.'}
+      ]}
+    ],
+    acido: [
+      { nombre: 'Floral Etíope', desc: 'La transparencia del Chemex permite que los aromas florales de los naturales etíopes brillen.', ratio:16, temp:'88°C', tiempo:'03:00', sabor:{d:2,a:5,c:1}, pasos:[
+        {t:'FILTRO DOBLE', d:'Usa <strong>dos filtros</strong> para máxima claridad en taza.'},
+        {t:'AGUA FRÍA', d:'<strong>88°C</strong>. El Chemex retiene más temperatura que el V60.'},
+        {t:'BLOOM RÁPIDO', d:'<strong>40g</strong>, 30 segundos. Más rápido que otras recetas.'},
+        {t:'VERTIDO', d:'Vierte los <strong>360g restantes en 2 minutos</strong>. Flujo constante.'}
+      ]},
+      { nombre: 'Té de Hibisco', desc: 'Extracción rápida para una taza casi translúcida con acidez pronunciada y color rosado.', ratio:17, temp:'85°C', tiempo:'02:45', sabor:{d:1,a:5,c:1}, pasos:[
+        {t:'TEMPERATURA', d:'<strong>85°C exactos</strong>. Muy importante en esta receta.'},
+        {t:'BLOOM MÍNIMO', d:'Solo <strong>30g de agua</strong> y 20 segundos. Sin excederse.'},
+        {t:'VERTIDO RÁPIDO', d:'Vierte <strong>todo de una sola vez</strong>, sin interrumpir el flujo.'},
+        {t:'COLOR', d:'Si el café tiene notas a frutos rojos, la taza tendrá <strong>un color rojizo natural</strong>.'}
+      ]},
+      { nombre: 'Naranja & Bergamota', desc: 'Ratio muy alto para una taza casi como té. Perfecto para cafés naturales africanos.', ratio:18, temp:'86°C', tiempo:'02:30', sabor:{d:2,a:5,c:1}, pasos:[
+        {t:'MENOS CAFÉ', d:'Con ratio 1:18, <strong>17g de café para 300g de agua</strong>.'},
+        {t:'BLOOM', d:'<strong>35g</strong>, 25 segundos.'},
+        {t:'DOS VERTIDOS', d:'<strong>130g</strong> a los 25s, luego los <strong>135g restantes</strong> a 1:20.'},
+        {t:'BEBIDA', d:'Bébelo caliente primero. Al enfriarse la acidez <strong>se transforma completamente</strong>.'}
+      ]}
+    ],
+    balanceado: [
+      { nombre: 'Chemex Clásico', desc: 'El método estándar para sacar lo mejor del Chemex. Funciona con cualquier origen.', ratio:15, temp:'93°C', tiempo:'03:30', sabor:{d:3,a:3,c:2}, pasos:[
+        {t:'FILTRO', d:'Enjuaga el filtro con <strong>agua caliente</strong>. Vacía el servidor.'},
+        {t:'BLOOM', d:'<strong>50g de agua</strong>. Espera 45 segundos.'},
+        {t:'VERTIDO', d:'Vierte lentamente en espirales hasta <strong>450g totales</strong>.'},
+        {t:'DRENAR', d:'El drenaje toma entre <strong>3 y 3:30 minutos</strong>. Perfecto.'}
+      ]},
+      { nombre: 'Domingo en Casa', desc: 'Receta para hacer café para varios. Simple, sin técnica complicada, siempre consistente.', ratio:15, temp:'92°C', tiempo:'04:00', sabor:{d:3,a:2,c:3}, pasos:[
+        {t:'ESCALA', d:'Para <strong>4–6 tazas</strong>: 45g de café y 675g de agua.'},
+        {t:'BLOOM', d:'<strong>90g de agua</strong>. Espera 45 segundos.'},
+        {t:'VERTIDOS LIBRES', d:'No hay reglas estrictas. Vierte en <strong>3–4 etapas</strong> cuando el nivel baje.'},
+        {t:'PACIENCIA', d:'<strong>No apures el drenaje</strong>. El Chemex para varios puede tomar 5 minutos.'}
+      ]},
+      { nombre: 'Media Jornada', desc: 'Perfecto para la segunda taza del día. Extracción controlada para claridad sin exceso de acidez.', ratio:14, temp:'93°C', tiempo:'03:15', sabor:{d:3,a:2,c:3}, pasos:[
+        {t:'CAFÉ', d:'<strong>22g de café</strong> molido punto medio-grueso.'},
+        {t:'BLOOM', d:'<strong>44g de agua</strong>. Exactamente el doble del café. 40 segundos.'},
+        {t:'VERTIDOS', d:'Dos vertidos: <strong>150g a 1:00</strong> y <strong>114g a 2:00</strong>.'},
+        {t:'META', d:'Termina el drenaje entre <strong>3:00 y 3:30</strong>.'}
+      ]}
+    ]
+  },
+  Prensa: {
+    dulce: [
+      { nombre: 'Terciopelo', desc: 'La prensa francesa en su máxima expresión. Cuerpo total, sin filtros que retengan aceites.', ratio:12, temp:'95°C', tiempo:'04:00', sabor:{d:4,a:1,c:5}, pasos:[
+        {t:'PRECALENTAR', d:'Llena la prensa con <strong>agua caliente y vacía</strong> antes de agregar el café.'},
+        {t:'CAFÉ GRUESO', d:'<strong>Molienda muy gruesa</strong>. Como sal marina gruesa. Clave para evitar sedimento.'},
+        {t:'VERTIDO', d:'Agrega el agua a <strong>95°C de una vez</strong>. Revuelve 3 veces.'},
+        {t:'PRESIONAR', d:'A los 4 minutos, presiona <strong>muy lentamente en 30 segundos</strong>. Sirve de inmediato.'}
+      ]},
+      { nombre: 'Cacao & Roca', desc: 'Para tuestes oscuros de Indonesia o Brasil. El cuerpo más pleno que puede dar la prensa.', ratio:11, temp:'94°C', tiempo:'05:00', sabor:{d:3,a:1,c:5}, pasos:[
+        {t:'RATIO BAJO', d:'<strong>Más café</strong>. Con ratio 1:11 el cuerpo es máximo.'},
+        {t:'NO REVOLVER', d:'Agrega el agua y <strong>no toques el café</strong>. Deja que se humedezca solo.'},
+        {t:'5 MINUTOS', d:'Espera los <strong>5 minutos completos</strong>. Paciencia total.'},
+        {t:'PRESIÓN SUAVE', d:'Presiona sin fuerza. Si hay resistencia, <strong>detente y espera 30 segundos más</strong>.'}
+      ]},
+      { nombre: 'Panela & Roble', desc: 'Temperatura alta y tiempo largo para una prensa con sabores a madera y azúcar moreno.', ratio:12, temp:'96°C', tiempo:'04:30', sabor:{d:4,a:1,c:4}, pasos:[
+        {t:'AGUA CASI HIRVIENDO', d:'<strong>96°C</strong>. En prensa francesa el agua más caliente funciona.'},
+        {t:'CAFÉ', d:'<strong>Molienda gruesa uniforme</strong>. Importante para una extracción pareja.'},
+        {t:'TIEMPO', d:'<strong>4 minutos y medio</strong>. Pon el timer y no mires.'},
+        {t:'DECANTA', d:'Sirve todo el café de inmediato. <strong>No dejes el café en la prensa</strong> o se sobreextrae.'}
+      ]}
+    ],
+    acido: [
+      { nombre: 'Prensa Ligera', desc: 'Tiempo corto y temperatura media para una prensa más ligera y con acidez presente.', ratio:14, temp:'88°C', tiempo:'03:00', sabor:{d:2,a:4,c:3}, pasos:[
+        {t:'TEMPERATURA BAJA', d:'<strong>88°C</strong>. Inusual para prensa francesa pero funciona.'},
+        {t:'TIEMPO CORTO', d:'Solo <strong>3 minutos</strong>. Menos extracción = más acidez.'},
+        {t:'MOLIENDA', d:'Muele <strong>ligeramente menos grueso</strong> de lo usual para compensar el tiempo corto.'},
+        {t:'DECANTA', d:'Sirve enseguida. El café sigue extrayéndose incluso después de presionar.'}
+      ]},
+      { nombre: 'Colombia Vivo', desc: 'Para cafés lavados de Colombia o Costa Rica. La prensa puede expresar acidez si se maneja bien.', ratio:13, temp:'90°C', tiempo:'03:30', sabor:{d:3,a:4,c:3}, pasos:[
+        {t:'MOLIENDA MEDIA', d:'<strong>Más fina de lo usual</strong> para prensa. Ayuda a la acidez.'},
+        {t:'BLOOM', d:'<strong>Sí, bloom en prensa</strong>. 40g de agua, 20 segundos.'},
+        {t:'RESTO', d:'Vierte el resto del agua y pon la tapa <strong>sin presionar</strong>.'},
+        {t:'PRESIONAR', d:'A los 3:30, presiona en <strong>20 segundos</strong>. Sirve inmediatamente.'}
+      ]},
+      { nombre: 'Mineral & Lima', desc: 'La versión más luminosa de la prensa francesa. Para granos washed de alturas.', ratio:14, temp:'89°C', tiempo:'03:15', sabor:{d:2,a:4,c:2}, pasos:[
+        {t:'AGUA DE CALIDAD', d:'El agua importa aquí. <strong>Agua filtrada o mineral baja en calcio</strong>.'},
+        {t:'REVOLVER', d:'Revuelve <strong>10 veces</strong> para asegurar contacto uniforme.'},
+        {t:'TIMER', d:'<strong>3 minutos exactos</strong>.'},
+        {t:'FILTRO PAPEL', d:'Opcional: vierte a través de un <strong>filtro de papel</strong> para más claridad.'}
+      ]}
+    ],
+    balanceado: [
+      { nombre: 'Prensa Clásica', desc: 'La receta más simple y consistente. Perfecta para la mañana sin complicaciones.', ratio:12, temp:'93°C', tiempo:'04:00', sabor:{d:3,a:2,c:4}, pasos:[
+        {t:'CAFÉ', d:'<strong>Molienda gruesa</strong>. Si tienes moledora de disco, pon el nivel más alto.'},
+        {t:'AGUA', d:'<strong>93°C</strong>. Llena la prensa y revuelve una vez.'},
+        {t:'4 MINUTOS', d:'Pon el timer. <strong>4 minutos es el estándar por buena razón</strong>.'},
+        {t:'PRESIONAR', d:'Lento. <strong>30 segundos de bajada suave</strong>. Sirve todo enseguida.'}
+      ]},
+      { nombre: 'Two Cups', desc: 'Optimizada para dos tazas. La proporción más honesta de la prensa francesa.', ratio:12, temp:'94°C', tiempo:'04:00', sabor:{d:3,a:2,c:4}, pasos:[
+        {t:'MEDIDAS', d:'<strong>30g de café</strong> para 360g de agua. Para dos tazas perfectas.'},
+        {t:'TEMPERATURA', d:'<strong>94°C</strong>. Un poco más alta que el clásico para equilibrar el ratio.'},
+        {t:'REVUELVE UNA VEZ', d:'Solo <strong>una sola vez</strong> justo después de verter.'},
+        {t:'ROMPE LA COSTRA', d:'A los 3 minutos, rompe la costra que se forma arriba. Presiona al minuto 4.'}
+      ]},
+      { nombre: 'Sin Estrés', desc: 'Para cuando no quieres pensar. Funciona aunque no seas preciso.', ratio:12, temp:'90-96°C', tiempo:'04:00', sabor:{d:3,a:2,c:4}, pasos:[
+        {t:'CAFÉ', d:'Una <strong>cucharada llena de café</strong> por cada 120ml de agua.'},
+        {t:'AGUA', d:'Agua <strong>recién hervida esperando 1 minuto</strong>. Eso es 90-96°C aprox.'},
+        {t:'ESPERAR', d:'Exactamente <strong>4 minutos</strong>. Sin revisar.'},
+        {t:'LISTO', d:'Presiona, sirve. Esta receta <strong>no falla</strong>.'}
+      ]}
+    ]
+  },
+  EvaSolo: {
+    dulce: [
+      { nombre: 'Nórdico Dulce', desc: 'El manga filtrante de Eva Solo aporta cuerpo mientras suaviza la acidez. Para tuestes medios escandinavos.', ratio:15, temp:'93°C', tiempo:'04:00', sabor:{d:4,a:2,c:3}, pasos:[
+        {t:'MANGA', d:'Asegúrate que la manga esté <strong>bien limpia y sin residuos</strong> de preparaciones anteriores.'},
+        {t:'CAFÉ', d:'Muele en punto <strong>medio, similar a prensa francesa pero ligeramente más fino</strong>.'},
+        {t:'AGUA', d:'<strong>93°C</strong>. Vierte en espiral desde afuera hacia el centro.'},
+        {t:'REPOSAR', d:'Cierra la tapa. Espera <strong>4 minutos sin abrir</strong>. Sirve directamente.'}
+      ]},
+      { nombre: 'Verano Caramelizado', desc: 'Tiempo de contacto extendido con temperatura media para máximo dulzor.', ratio:14, temp:'91°C', tiempo:'05:00', sabor:{d:5,a:1,c:3}, pasos:[
+        {t:'TEMPERATURA', d:'<strong>91°C</strong>. La manga retiene bien la temperatura.'},
+        {t:'REVOLVER', d:'Revuelve suavemente <strong>5 veces</strong> después de verter.'},
+        {t:'ESPERAR', d:'<strong>5 minutos completos</strong>. Eva Solo perdona el tiempo extra mejor que otros métodos.'},
+        {t:'SERVIR', d:'Sirve inclinando la cafetera. El café sale limpio <strong>gracias a la manga</strong>.'}
+      ]},
+      { nombre: 'Dulzor Nublado', desc: 'Técnica de remojo completo para una extracción uniforme y sabores redondos.', ratio:15, temp:'90°C', tiempo:'04:30', sabor:{d:4,a:2,c:4}, pasos:[
+        {t:'SATURAR', d:'Vierte solo <strong>50g de agua primero</strong>. Agita para humedecer todo el café.'},
+        {t:'COMPLETAR', d:'A los 30s, vierte el <strong>resto del agua</strong>. Cierra.'},
+        {t:'ESPERAR', d:'<strong>4 minutos</strong>. La manga hará su trabajo.'},
+        {t:'SERVIR', d:'Inclina suavemente. El resultado es <strong>más uniforme que el método directo</strong>.'}
+      ]}
+    ],
+    acido: [
+      { nombre: 'Eva Fresca', desc: 'Eva Solo con menos tiempo y temperatura baja para una infusión más ligera y brillante.', ratio:16, temp:'86°C', tiempo:'03:00', sabor:{d:2,a:4,c:2}, pasos:[
+        {t:'TEMPERATURA BAJA', d:'<strong>86°C</strong>. Menos extracción de amargor.'},
+        {t:'TIEMPO CORTO', d:'Solo <strong>3 minutos</strong>. Inusual para Eva Solo pero funciona.'},
+        {t:'NO REVOLVER', d:'<strong>No agites</strong>. Deja que el agua sola haga el trabajo.'},
+        {t:'SERVIR RÁPIDO', d:'Sirve <strong>en cuanto termina</strong> el tiempo. No dejes el café dentro.'}
+      ]},
+      { nombre: 'Mañana Brillante', desc: 'Para empezar el día con claridad. Menos café, más agua, más acidez expresada.', ratio:17, temp:'88°C', tiempo:'03:30', sabor:{d:2,a:5,c:1}, pasos:[
+        {t:'RATIO ALTO', d:'<strong>1:17</strong>. Menos café, taza más ligera y brillante.'},
+        {t:'AGUA', d:'<strong>88°C</strong>, vierte de una sola vez.'},
+        {t:'TAPA ABIERTA', d:'Deja la tapa <strong>entreabierta</strong>. La temperatura baja más rápido = menos amargor.'},
+        {t:'SERVIR', d:'A los 3:30, sirve <strong>todo</strong>. No queda nada en la cafetera.'}
+      ]},
+      { nombre: 'Otoño Cítrico', desc: 'Eva Solo con café africano. El manga filtrante aporta cuerpo sin tapar los cítricos.', ratio:16, temp:'87°C', tiempo:'04:00', sabor:{d:2,a:4,c:2}, pasos:[
+        {t:'CAFÉ', d:'Usa un <strong>café natural de Etiopía o Kenia</strong>. La manga lo transforma.'},
+        {t:'TEMPERATURA', d:'<strong>87°C</strong>. El punto exacto para este tipo de grano.'},
+        {t:'REPOSO', d:'<strong>4 minutos</strong> con la manga actuando como filtro suave.'},
+        {t:'RESULTADO', d:'Una taza con <strong>más cuerpo que el V60</strong> pero con la acidez presente.'}
+      ]}
+    ],
+    balanceado: [
+      { nombre: 'Eva Classic', desc: 'El método que viene en el manual de Eva Solo. Simple, elegante, sin errores posibles.', ratio:15, temp:'92°C', tiempo:'04:00', sabor:{d:3,a:3,c:3}, pasos:[
+        {t:'CALENTAR', d:'<strong>92°C</strong>. Vierte sobre el café molido.'},
+        {t:'REVOLVER', d:'Revuelve <strong>3 veces suavemente</strong>.'},
+        {t:'4 MINUTOS', d:'Cierra la tapa. <strong>Timer en 4 minutos</strong>.'},
+        {t:'SERVIR', d:'Inclina y sirve. La manga retiene <strong>todos los finos y sedimentos</strong>.'}
+      ]},
+      { nombre: 'Taza para Dos', desc: 'Escala perfecta para dos personas. Eva Solo hace muy bien el café para compartir.', ratio:15, temp:'93°C', tiempo:'04:00', sabor:{d:3,a:2,c:3}, pasos:[
+        {t:'ESCALA', d:'<strong>34g de café</strong> para 510g de agua. Para una Eva Solo de 1L.'},
+        {t:'VERTIDO', d:'Vierte en espiral. <strong>Llena hasta el borde de la manga</strong>.'},
+        {t:'REVOLVER', d:'Dos vueltas suaves. Cierra la tapa.'},
+        {t:'SERVIR', d:'A los 4 minutos, sirve directamente. Eva Solo mantiene el café <strong>caliente extra tiempo</strong>.'}
+      ]},
+      { nombre: 'Invierno Cálido', desc: 'Para días fríos. Temperatura alta y tiempo extendido para un café que calienta de adentro.', ratio:14, temp:'95°C', tiempo:'05:00', sabor:{d:3,a:2,c:4}, pasos:[
+        {t:'TEMPERATURA ALTA', d:'<strong>95°C</strong>. Eva Solo con agua muy caliente extrae cuerpo.'},
+        {t:'PRECALENTAR', d:'Llena la Eva Solo con agua caliente, espera 1 min y descarta.'},
+        {t:'CAFÉ', d:'Vierte y cierra. <strong>5 minutos completos</strong>.'},
+        {t:'RESULTADO', d:'Una taza <strong>densa y cálida</strong>. Perfecta para beberla en 10 minutos, cuando se enfría un poco.'}
+      ]}
+    ]
+  },
+  Espresso: {
+    dulce: [
+      { nombre: 'Corto & Dulce', desc: 'Extracción corta para capturar solo los azúcares sin llegar al amargor.', ratio:2, temp:'91°C', tiempo:'00:22', sabor:{d:5,a:2,c:4}, pasos:[
+        {t:'DOSIS', d:'<strong>18g de café</strong> molido muy fino.'},
+        {t:'DISTRIBUCIÓN', d:'Distribuye el café uniformemente con el dedo antes de tampar. <strong>Nivel parejo</strong>.'},
+        {t:'TAMPAR', d:'Presiona con <strong>15kg de fuerza</strong>. Firme y perpendicular.'},
+        {t:'META', d:'<strong>22 segundos</strong> para sacar 36g de espresso. Dulzor máximo en ese rango.'}
+      ]},
+      { nombre: 'Ristretto Dulce', desc: 'La mitad del líquido, el doble del sabor. El ristretto concentra los azúcares del grano.', ratio:1.5, temp:'90°C', tiempo:'00:20', sabor:{d:5,a:1,c:5}, pasos:[
+        {t:'RISTRETTO', d:'<strong>18g de café → 27g de líquido</strong>. Ratio 1:1.5.'},
+        {t:'MOLIENDA MÁS FINA', d:'Muele <strong>ligeramente más fino</strong> que tu espresso normal.'},
+        {t:'META TIEMPO', d:'<strong>18–22 segundos</strong>. Más largo = amargor.'},
+        {t:'BEBER SOLO', d:'El ristretto se toma solo. <strong>No es base para leche</strong>, es una experiencia en sí mismo.'}
+      ]},
+      { nombre: 'Espresso Clásico', desc: 'El espresso de referencia italiano. Dulzor en boca con crema avellana.', ratio:2, temp:'92°C', tiempo:'00:25', sabor:{d:4,a:2,c:4}, pasos:[
+        {t:'TEMPERATURA', d:'<strong>92°C</strong>. El estándar italiano desde los años 50.'},
+        {t:'DOSIS', d:'<strong>7–9g por taza</strong> en máquina de palanca. <strong>18–20g</strong> en moderna.'},
+        {t:'TIEMPO', d:'<strong>25 segundos exactos</strong>. El rango donde vive el espresso italiano.'},
+        {t:'CREMA', d:'Debe ser color <strong>avellana oscuro</strong>. Ni muy clara ni muy oscura.'}
+      ]}
+    ],
+    acido: [
+      { nombre: 'Espresso Largo', desc: 'Lungo para maximizar la acidez. Más agua, más extracción de los ácidos aromáticos.', ratio:3, temp:'90°C', tiempo:'00:35', sabor:{d:2,a:4,c:2}, pasos:[
+        {t:'LUNGO', d:'<strong>18g de café → 54g de líquido</strong>. Ratio 1:3.'},
+        {t:'TEMPERATURA BAJA', d:'<strong>90°C</strong>. Extrae acidez sin amargar el lungo.'},
+        {t:'TIEMPO', d:'<strong>30–35 segundos</strong>. El lungo necesita más tiempo.'},
+        {t:'BEBER CALIENTE', d:'El lungo se enfría rápido. <strong>Bébelo en los primeros 2 minutos</strong>.'}
+      ]},
+      { nombre: 'Washed Natural', desc: 'Para granos lavados de Etiopía. La presión del espresso extrae una acidez vinosa única.', ratio:2.5, temp:'89°C', tiempo:'00:28', sabor:{d:3,a:5,c:3}, pasos:[
+        {t:'GRANO', d:'Usar <strong>café washed de Etiopía o Kenia</strong> con tostado claro.'},
+        {t:'TEMPERATURA', d:'<strong>89°C</strong>. Bajo para espresso pero ideal para washed ligeros.'},
+        {t:'TIEMPO', d:'<strong>26–30 segundos</strong>. La acidez aparece en ese rango.'},
+        {t:'SIN LECHE', d:'Este espresso <strong>no va bien con leche</strong>. Se pierde toda la acidez.'}
+      ]},
+      { nombre: 'Turbo Shot', desc: 'Molienda gruesa, presión normal, extracción ultra rápida. Para una acidez limpia sin amargor.', ratio:2, temp:'93°C', tiempo:'00:15', sabor:{d:2,a:5,c:2}, pasos:[
+        {t:'MOLIENDA GRUESA', d:'<strong>Mucho más grueso</strong> de lo normal para espresso. Contraintuitivo.'},
+        {t:'TEMPERATURA ALTA', d:'<strong>93°C</strong>. Compensa la molienda gruesa.'},
+        {t:'TIEMPO CORTO', d:'<strong>15 segundos</strong>. El agua pasa rápido por la molienda gruesa.'},
+        {t:'RESULTADO', d:'Una taza <strong>sin amargor</strong>. La acidez llega limpia al paladar.'}
+      ]}
+    ],
+    balanceado: [
+      { nombre: 'Espresso de Bar', desc: 'El espresso que sirven en los mejores bares de Italia. Equilibrio clásico.', ratio:2, temp:'92°C', tiempo:'00:25', sabor:{d:3,a:3,c:4}, pasos:[
+        {t:'ESTÁNDAR', d:'<strong>18g café → 36g líquido</strong>. El ratio de oro.'},
+        {t:'92°C', d:'Temperatura estándar de los mejores bares italianos.'},
+        {t:'25 SEGUNDOS', d:'El tiempo perfecto. <strong>Ni un segundo más</strong>.'},
+        {t:'CREMA', d:'Color <strong>avellana dorado</strong>. Si está muy oscura, muele más grueso.'}
+      ]},
+      { nombre: 'Modern Specialty', desc: 'El espresso de tercera ola. Más ácido que el italiano pero más redondo que el washed.', ratio:2.5, temp:'93°C', tiempo:'00:28', sabor:{d:3,a:4,c:3}, pasos:[
+        {t:'RATIO', d:'<strong>18g → 45g</strong>. Más largo que el italiano clásico.'},
+        {t:'TEMPERATURA ALTA', d:'<strong>93°C</strong>. Los cafés especiales necesitan más temperatura.'},
+        {t:'28 SEGUNDOS', d:'El punto donde specialty y tradición se encuentran.'},
+        {t:'PROBAR', d:'Si es amargo, <strong>sube temperatura o baja molienda</strong>. Si es ácido, al revés.'}
+      ]},
+      { nombre: 'Dialed In', desc: 'La receta para calibrar tu máquina. Parámetros medios para encontrar el punto de tu molino.', ratio:2, temp:'93°C', tiempo:'00:27', sabor:{d:3,a:3,c:3}, pasos:[
+        {t:'EMPEZAR AQUÍ', d:'<strong>Usa esta receta para calibrar</strong>. Es el punto de partida neutral.'},
+        {t:'AJUSTAR MOLIENDA', d:'Si en 27s sacas <strong>menos de 36g, muele más grueso</strong>. Si sacas más, más fino.'},
+        {t:'TEMPERATURA', d:'Una vez calibrado el tiempo, ajusta <strong>temperatura para sabor</strong>.'},
+        {t:'REPETIR', d:'Haz <strong>3 shots iguales</strong>. Si los tres saben igual, estás calibrado.'}
+      ]}
+    ]
+  },
+  Moka: {
+    dulce: [
+      { nombre: 'Italiana Clásica', desc: 'La moka como la hacían las abuelas italianas. Sin trucos, con respeto al proceso.', ratio:10, temp:'80°C', tiempo:'01:00', sabor:{d:4,a:1,c:5}, pasos:[
+        {t:'AGUA CALIENTE', d:'Llena la base con <strong>agua ya caliente a 80°C</strong>. Nunca fría.'},
+        {t:'CAFÉ', d:'Llena el filtro <strong>sin compactar</strong>. Solo nivelar con el dedo.'},
+        {t:'FUEGO BAJO', d:'<strong>Fuego bajo siempre</strong>. La moka no necesita prisa.'},
+        {t:'BAÑO FRÍO', d:'Cuando escuches el burbujeo final, <strong>moja la base en agua fría</strong>. Para la extracción.'}
+      ]},
+      { nombre: 'Dulce Napolitano', desc: 'Técnica napolitana con menos café pero más tiempo. Menos amarga, más dulce.', ratio:8, temp:'82°C', tiempo:'01:30', sabor:{d:5,a:1,c:4}, pasos:[
+        {t:'MENOS CAFÉ', d:'Llena el filtro <strong>solo hasta la mitad</strong>.'},
+        {t:'FUEGO MUY BAJO', d:'El fuego más bajo posible. <strong>La extracción tarda 90 segundos</strong>.'},
+        {t:'NO ABRIR', d:'<strong>No abras la tapa</strong> durante la extracción. Cada vez que abres, baja la presión.'},
+        {t:'EL PRIMER CAFÉ', d:'Los primeros 20ml que salen son los más dulces. <strong>Cierra el fuego ahí</strong> si quieres lo mejor.'}
+      ]},
+      { nombre: 'Seda & Canela', desc: 'Agregando una pizca de canela al café antes de la extracción. La moka lo infusiona perfectamente.', ratio:10, temp:'80°C', tiempo:'01:00', sabor:{d:5,a:1,c:4}, pasos:[
+        {t:'CANELA', d:'Agrega <strong>una pizca de canela en polvo</strong> encima del café en el filtro. Sin revolver.'},
+        {t:'AGUA CALIENTE', d:'<strong>80°C</strong> en la base.'},
+        {t:'FUEGO MEDIO-BAJO', d:'Extrae normalmente en <strong>60 segundos</strong>.'},
+        {t:'RESULTADO', d:'La canela se integra sutilmente. <strong>No domina, solo redondea</strong>.'}
+      ]}
+    ],
+    acido: [
+      { nombre: 'Moka Ligera', desc: 'Menos café y agua más fría para una moka más delicada y con acidez presente.', ratio:12, temp:'75°C', tiempo:'01:30', sabor:{d:2,a:3,c:3}, pasos:[
+        {t:'TEMPERATURA MUY BAJA', d:'<strong>75°C</strong>. La moka menos caliente del menú.'},
+        {t:'MENOS CAFÉ', d:'Llena el filtro a <strong>dos tercios</strong>. Menos café, más acidez.'},
+        {t:'FUEGO BAJO', d:'El fuego más bajo posible. <strong>No apures</strong>.'},
+        {t:'RESULTADO', d:'Una moka más <strong>parecida al filter coffee</strong>. Menos concentrada, más aromática.'}
+      ]},
+      { nombre: 'Origen Lavado', desc: 'Para usar cafés de especialidad lavados en la moka. Sí se puede.', ratio:11, temp:'78°C', tiempo:'01:15', sabor:{d:2,a:4,c:3}, pasos:[
+        {t:'GRANO', d:'Usa un <strong>café lavado de Colombia o Etiopía</strong> con tostado claro-medio.'},
+        {t:'MOLIENDA', d:'Muele <strong>menos fino que lo usual</strong> en moka. Casi punto de prensa francesa.'},
+        {t:'78°C', d:'Agua más fría de lo típico. <strong>Mide la temperatura</strong> si puedes.'},
+        {t:'RÁPIDO', d:'Apenas escuches el burbujeo, <strong>cierra el fuego</strong>. Extraer de más arruina este tipo de grano.'}
+      ]},
+      { nombre: 'Moka Americana', desc: 'Con más agua que lo usual para diluir la concentración y revelar la acidez escondida.', ratio:13, temp:'80°C', tiempo:'01:00', sabor:{d:2,a:4,c:2}, pasos:[
+        {t:'MÁS AGUA BASE', d:'Llena la base <strong>por encima de la válvula</strong>. Más presión = más extracción.'},
+        {t:'CAFÉ NORMAL', d:'Filtro lleno normalmente. <strong>No cambies el café</strong>.'},
+        {t:'EXTRACCIÓN', d:'Extrae normal. El resultado saldrá <strong>más diluido pero más ácido</strong>.'},
+        {t:'DILUIR MÁS', d:'Opcionalmente, <strong>agrega un poco de agua caliente</strong> al final para un americano de moka.'}
+      ]}
+    ],
+    balanceado: [
+      { nombre: 'Moka de Diario', desc: 'La receta para cada mañana. Simple, sin variaciones, siempre igual de buena.', ratio:10, temp:'80°C', tiempo:'01:00', sabor:{d:3,a:2,c:4}, pasos:[
+        {t:'RITUAL', d:'Siempre <strong>agua caliente en la base</strong>. Café nivelado, no compactado.'},
+        {t:'FUEGO MEDIO', d:'<strong>Fuego medio</strong>. La moka de diario no necesita ser perfecta.'},
+        {t:'ESCUCHAR', d:'Aprende a escuchar los sonidos. <strong>Burbujeo suave = bien. Silbido fuerte = muy tarde</strong>.'},
+        {t:'SERVIR', d:'Sirve de inmediato. <strong>La moka no espera</strong>.'}
+      ]},
+      { nombre: 'Dos Tazas Iguales', desc: 'Técnica para sacar dos espressos idénticos de la moka. El secreto es simple.', ratio:10, temp:'80°C', tiempo:'01:00', sabor:{d:3,a:2,c:4}, pasos:[
+        {t:'MEZCLA PRIMERO', d:'Vierte todo el café de la moka en una taza grande y <strong>mezcla bien</strong>.'},
+        {t:'DIVIDIR', d:'Luego divide <strong>en partes iguales</strong>. La primera extracción es más concentrada, la última más diluida.'},
+        {t:'RESULTADO', d:'Dos tazas <strong>completamente idénticas</strong>. Simple pero muy efectivo.'},
+        {t:'APLICAR', d:'Usa esta técnica <strong>siempre que hagas moka para más de una persona</strong>.'}
+      ]},
+      { nombre: 'Mezcla de Casa', desc: 'Usa una mezcla de dos orígenes en la moka para complejidad natural sin esfuerzo técnico.', ratio:10, temp:'80°C', tiempo:'01:00', sabor:{d:3,a:3,c:4}, pasos:[
+        {t:'MEZCLA', d:'<strong>60% tueste oscuro + 40% tueste medio</strong>. La proporción clásica de los blends italianos.'},
+        {t:'MOLER JUNTOS', d:'<strong>Muele los dos granos juntos</strong>. El resultado es más uniforme que mezclar después.'},
+        {t:'EXTRACCIÓN', d:'Extrae normalmente. El blend se comporta como un <strong>café equilibrado</strong>.'},
+        {t:'EXPERIMENTAR', d:'Prueba distintas proporciones. <strong>Anota la que más te guste</strong>.'}
+      ]}
+    ]
+  }
+};
 
-    function calcular() {
-        const c = parseFloat(document.getElementById('cafe').value) || 0;
-        const r = parseFloat(document.getElementById('ratio').value) || 0;
-        document.getElementById('resultado').innerText = Math.round(c * r);
-    }
+// ── STATE ─────────────────────────────────────────────
+let state = {
+  method: null,
+  obj: null,
+  currentReceta: null,
+  fromMyRecipes: false
+};
 
-    function actualizarMetodo() {
-        const m = document.getElementById('metodo').value;
-        const conf = configuraciones[m];
-        
-        document.getElementById('txt-molienda').innerText = conf.molienda;
-        document.getElementById('txt-temp').innerText = conf.temp;
-        document.getElementById('ratio').value = conf.ratio;
-        document.getElementById('meta-display').innerText = conf.tiempo;
-        calcular();
-    }
+// timer
+let timerInterval = null, elapsedMs = 0, startTs = 0;
+let audioCtx = null;
 
-    let startTime, elapsedTime = 0, timerInterval;
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function getAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
 
-    function beep() {
-        const osc = audioCtx.createOscillator();
-        const g = audioCtx.createGain();
-        osc.connect(g); g.connect(audioCtx.destination);
-        osc.frequency.value = 600; osc.start();
-        setTimeout(() => osc.stop(), 400);
-    }
+// ── NAVIGATION ────────────────────────────────────────
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+    s.style.display = 'none';
+  });
+  const s = document.getElementById(screenId);
+  s.style.display = 'block';
+  requestAnimationFrame(() => s.classList.add('active'));
 
-    function toggleTimer() {
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        if (!timerInterval) {
-            startTime = Date.now() - elapsedTime;
-            timerInterval = setInterval(() => {
-                elapsedTime = Date.now() - startTime;
-                let m = Math.floor(elapsedTime / 60000);
-                let s = Math.floor((elapsedTime % 60000) / 1000);
-                let displayStr = m.toString().padStart(2,'0') + ":" + s.toString().padStart(2,'0');
-                document.getElementById('display').innerText = displayStr;
-                if (displayStr === document.getElementById('meta-display').innerText) {
-                    document.getElementById('display').classList.add('active-timer');
-                    beep();
-                }
-            }, 100);
-            document.getElementById('startBtn').innerText = "PAUSAR";
-            document.getElementById('startBtn').style.background = "#ff4444";
-        } else {
-            clearInterval(timerInterval); timerInterval = null;
-            document.getElementById('startBtn').innerText = "CONTINUAR";
-            document.getElementById('startBtn').style.background = "#c5a059";
-        }
-    }
+  if (screenId === 'screen-myrecipes') renderMyRecipes();
+  window.scrollTo(0, 0);
+}
 
-    function resetTimer() {
-        clearInterval(timerInterval); timerInterval = null; elapsedTime = 0;
-        document.getElementById('display').innerText = "00:00";
-        document.getElementById('display').classList.remove('active-timer');
-        document.getElementById('startBtn').innerText = "INICIAR";
-        document.getElementById('startBtn').style.background = "#c5a059";
-    }
+// ── HOME ──────────────────────────────────────────────
+function selectMethod(btn, val) {
+  document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.method = val;
+  updateCTA();
+}
 
-    window.onload = actualizarMetodo;
+function selectObj(btn, val) {
+  document.querySelectorAll('.obj-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.obj = val;
+  updateCTA();
+}
+
+function updateCTA() {
+  const btn = document.getElementById('btn-preparar');
+  if (state.method && state.obj) btn.classList.add('ready');
+  else btn.classList.remove('ready');
+}
+
+function goToList() {
+  if (!state.method || !state.obj) return;
+  state.fromMyRecipes = false;
+
+  const objLabels = { dulce: 'Dulce 🍯', acido: 'Ácido 🍋', balanceado: 'Balanceado ⚖️' };
+  const methodLabels = { V60:'Hario V60', AeroPress:'AeroPress', Chemex:'Chemex', Prensa:'Prensa Francesa', EvaSolo:'Eva Solo', Espresso:'Espresso', Moka:'Moka Italiana' };
+
+  document.getElementById('lc-method').textContent = methodLabels[state.method];
+  document.getElementById('lc-obj').textContent = objLabels[state.obj];
+
+  renderCuratedList();
+  renderUserListForCombo();
+  goTo('screen-list');
+}
+
+function renderCuratedList() {
+  const recetas = (RECETAS[state.method] || {})[state.obj] || [];
+  const cont = document.getElementById('curated-cards');
+  cont.innerHTML = recetas.map((r, i) => rcardHTML(r, 'curada', i)).join('');
+}
+
+function renderUserListForCombo() {
+  const all = getUserRecetas();
+  const filtered = all.filter(r => r.metodo === state.method && r.objetivo === state.obj);
+  const cont = document.getElementById('user-cards');
+  const div = document.getElementById('user-divider');
+
+  if (filtered.length === 0) {
+    div.style.display = 'none';
+    cont.innerHTML = '';
+    return;
+  }
+  div.style.display = 'flex';
+  cont.innerHTML = filtered.map((r, i) => rcardHTML(r, 'user', i)).join('');
+}
+
+function rcardHTML(r, tipo, i) {
+  const isUser = tipo === 'user';
+  return `<div class="rcard ${isUser ? 'user-card' : ''}" onclick="openDetail('${tipo}',${i})">
+    <div class="rcard-left">
+      <div class="rcard-name">${r.nombre} <span class="rcard-badge ${isUser ? 'badge-user' : 'badge-800'}">${isUser ? 'MÍA' : '800'}</span></div>
+      <div class="rcard-desc">${r.desc}</div>
+      <div class="rcard-meta">
+        <div class="rpill">RATIO <span>1:${r.ratio}</span></div>
+        <div class="rpill">TEMP <span>${r.temp}</span></div>
+        <div class="rpill">TIEMPO <span>${r.tiempo}</span></div>
+      </div>
+    </div>
+    <div class="rcard-arrow">›</div>
+  </div>`;
+}
+
+// ── DETAIL ────────────────────────────────────────────
+function openDetail(tipo, idx) {
+  let receta;
+  if (tipo === 'curada') {
+    receta = (RECETAS[state.method] || {})[state.obj]?.[idx];
+  } else {
+    const all = getUserRecetas().filter(r => r.metodo === state.method && r.objetivo === state.obj);
+    receta = all[idx];
+  }
+  if (!receta) return;
+  state.currentReceta = receta;
+
+  document.getElementById('d-name').textContent = receta.nombre;
+  document.getElementById('d-desc').textContent = receta.desc;
+
+  document.getElementById('d-pills').innerHTML = `
+    <div class="detail-pill">RATIO <span>1:${receta.ratio}</span></div>
+    <div class="detail-pill">TEMP <span>${receta.temp}</span></div>
+    <div class="detail-pill">TIEMPO <span>${receta.tiempo}</span></div>
+  `;
+
+  const s = receta.sabor || {d:3,a:3,c:3};
+  document.getElementById('d-flavor').innerHTML = `
+    ${fbarHTML('DULZOR', s.d || s.dulzor || 3)}
+    ${fbarHTML('ACIDEZ', s.a || s.acidez || 3)}
+    ${fbarHTML('CUERPO', s.c || s.cuerpo || 3)}
+  `;
+
+  const pasos = receta.pasos || [];
+  document.getElementById('d-steps').innerHTML = pasos.map((p, i) => `
+    <div class="step">
+      <div class="step-dot">${i+1}</div>
+      <div class="step-body">
+        <div class="step-title">${p.t}</div>
+        <div class="step-desc">${p.d}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('t-meta').textContent = receta.tiempo;
+  resetTimer();
+  goTo('screen-detail');
+}
+
+function openDetailFromMine(idx) {
+  const all = getUserRecetas();
+  const receta = all[idx];
+  if (!receta) return;
+  state.method = receta.metodo;
+  state.obj = receta.objetivo;
+  state.fromMyRecipes = true;
+  openDetail('user', getUserRecetas().filter(r => r.metodo === receta.metodo && r.objetivo === receta.objetivo).indexOf(receta));
+
+  document.getElementById('detail-back').onclick = () => goTo('screen-myrecipes');
+}
+
+function fbarHTML(label, val) {
+  return `<div class="flavor-row">
+    <div class="flabel">${label}</div>
+    <div class="fbar"><div class="ffill" style="width:${(val/5)*100}%"></div></div>
+  </div>`;
+}
+
+// ── TIMER ─────────────────────────────────────────────
+function toggleTimer() {
+  if (audioCtx) audioCtx.resume();
+  else audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  if (!timerInterval) {
+    startTs = Date.now() - elapsedMs;
+    timerInterval = setInterval(() => {
+      elapsedMs = Date.now() - startTs;
+      const m = Math.floor(elapsedMs / 60000);
+      const s = Math.floor((elapsedMs % 60000) / 1000);
+      const str = pad(m) + ':' + pad(s);
+      document.getElementById('timer-display').textContent = str;
+
+      const meta = document.getElementById('t-meta').textContent;
+      if (str === meta) {
+        document.getElementById('timer-display').classList.add('done');
+        beep();
+      }
+    }, 100);
+    document.getElementById('t-start').textContent = 'PAUSAR';
+    document.getElementById('t-start').style.background = '#e06060';
+  } else {
+    clearInterval(timerInterval); timerInterval = null;
+    document.getElementById('t-start').textContent = 'CONTINUAR';
+    document.getElementById('t-start').style.background = 'var(--oro)';
+  }
+}
+
+function resetTimer() {
+  clearInterval(timerInterval); timerInterval = null; elapsedMs = 0;
+  document.getElementById('timer-display').textContent = '00:00';
+  document.getElementById('timer-display').classList.remove('done');
+  const btn = document.getElementById('t-start');
+  if (btn) { btn.textContent = 'INICIAR'; btn.style.background = 'var(--oro)'; }
+}
+
+function beep() {
+  try {
+    const ctx = getAudio();
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.connect(g); g.connect(ctx.destination);
+    osc.frequency.value = 660;
+    g.gain.setValueAtTime(0.3, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+    osc.start(); osc.stop(ctx.currentTime + 0.6);
+  } catch(e) {}
+}
+
+function pad(n) { return n.toString().padStart(2,'0'); }
+
+// ── MY RECIPES ────────────────────────────────────────
+function getUserRecetas() {
+  return JSON.parse(localStorage.getItem('recetas800') || '[]');
+}
+
+function renderMyRecipes() {
+  const all = getUserRecetas();
+  const cont = document.getElementById('all-user-cards');
+  if (all.length === 0) {
+    cont.innerHTML = `<div class="empty">Aún no tienes recetas guardadas.<br><br>Crea la primera con el botón +</div>`;
+    return;
+  }
+  const methodLabels = { V60:'V60', AeroPress:'AeroPress', Chemex:'Chemex', Prensa:'Prensa Francesa', EvaSolo:'Eva Solo', Espresso:'Espresso', Moka:'Moka' };
+  const objEmoji = { dulce:'🍯', acido:'🍋', balanceado:'⚖️' };
+  cont.innerHTML = all.map((r, i) => `
+    <div class="rcard user-card" onclick="openDetailFromMine(${i})">
+      <div class="rcard-left">
+        <div class="rcard-name">${r.nombre}</div>
+        <div class="rcard-desc" style="margin-bottom:6px">${methodLabels[r.metodo] || r.metodo} ${objEmoji[r.objetivo] || ''}</div>
+        <div class="rcard-desc">${r.desc}</div>
+        <div class="rcard-meta">
+          <div class="rpill">1:${r.ratio}</div>
+          <div class="rpill">${r.temp}</div>
+          <div class="rpill">${r.tiempo}</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+        <div class="rcard-arrow">›</div>
+        <button onclick="deleteReceta(event,${i})" style="background:none;border:none;color:#e06060;font-size:0.75em;letter-spacing:1px;cursor:pointer;font-family:'DM Mono',monospace;">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function deleteReceta(e, idx) {
+  e.stopPropagation();
+  const all = getUserRecetas();
+  all.splice(idx, 1);
+  localStorage.setItem('recetas800', JSON.stringify(all));
+  renderMyRecipes();
+}
+
+// ── NEW RECIPE ────────────────────────────────────────
+function updSl(el, id) {
+  document.getElementById(id).textContent = el.value;
+}
+
+function saveReceta() {
+  const nombre = document.getElementById('f-nombre').value.trim();
+  if (!nombre) { alert('Ponle un nombre a la receta'); return; }
+
+  const receta = {
+    nombre,
+    metodo: document.getElementById('f-metodo').value,
+    objetivo: document.getElementById('f-obj').value,
+    desc: document.getElementById('f-desc').value || 'Receta personalizada.',
+    ratio: parseInt(document.getElementById('f-ratio').value) || 15,
+    temp: document.getElementById('f-temp').value || '--',
+    tiempo: document.getElementById('f-tiempo').value || '00:00',
+    sabor: {
+      d: parseInt(document.querySelector('#screen-new input[type=range]:nth-of-type(1)').value),
+      a: parseInt(document.querySelector('#screen-new input[type=range]:nth-of-type(2)').value),
+      c: parseInt(document.querySelector('#screen-new input[type=range]:nth-of-type(3)').value),
+    },
+    pasos: []
+  };
+
+  const all = getUserRecetas();
+  all.push(receta);
+  localStorage.setItem('recetas800', JSON.stringify(all));
+
+  document.getElementById('f-nombre').value = '';
+  document.getElementById('f-desc').value = '';
+
+  state.method = receta.metodo;
+  state.obj = receta.objetivo;
+  goTo('screen-myrecipes');
+}
+
+// init
+window.onload = () => {
+  document.getElementById('screen-home').style.display = 'flex';
+};
 </script>
+
 </body>
 </html>
