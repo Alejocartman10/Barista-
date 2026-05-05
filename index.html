@@ -1165,24 +1165,46 @@ function renderStepCards() {
   const r=currentReceta;
   const totalAgua=Math.round(cafeGrams*r.ratio);
   const cont=document.getElementById('steps-timer');
-  cont.innerHTML=r.pasos.map((p,i)=>{
+
+  // Build quantities summary card if any step has pct > 0
+  const hasPct = r.pasos.some(p=>p.pct&&p.pct>0);
+  let summaryHTML = '';
+  if (hasPct) {
+    const rows = r.pasos
+      .filter(p=>p.pct&&p.pct>0)
+      .map(p=>{
+        const g=Math.round(totalAgua*(p.pct/100));
+        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+          <span style="font-size:.6em;letter-spacing:1.5px;color:rgba(237,232,224,.5)">${p.t}</span>
+          <span style="font-size:.75em;color:#c5a059;font-weight:600">${g}g</span>
+        </div>`;
+      }).join('');
+    summaryHTML = `<div style="background:#1a1a1a;border:1px solid rgba(197,160,89,0.25);border-radius:14px;padding:14px 16px;margin-bottom:16px">
+      <div style="font-size:.58em;letter-spacing:3px;color:rgba(237,232,224,.4);margin-bottom:8px">CANTIDADES CALCULADAS</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+        <div style="text-align:center">
+          <div style="font-size:1.4em;color:#c5a059;font-weight:600">${cafeGrams}g</div>
+          <div style="font-size:.55em;letter-spacing:1px;color:rgba(237,232,224,.4);margin-top:2px">CAFÉ</div>
+        </div>
+        <div style="color:rgba(237,232,224,.3);align-self:center">→</div>
+        <div style="text-align:center">
+          <div style="font-size:1.4em;color:#c5a059;font-weight:600">${totalAgua}g</div>
+          <div style="font-size:.55em;letter-spacing:1px;color:rgba(237,232,224,.4);margin-top:2px">AGUA TOTAL</div>
+        </div>
+      </div>
+      ${rows}
+    </div>`;
+  }
+
+  const stepsHTML = r.pasos.map((p,i)=>{
     const mm=Math.floor(p.s/60), ss=p.s%60;
     const durLabel=mm>0?`${mm}:${pad(ss)} min`:`${p.s}s`;
-    // recalc gram amounts in description if pct available
-    let desc=p.d;
-    if (cafeGrams!==20 && p.pct && p.pct>0) {
-      const grams=Math.round(totalAgua*(p.pct/100));
-      // replace bolded gram amounts (simple heuristic: first <strong>Xg</strong> or <strong>~Xg</strong>)
-      desc=desc.replace(/<strong>(~?\d+g)<\/strong>/g,(match,orig)=>{
-        return `<strong>${grams}g</strong>`;
-      });
-    }
     return `<div class="step-card" id="sc-${i}">
       <div class="step-inner">
         <div class="step-num">${i+1}</div>
         <div class="step-body">
           <div class="step-title">${p.t}</div>
-          <div class="step-desc">${desc}</div>
+          <div class="step-desc">${p.d}</div>
         </div>
         <div class="step-right">
           <div class="step-duration">${durLabel}</div>
@@ -1193,6 +1215,8 @@ function renderStepCards() {
       <div class="step-progress" id="sp-${i}"></div>
     </div>`;
   }).join('');
+
+  cont.innerHTML = summaryHTML + stepsHTML;
 }
 
 function updateStepCards() {
