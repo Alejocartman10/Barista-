@@ -666,392 +666,391 @@ const RECETAS = {
   V60:{
     dulce:[
       {nombre:'Panela & Chocolate',desc:'Vertido lento en cuatro tiempos para resaltar azúcares naturales del grano. Ideal para tuestes medios de Colombia o Brasil.',ratio:15,temp:'93°C',tiempo:'02:30',sabor:{d:4,a:2,c:3},pasos:[
-        {t:'BLOOM',d:'Vierte <strong>40g de agua</strong> sobre el café. El <span class="gterm" onclick="showTip(\'bloom\')">bloom</span> libera el CO₂ y el café se asienta.',s:30,pct:13},
-        {t:'PRIMER VERTIDO',d:'Vierte <strong>lentamente hasta 120g</strong> en espirales desde el centro.',s:45,pct:27},
-        {t:'SEGUNDO VERTIDO',d:'Completa hasta <strong>200g</strong>. Mantén movimientos circulares lentos.',s:30,pct:27},
-        {t:'TERCER VERTIDO',d:'Completa hasta <strong>300g</strong>. Termina antes de 2:30.',s:45,pct:33}
+        {t:'BLOOM',d:'Vierte <strong>40g de agua</strong> sobre el café. El <span class="gterm" onclick="showTip(\'bloom\')">bloom</span> libera el CO₂ y el café se asienta.',s:30,ag:40},
+        {t:'PRIMER VERTIDO',d:'Vierte lentamente hasta <strong>80g más</strong> en espirales desde el centro.',s:45,ag:80},
+        {t:'SEGUNDO VERTIDO',d:'Agrega <strong>80g más</strong>. Mantén movimientos circulares lentos.',s:30,ag:80},
+        {t:'TERCER VERTIDO',d:'Agrega los <strong>100g finales</strong>. Termina antes de 2:30.',s:45,ag:100}
       ]},
       {nombre:'Miel Tostada',desc:'Molienda ligeramente más gruesa y temperatura reducida para extraer solo los azúcares. Sin amargor.',ratio:14,temp:'90°C',tiempo:'03:00',sabor:{d:5,a:1,c:3},pasos:[
-        {t:'BLOOM',d:'<strong>50g de agua a 90°C</strong>. Más tiempo de <span class="gterm" onclick="showTip(\'bloom\')">pre-infusión</span> que lo usual.',s:45,pct:18},
-        {t:'VERTIDO ÚNICO',d:'Vierte el resto <strong>en un solo movimiento continuo</strong>, muy despacio, en espiral.',s:90,pct:64},
-        {t:'DRENAR',d:'Deja que el filtro drene solo. <strong>No toques el dripper</strong>.',s:45,pct:18}
+        {t:'BLOOM',d:'<strong>40g de agua a 90°C</strong>. Más tiempo de <span class="gterm" onclick="showTip(\'bloom\')">pre-infusión</span> que lo usual.',s:45,ag:40},
+        {t:'VERTIDO ÚNICO',d:'Vierte los <strong>240g restantes</strong> en un solo movimiento continuo, muy despacio, en espiral.',s:90,ag:240},
+        {t:'DRENAR',d:'Deja que el filtro drene solo. <strong>No toques el dripper</strong>.',s:45,ag:0}
       ]},
       {nombre:'Caramelo de Altura',desc:'Para cafés de altitudes sobre 1800 msnm. Resalta el dulzor complejo de granos cultivados en frío.',ratio:15,temp:'94°C',tiempo:'02:45',sabor:{d:4,a:3,c:2},pasos:[
-        {t:'PRECALENTAR',d:'Enjuaga el filtro con agua caliente. Descarta el agua del servidor.',s:20,pct:0},
-        {t:'BLOOM',d:'<strong>40g de agua</strong>. Agita el V60 suavemente.',s:30,pct:13},
-        {t:'VERTIDO 1',d:'<strong>85g de agua</strong> en espiral lenta.',s:30,pct:28},
-        {t:'VERTIDO 2',d:'Otros <strong>85g</strong> en espiral lenta.',s:30,pct:28},
-        {t:'VERTIDO 3',d:'<strong>90g finales</strong>. El tiempo total debe estar entre 2:30 y 2:45.',s:55,pct:31}
+        {t:'PRECALENTAR',d:'Enjuaga el filtro con agua caliente. Descarta el agua del servidor.',s:20,ag:0},
+        {t:'BLOOM',d:'<strong>40g de agua</strong>. Agita el V60 suavemente.',s:30,ag:40},
+        {t:'VERTIDO 1',d:'<strong>85g de agua</strong> en espiral lenta.',s:30,ag:85},
+        {t:'VERTIDO 2',d:'<strong>85g más</strong> en espiral lenta.',s:30,ag:85},
+        {t:'VERTIDO 3',d:'<strong>90g finales</strong>. El tiempo total debe estar entre 2:30 y 2:45.',s:55,ag:90}
       ]}
     ],
     acido:[
       {nombre:'Cítrico Etíope',desc:'Temperatura baja y contacto mínimo para preservar la acidez brillante de los granos africanos.',ratio:16,temp:'86°C',tiempo:'02:00',sabor:{d:2,a:5,c:1},pasos:[
-        {t:'BLOOM CORTO',d:'Solo <strong>30g de agua a 86°C</strong>. No más tiempo.',s:20,pct:10},
-        {t:'VERTIDO CONTINUO',d:'Vierte los <strong>270g restantes sin parar</strong>, en un chorro constante.',s:50,pct:73},
-        {t:'DRENAR',d:'<strong>No revuelvas</strong>. El movimiento extra tapa la acidez.',s:50,pct:17}
+        {t:'BLOOM CORTO',d:'Solo <strong>30g de agua a 86°C</strong>. No más tiempo.',s:20,ag:30},
+        {t:'VERTIDO CONTINUO',d:'Vierte los <strong>290g restantes</strong> en un chorro constante y delgado.',s:50,ag:290},
+        {t:'DRENAR',d:'<strong>No revuelvas</strong>. El movimiento extra tapa la acidez.',s:50,ag:0}
       ]},
       {nombre:'Frambuesa Kenia',desc:'El doble bloom activa la acidez en capas. Para granos AA de Kenia con notas a frutos rojos.',ratio:15,temp:'88°C',tiempo:'02:20',sabor:{d:3,a:5,c:2},pasos:[
-        {t:'PRIMER BLOOM',d:'<strong>35g de agua</strong>.',s:20,pct:12},
-        {t:'SEGUNDO BLOOM',d:'Añade <strong>otros 35g</strong>. Dos <span class="gterm" onclick="showTip(\'bloom\')">blooms</span>, más acidez liberada.',s:20,pct:12},
-        {t:'VERTIDO PRINCIPAL',d:'Vierte hasta <strong>300g totales</strong> en movimiento continuo y suave.',s:80,pct:63},
-        {t:'DRENAR',d:'Termina entre <strong>2:10–2:20</strong>. Si pasa de 2:30, muele más grueso.',s:40,pct:13}
+        {t:'PRIMER BLOOM',d:'<strong>35g de agua</strong>.',s:20,ag:35},
+        {t:'SEGUNDO BLOOM',d:'<strong>35g más</strong>. Dos <span class="gterm" onclick="showTip(\'bloom\')">blooms</span>, más acidez liberada.',s:20,ag:35},
+        {t:'VERTIDO PRINCIPAL',d:'Vierte los <strong>230g restantes</strong> en movimiento continuo y suave.',s:80,ag:230},
+        {t:'DRENAR',d:'Termina entre <strong>2:10–2:20</strong>. Si pasa de 2:30, muele más grueso.',s:40,ag:0}
       ]},
       {nombre:'Maracuyá & Té',desc:'Molienda muy fina con agua fría. Extracción rápida para una taza translúcida y aromática.',ratio:17,temp:'84°C',tiempo:'01:50',sabor:{d:1,a:5,c:1},pasos:[
-        {t:'BLOOM',d:'<strong>30g de agua a 84°C</strong>.',s:20,pct:9},
-        {t:'VERTIDO RÁPIDO',d:'Vierte los <strong>310g restantes en 40 segundos</strong> continuos.',s:40,pct:78},
-        {t:'DRENAR',d:'Si está astringente, baja la temperatura.',s:50,pct:13}
+        {t:'BLOOM',d:'<strong>30g de agua a 84°C</strong>.',s:20,ag:30},
+        {t:'VERTIDO RÁPIDO',d:'Vierte los <strong>310g restantes</strong> en 40 segundos continuos.',s:40,ag:310},
+        {t:'DRENAR',d:'Si está astringente, baja la temperatura.',s:50,ag:0}
       ]}
     ],
     balanceado:[
       {nombre:'V60 Clásico',desc:'El método estándar de referencia. Funciona con casi cualquier origen y tueste medio.',ratio:15,temp:'93°C',tiempo:'02:30',sabor:{d:3,a:3,c:3},pasos:[
-        {t:'BLOOM',d:'<strong>40g de agua</strong>. Espera exactamente.',s:30,pct:13},
-        {t:'VERTIDO 1',d:'Vierte hasta <strong>120g</strong> en círculos.',s:30,pct:27},
-        {t:'VERTIDO 2',d:'Vierte hasta <strong>200g</strong> lentamente.',s:30,pct:27},
-        {t:'VERTIDO 3',d:'Completa hasta <strong>300g</strong>. Da una vuelta suave al V60 al terminar.',s:60,pct:33}
+        {t:'BLOOM',d:'<strong>40g de agua</strong>. Espera exactamente.',s:30,ag:40},
+        {t:'VERTIDO 1',d:'<strong>80g más</strong> en círculos.',s:30,ag:80},
+        {t:'VERTIDO 2',d:'<strong>80g más</strong> lentamente.',s:30,ag:80},
+        {t:'VERTIDO 3',d:'<strong>100g finales</strong>. Da una vuelta suave al V60 al terminar.',s:60,ag:100}
       ]},
       {nombre:'Hoffmann 4:6',desc:'Los primeros dos vertidos controlan dulzor/acidez. Los siguientes, la concentración.',ratio:15,temp:'93°C',tiempo:'03:30',sabor:{d:3,a:3,c:3},pasos:[
-        {t:'VERTIDO 1 (40%)',d:'<strong>120g</strong> de agua. Espera que caiga.',s:45,pct:40},
-        {t:'VERTIDO 2 (40%)',d:'Otros <strong>120g</strong>. Estos dos definen el perfil.',s:45,pct:40},
-        {t:'VERTIDO 3',d:'<strong>20g</strong>.',s:45,pct:7},
-        {t:'VERTIDO 4',d:'<strong>20g</strong> más.',s:45,pct:7},
-        {t:'VERTIDO 5',d:'<strong>20g finales</strong>.',s:30,pct:6}
+        {t:'VERTIDO 1 (40%)',d:'<strong>120g de agua</strong>. Espera que caiga.',s:45,ag:120},
+        {t:'VERTIDO 2 (40%)',d:'<strong>120g más</strong>. Estos dos definen el perfil.',s:45,ag:120},
+        {t:'VERTIDO 3',d:'<strong>20g</strong>.',s:45,ag:20},
+        {t:'VERTIDO 4',d:'<strong>20g más</strong>.',s:45,ag:20},
+        {t:'VERTIDO 5',d:'<strong>20g finales</strong>.',s:30,ag:20}
       ]},
       {nombre:'Lento & Constante',desc:'Un solo vertido continuo durante 2 minutos. Extracción muy uniforme.',ratio:15,temp:'91°C',tiempo:'02:45',sabor:{d:3,a:3,c:3},pasos:[
-        {t:'BLOOM',d:'<strong>40g</strong>. Espera.',s:30,pct:13},
-        {t:'VERTIDO ÚNICO',d:'Vierte los <strong>260g restantes en exactamente 2 minutos</strong>. Sin parar.',s:120,pct:87},
-        {t:'DRENAR',d:'Si pasa de 3 min, muele más grueso.',s:45,pct:0}
+        {t:'BLOOM',d:'<strong>40g</strong>. Espera.',s:30,ag:40},
+        {t:'VERTIDO ÚNICO',d:'Vierte los <strong>260g restantes</strong> en exactamente 2 minutos. Sin parar.',s:120,ag:260},
+        {t:'DRENAR',d:'Si pasa de 3 min, muele más grueso.',s:45,ag:0}
       ]}
     ]
   },
   AeroPress:{
     dulce:[
       {nombre:'Tropical Invertido',desc:'Técnica invertida con temperatura baja para resaltar el dulzor de tuestes medios.',ratio:14,temp:'88°C',tiempo:'01:45',sabor:{d:5,a:2,c:3},pasos:[
-        {t:'INVERTIDO',d:'Coloca el AeroPress <strong>boca abajo</strong>. Agrega <strong>15g de café</strong>.',s:15,pct:0},
-        {t:'AGUA',d:'Vierte <strong>200g a 88°C</strong>. Revuelve 5 veces.',s:10,pct:100},
-        {t:'REPOSAR',d:'La temperatura baja resalta los azúcares.',s:65,pct:0},
-        {t:'PRESIONAR',d:'Voltea y presiona <strong>suavemente en 15 segundos</strong>.',s:15,pct:0}
+        {t:'INVERTIDO',d:'Coloca el AeroPress <strong>boca abajo</strong>. Agrega <strong>15g de café</strong>.',s:15,ag:0},
+        {t:'AGUA',d:'Vierte <strong>200g a 88°C</strong>. Revuelve 5 veces.',s:10,ag:200},
+        {t:'REPOSAR',d:'La temperatura baja resalta los azúcares.',s:65,ag:0},
+        {t:'PRESIONAR',d:'Voltea y presiona <strong>suavemente en 15 segundos</strong>.',s:15,ag:0}
       ]},
       {nombre:'Agave & Vainilla',desc:'Tiempo de contacto largo para extraer los azúcares más complejos.',ratio:13,temp:'90°C',tiempo:'02:30',sabor:{d:5,a:1,c:4},pasos:[
-        {t:'CAFÉ + AGUA',d:'<strong>18g de café</strong>. Vierte <strong>200g a 90°C</strong> de una vez.',s:15,pct:100},
-        {t:'REPOSAR',d:'<strong>2 minutos completos</strong> sin tocar.',s:120,pct:0},
-        {t:'PRESIONAR',d:'Presiona <strong>muy lentamente en 30 segundos</strong>.',s:30,pct:0}
+        {t:'CAFÉ + AGUA',d:'<strong>18g de café</strong>. Vierte <strong>220g a 90°C</strong> de una vez.',s:15,ag:220},
+        {t:'REPOSAR',d:'<strong>2 minutos completos</strong> sin tocar.',s:120,ag:0},
+        {t:'PRESIONAR',d:'Presiona <strong>muy lentamente en 30 segundos</strong>.',s:30,ag:0}
       ]},
       {nombre:'Melaza Oscura',desc:'Para granos de tueste oscuro. Extrae el cuerpo y el dulzor sin amargor.',ratio:12,temp:'85°C',tiempo:'02:00',sabor:{d:4,a:1,c:5},pasos:[
-        {t:'CAFÉ + AGUA',d:'<strong>15g de café</strong>. <strong>180g a 85°C</strong>. Llena hasta la marca 3.',s:15,pct:100},
-        {t:'REPOSAR',d:'85°C es clave. El tueste oscuro ya tiene más amargor base.',s:90,pct:0},
-        {t:'PRESIONAR',d:'Presiona en <strong>15 segundos constantes</strong>. Para antes del silbido.',s:15,pct:0}
+        {t:'CAFÉ + AGUA',d:'<strong>15g de café</strong>. <strong>180g a 85°C</strong>. Llena hasta la marca 3.',s:15,ag:180},
+        {t:'REPOSAR',d:'85°C es clave para tueste oscuro.',s:90,ag:0},
+        {t:'PRESIONAR',d:'Presiona en <strong>15 segundos constantes</strong>. Para antes del silbido.',s:15,ag:0}
       ]}
     ],
     acido:[
       {nombre:'Etíope Flash',desc:'Extracción ultrarrápida para capturar los aromas florales antes de que se pierdan.',ratio:16,temp:'83°C',tiempo:'01:00',sabor:{d:2,a:5,c:1},pasos:[
-        {t:'CAFÉ',d:'<strong>12g de café</strong> molido más fino de lo normal.',s:10,pct:0},
-        {t:'VERTIDO RÁPIDO',d:'Vierte <strong>150g en 10 segundos</strong>. Sin <span class="gterm" onclick="showTip(\'bloom\')">bloom</span> previo.',s:10,pct:100},
-        {t:'PRESIONAR YA',d:'Presiona <strong>inmediatamente en 20 segundos</strong>.',s:20,pct:0},
-        {t:'SERVIR',d:'Sirve de inmediato. Esta <span class="gterm" onclick="showTip(\'extraccion\')">extracción</span> no espera.',s:10,pct:0}
+        {t:'CAFÉ',d:'<strong>12g de café</strong> molido más fino de lo normal.',s:10,ag:0},
+        {t:'VERTIDO RÁPIDO',d:'Vierte <strong>150g en 10 segundos</strong>. Sin <span class="gterm" onclick="showTip(\'bloom\')">bloom</span> previo.',s:10,ag:150},
+        {t:'PRESIONAR',d:'Presiona <strong>inmediatamente en 20 segundos</strong>.',s:20,ag:0},
+        {t:'SERVIR',d:'Sirve de inmediato.',s:10,ag:0}
       ]},
       {nombre:'Kenia Express',desc:'Dos filtraciones para una acidez limpia y sin sedimento.',ratio:15,temp:'86°C',tiempo:'01:30',sabor:{d:2,a:5,c:2},pasos:[
-        {t:'DOS FILTROS',d:'Usa <strong>dos filtros de papel</strong> apilados. Máxima claridad.',s:15,pct:0},
-        {t:'BLOOM',d:'<strong>30g de agua</strong>. Espera.',s:20,pct:15},
-        {t:'RESTO',d:'Vierte los <strong>170g restantes</strong> continuamente.',s:20,pct:85},
-        {t:'PRESIÓN SUAVE',d:'Presiona con <strong>poca fuerza</strong>.',s:35,pct:0}
+        {t:'DOS FILTROS',d:'Usa <strong>dos filtros de papel</strong> apilados. Máxima claridad.',s:15,ag:0},
+        {t:'BLOOM',d:'<strong>30g de agua</strong>. Espera.',s:20,ag:30},
+        {t:'RESTO',d:'Vierte los <strong>270g restantes</strong> continuamente.',s:20,ag:270},
+        {t:'PRESIÓN SUAVE',d:'Presiona con <strong>poca fuerza</strong>.',s:35,ag:0}
       ]},
       {nombre:'Acidez Viva',desc:'El ratio alto y temperatura baja hacen el trabajo.',ratio:17,temp:'84°C',tiempo:'01:20',sabor:{d:1,a:5,c:2},pasos:[
-        {t:'CAFÉ + AGUA',d:'<strong>12g de café</strong>. <strong>200g a 84°C</strong>.',s:15,pct:100},
-        {t:'AGITACIÓN SUAVE',d:'Revuelve <strong>solo 3 veces</strong>.',s:10,pct:0},
-        {t:'REPOSAR',d:'Espera sin tocar.',s:35,pct:0},
-        {t:'PRESIONAR',d:'Presiona en <strong>20 segundos constantes</strong>.',s:20,pct:0}
+        {t:'CAFÉ + AGUA',d:'<strong>12g de café</strong>. Vierte <strong>200g a 84°C</strong>.',s:15,ag:200},
+        {t:'AGITACIÓN SUAVE',d:'Revuelve <strong>solo 3 veces</strong>.',s:10,ag:0},
+        {t:'REPOSAR',d:'Espera sin tocar.',s:35,ag:0},
+        {t:'PRESIONAR',d:'Presiona en <strong>20 segundos constantes</strong>.',s:20,ag:0}
       ]}
     ],
     balanceado:[
       {nombre:'AeroPress Clásico',desc:'El método de referencia. Consistente, rápido y perdona errores.',ratio:15,temp:'90°C',tiempo:'01:30',sabor:{d:3,a:3,c:3},pasos:[
-        {t:'CAFÉ + AGUA',d:'<strong>15g de café</strong>. <strong>220g a 90°C</strong>. Revuelve 10 veces.',s:20,pct:100},
-        {t:'REPOSAR',d:'<strong>1 minuto completo</strong>. Sin tocar.',s:60,pct:0},
-        {t:'PRESIONAR',d:'En <strong>20-30 segundos</strong>. Para al primer silbido.',s:25,pct:0}
+        {t:'CAFÉ + AGUA',d:'<strong>15g de café</strong>. <strong>220g a 90°C</strong>. Revuelve 10 veces.',s:20,ag:220},
+        {t:'REPOSAR',d:'<strong>1 minuto completo</strong>. Sin tocar.',s:60,ag:0},
+        {t:'PRESIONAR',d:'En <strong>20-30 segundos</strong>. Para al primer silbido.',s:25,ag:0}
       ]},
-      {nombre:'Nordic Style',desc:'Inspirado en campeones escandinavos. Temperatura alta, tiempo corto, resultado limpio.',ratio:15,temp:'95°C',tiempo:'01:15',sabor:{d:3,a:4,c:2},pasos:[
-        {t:'AGUA DE GOLPE',d:'Vierte <strong>todos los 220g de golpe</strong>. Tapa sin presionar.',s:15,pct:100},
-        {t:'REPOSAR',d:'A 95°C la extracción es más corta.',s:30,pct:0},
-        {t:'PRESIONAR',d:'A los 45 segundos, presiona <strong>en 30 segundos</strong>.',s:30,pct:0}
+      {nombre:'Nordic Style',desc:'Temperatura alta, tiempo corto, resultado limpio.',ratio:15,temp:'95°C',tiempo:'01:15',sabor:{d:3,a:4,c:2},pasos:[
+        {t:'AGUA DE GOLPE',d:'Vierte <strong>220g de golpe</strong>. Tapa sin presionar.',s:15,ag:220},
+        {t:'REPOSAR',d:'A 95°C la extracción es más corta.',s:30,ag:0},
+        {t:'PRESIONAR',d:'A los 45 segundos, presiona en <strong>30 segundos</strong>.',s:30,ag:0}
       ]},
       {nombre:'Todo Terreno',desc:'Funciona con cualquier origen, tueste o molienda aproximada.',ratio:14,temp:'88°C',tiempo:'02:00',sabor:{d:3,a:2,c:4},pasos:[
-        {t:'CAFÉ + AGUA',d:'Una <strong>cucharada de café</strong>. Llena hasta la <strong>marca 2</strong>.',s:15,pct:100},
-        {t:'REVOLVER',d:'Revuelve <strong>15 veces</strong>.',s:15,pct:0},
-        {t:'REPOSAR',d:'<strong>90 segundos</strong>.',s:90,pct:0},
-        {t:'PRESIONAR',d:'Presiona. Lento o rápido, el resultado es similar.',s:20,pct:0}
+        {t:'CAFÉ + AGUA',d:'Una cucharada de café. Llena hasta la <strong>marca 2</strong> (~200g).',s:15,ag:200},
+        {t:'REVOLVER',d:'Revuelve <strong>15 veces</strong>.',s:15,ag:0},
+        {t:'REPOSAR',d:'<strong>90 segundos</strong>.',s:90,ag:0},
+        {t:'PRESIONAR',d:'Presiona. Lento o rápido, el resultado es similar.',s:20,ag:0}
       ]}
     ]
   },
   Chemex:{
     dulce:[
       {nombre:'Caramelo Lento',desc:'El filtro grueso elimina aceites y finos, dejando solo los azúcares más nobles.',ratio:14,temp:'94°C',tiempo:'03:30',sabor:{d:4,a:2,c:1},pasos:[
-        {t:'FILTRO',d:'Dobla el filtro con <strong>tres capas hacia el pico</strong>. Enjuaga y descarta.',s:20,pct:0},
-        {t:'BLOOM',d:'<strong>50g de agua</strong>. El Chemex necesita más tiempo de <span class="gterm" onclick="showTip(\'bloom\')">bloom</span>.',s:45,pct:11},
-        {t:'VERTIDO 1',d:'<strong>75g</strong> en espiral lenta.',s:30,pct:17},
-        {t:'VERTIDO 2',d:'Otros <strong>75g</strong>.',s:30,pct:17},
-        {t:'VERTIDO 3',d:'Otros <strong>75g</strong>.',s:30,pct:17},
-        {t:'VERTIDO 4',d:'<strong>75g finales</strong>. Deja drenar sin tocar.',s:75,pct:17}
+        {t:'FILTRO',d:'Dobla el filtro con <strong>tres capas hacia el pico</strong>. Enjuaga y descarta.',s:20,ag:0},
+        {t:'BLOOM',d:'<strong>50g de agua</strong>. El Chemex necesita más tiempo de <span class="gterm" onclick="showTip(\'bloom\')">bloom</span>.',s:45,ag:50},
+        {t:'VERTIDO 1',d:'<strong>60g más</strong> en espiral lenta.',s:30,ag:60},
+        {t:'VERTIDO 2',d:'<strong>60g más</strong>.',s:30,ag:60},
+        {t:'VERTIDO 3',d:'<strong>60g más</strong>.',s:30,ag:60},
+        {t:'VERTIDO 4',d:'<strong>50g finales</strong>. Deja drenar sin tocar.',s:75,ag:50}
       ]},
       {nombre:'Panela Colombiana',desc:'Para cafés de Colombia o Guatemala. Notas a fruta seca y azúcar moreno.',ratio:15,temp:'92°C',tiempo:'04:00',sabor:{d:5,a:1,c:2},pasos:[
-        {t:'BLOOM LARGO',d:'<strong>60g de agua</strong>. Espera <strong>60 segundos completos</strong>.',s:60,pct:13},
-        {t:'VERTIDO CONTINUO',d:'Vierte los <strong>340g restantes sin parar</strong>, muy despacio.',s:120,pct:75},
-        {t:'DRENAR',d:'El Chemex no se apura.',s:60,pct:12}
+        {t:'BLOOM LARGO',d:'<strong>60g de agua</strong>. Espera <strong>60 segundos completos</strong>.',s:60,ag:60},
+        {t:'VERTIDO CONTINUO',d:'Vierte los <strong>240g restantes</strong> muy despacio, sin parar.',s:120,ag:240},
+        {t:'DRENAR',d:'El Chemex no se apura.',s:60,ag:0}
       ]},
       {nombre:'Chocolate & Nuez',desc:'Para cafés de Brasil o tuestes oscuros con notas a cacao.',ratio:13,temp:'91°C',tiempo:'04:30',sabor:{d:4,a:1,c:3},pasos:[
-        {t:'BLOOM',d:'<strong>80g de agua</strong>. Espera.',s:45,pct:15},
-        {t:'VERTIDO 1',d:'<strong>~130g</strong> en espiral.',s:60,pct:25},
-        {t:'VERTIDO 2',d:'Otros <strong>~130g</strong>.',s:60,pct:25},
-        {t:'VERTIDO 3',d:'<strong>~130g finales</strong>. Limpio pero con cuerpo.',s:75,pct:25}
+        {t:'BLOOM',d:'<strong>60g de agua</strong>. Espera.',s:45,ag:60},
+        {t:'VERTIDO 1',d:'<strong>80g más</strong> en espiral.',s:60,ag:80},
+        {t:'VERTIDO 2',d:'<strong>80g más</strong>.',s:60,ag:80},
+        {t:'VERTIDO 3',d:'<strong>40g finales</strong>. Limpio pero con cuerpo.',s:75,ag:40}
       ]}
     ],
     acido:[
       {nombre:'Floral Etíope',desc:'La transparencia del Chemex permite que los aromas florales brillen.',ratio:16,temp:'88°C',tiempo:'03:00',sabor:{d:2,a:5,c:1},pasos:[
-        {t:'BLOOM RÁPIDO',d:'<strong>40g a 88°C</strong>. Más rápido que otras recetas.',s:30,pct:9},
-        {t:'VERTIDO CONTINUO',d:'Vierte los <strong>360g restantes en 2 minutos</strong>.',s:120,pct:82},
-        {t:'DRENAR',d:'Sin tocar el filtro.',s:30,pct:9}
+        {t:'BLOOM RÁPIDO',d:'<strong>40g a 88°C</strong>.',s:30,ag:40},
+        {t:'VERTIDO CONTINUO',d:'Vierte los <strong>280g restantes</strong> en 2 minutos. Flujo constante.',s:120,ag:280},
+        {t:'DRENAR',d:'Sin tocar el filtro.',s:30,ag:0}
       ]},
       {nombre:'Té de Hibisco',desc:'Extracción rápida para una taza casi translúcida con acidez pronunciada.',ratio:17,temp:'85°C',tiempo:'02:45',sabor:{d:1,a:5,c:1},pasos:[
-        {t:'BLOOM MÍNIMO',d:'Solo <strong>30g de agua</strong>.',s:20,pct:7},
-        {t:'VERTIDO RÁPIDO',d:'Vierte <strong>todo de una sola vez</strong>, sin interrumpir el flujo.',s:90,pct:85},
-        {t:'DRENAR',d:'La taza tendrá un color rojizo natural si el café tiene notas a frutos rojos.',s:55,pct:8}
+        {t:'BLOOM MÍNIMO',d:'Solo <strong>30g de agua</strong>.',s:20,ag:30},
+        {t:'VERTIDO RÁPIDO',d:'Vierte los <strong>310g restantes</strong> de una sola vez, sin interrumpir.',s:90,ag:310},
+        {t:'DRENAR',d:'La taza tendrá color rojizo natural si el café tiene notas a frutos rojos.',s:55,ag:0}
       ]},
       {nombre:'Naranja & Bergamota',desc:'Ratio muy alto para una taza casi como té. Cafés naturales africanos.',ratio:18,temp:'86°C',tiempo:'02:30',sabor:{d:2,a:5,c:1},pasos:[
-        {t:'BLOOM',d:'<strong>35g</strong>.',s:25,pct:10},
-        {t:'VERTIDO 1',d:'<strong>130g</strong>.',s:50,pct:44},
-        {t:'VERTIDO 2',d:'<strong>135g finales</strong>.',s:65,pct:46}
+        {t:'BLOOM',d:'<strong>35g de agua</strong>.',s:25,ag:35},
+        {t:'VERTIDO 1',d:'<strong>145g más</strong>.',s:50,ag:145},
+        {t:'VERTIDO 2',d:'<strong>180g finales</strong>.',s:65,ag:180}
       ]}
     ],
     balanceado:[
       {nombre:'Chemex Clásico',desc:'El método estándar para sacar lo mejor del Chemex.',ratio:15,temp:'93°C',tiempo:'03:30',sabor:{d:3,a:3,c:2},pasos:[
-        {t:'FILTRO',d:'Enjuaga con <strong>agua caliente</strong>. Vacía el servidor.',s:15,pct:0},
-        {t:'BLOOM',d:'<strong>50g de agua</strong>.',s:45,pct:11},
-        {t:'VERTIDO PRINCIPAL',d:'Vierte lentamente hasta <strong>450g totales</strong>.',s:120,pct:89},
-        {t:'DRENAR',d:'Drenaje entre <strong>3 y 3:30 minutos</strong>.',s:30,pct:0}
+        {t:'FILTRO',d:'Enjuaga con <strong>agua caliente</strong>. Vacía el servidor.',s:15,ag:0},
+        {t:'BLOOM',d:'<strong>50g de agua</strong>.',s:45,ag:50},
+        {t:'VERTIDO PRINCIPAL',d:'Vierte <strong>250g más</strong> lentamente en espirales.',s:120,ag:250},
+        {t:'DRENAR',d:'Drenaje entre <strong>3 y 3:30 minutos</strong>.',s:30,ag:0}
       ]},
       {nombre:'Domingo en Casa',desc:'Para hacer café para varios. Simple y consistente.',ratio:15,temp:'92°C',tiempo:'04:00',sabor:{d:3,a:2,c:3},pasos:[
-        {t:'BLOOM',d:'<strong>90g de agua</strong> para 4–6 tazas.',s:45,pct:13},
-        {t:'VERTIDO 1',d:'Vierte hasta que el nivel baje a la mitad.',s:60,pct:44},
-        {t:'VERTIDO 2',d:'Completa hasta el final.',s:60,pct:43},
-        {t:'DRENAR',d:'Para varios puede tomar <strong>5 minutos</strong>.',s:75,pct:0}
+        {t:'BLOOM',d:'<strong>90g de agua</strong> para 4–6 tazas.',s:45,ag:90},
+        {t:'VERTIDO 1',d:'<strong>120g más</strong> hasta la mitad.',s:60,ag:120},
+        {t:'VERTIDO 2',d:'<strong>90g finales</strong> para completar.',s:60,ag:90},
+        {t:'DRENAR',d:'Para varios puede tomar <strong>5 minutos</strong>.',s:75,ag:0}
       ]},
       {nombre:'Media Jornada',desc:'Perfecto para la segunda taza del día. Claridad sin exceso de acidez.',ratio:14,temp:'93°C',tiempo:'03:15',sabor:{d:3,a:2,c:3},pasos:[
-        {t:'BLOOM',d:'<strong>44g de agua</strong>. El doble del café.',s:40,pct:14},
-        {t:'VERTIDO 1',d:'<strong>150g</strong>.',s:50,pct:48},
-        {t:'VERTIDO 2',d:'<strong>114g restantes</strong>.',s:65,pct:38}
+        {t:'BLOOM',d:'<strong>44g de agua</strong>. El doble del café.',s:40,ag:44},
+        {t:'VERTIDO 1',d:'<strong>150g más</strong>.',s:50,ag:150},
+        {t:'VERTIDO 2',d:'<strong>86g finales</strong>.',s:65,ag:86}
       ]}
     ]
   },
   Prensa:{
     dulce:[
       {nombre:'Terciopelo',desc:'La prensa francesa en su máxima expresión. Cuerpo total, sin filtros.',ratio:12,temp:'95°C',tiempo:'04:00',sabor:{d:4,a:1,c:5},pasos:[
-        {t:'PRECALENTAR',d:'Llena la prensa con <strong>agua caliente y vacía</strong>.',s:20,pct:0},
-        {t:'CAFÉ + AGUA',d:'Agrega el café. Vierte a <strong>95°C de una vez</strong>. Revuelve 3 veces.',s:15,pct:100},
-        {t:'REPOSAR',d:'<strong>Molienda muy gruesa</strong> es clave para evitar sedimento.',s:180,pct:0},
-        {t:'PRESIONAR',d:'Presiona <strong>muy lentamente en 30 segundos</strong>. Sirve de inmediato.',s:30,pct:0}
+        {t:'PRECALENTAR',d:'Llena la prensa con agua caliente y vacía.',s:20,ag:0},
+        {t:'CAFÉ + AGUA',d:'Agrega el café. Vierte <strong>240g a 95°C</strong>. Revuelve 3 veces.',s:15,ag:240},
+        {t:'REPOSAR',d:'Molienda muy gruesa es clave para evitar sedimento.',s:180,ag:0},
+        {t:'PRESIONAR',d:'Presiona <strong>muy lentamente en 30 segundos</strong>. Sirve de inmediato.',s:30,ag:0}
       ]},
-      {nombre:'Cacao & Roca',desc:'Para tuestes oscuros de Indonesia o Brasil. El cuerpo más pleno.',ratio:11,temp:'94°C',tiempo:'05:00',sabor:{d:3,a:1,c:5},pasos:[
-        {t:'CAFÉ + AGUA',d:'Vierte y <strong>no toques el café</strong>. Deja que se humedezca solo.',s:15,pct:100},
-        {t:'REPOSAR',d:'<strong>5 minutos completos</strong>. Paciencia total.',s:285,pct:0},
-        {t:'PRESIONAR',d:'Sin fuerza. Si hay resistencia, <strong>detente y espera 30 segundos más</strong>.',s:30,pct:0}
+      {nombre:'Cacao & Roca',desc:'Para tuestes oscuros. El cuerpo más pleno que puede dar la prensa.',ratio:11,temp:'94°C',tiempo:'05:00',sabor:{d:3,a:1,c:5},pasos:[
+        {t:'CAFÉ + AGUA',d:'Vierte <strong>220g a 94°C</strong> y no toques el café.',s:15,ag:220},
+        {t:'REPOSAR',d:'<strong>5 minutos completos</strong>. Paciencia total.',s:285,ag:0},
+        {t:'PRESIONAR',d:'Sin fuerza. Si hay resistencia, detente y espera 30 segundos más.',s:30,ag:0}
       ]},
       {nombre:'Panela & Roble',desc:'Temperatura alta y tiempo largo. Sabores a madera y azúcar moreno.',ratio:12,temp:'96°C',tiempo:'04:30',sabor:{d:4,a:1,c:4},pasos:[
-        {t:'CAFÉ + AGUA',d:'<strong>96°C</strong>. Vierte y pon la tapa.',s:15,pct:100},
-        {t:'REPOSAR',d:'<strong>4 minutos y medio</strong>.',s:255,pct:0},
-        {t:'PRESIONAR + SERVIR',d:'Sirve todo de inmediato. <strong>No dejes el café en la prensa</strong>.',s:30,pct:0}
+        {t:'CAFÉ + AGUA',d:'Vierte <strong>240g a 96°C</strong>. Pon la tapa.',s:15,ag:240},
+        {t:'REPOSAR',d:'<strong>4 minutos y medio</strong>.',s:255,ag:0},
+        {t:'PRESIONAR + SERVIR',d:'Sirve todo de inmediato. No dejes el café en la prensa.',s:30,ag:0}
       ]}
     ],
     acido:[
       {nombre:'Prensa Ligera',desc:'Tiempo corto y temperatura media para una prensa con acidez presente.',ratio:14,temp:'88°C',tiempo:'03:00',sabor:{d:2,a:4,c:3},pasos:[
-        {t:'CAFÉ + AGUA',d:'<strong>88°C</strong>. Inusual para prensa pero funciona para acidez.',s:15,pct:100},
-        {t:'REPOSAR',d:'Solo <strong>3 minutos</strong>. Menos <span class="gterm" onclick="showTip(\'extraccion\')">extracción</span> = más acidez.',s:165,pct:0},
-        {t:'PRESIONAR',d:'Sirve enseguida. El café sigue extrayéndose.',s:20,pct:0}
+        {t:'CAFÉ + AGUA',d:'Vierte <strong>280g a 88°C</strong>.',s:15,ag:280},
+        {t:'REPOSAR',d:'Solo <strong>3 minutos</strong>. Menos <span class="gterm" onclick="showTip(\'extraccion\')">extracción</span> = más acidez.',s:165,ag:0},
+        {t:'PRESIONAR',d:'Sirve enseguida.',s:20,ag:0}
       ]},
       {nombre:'Colombia Vivo',desc:'Para cafés lavados de Colombia o Costa Rica.',ratio:13,temp:'90°C',tiempo:'03:30',sabor:{d:3,a:4,c:3},pasos:[
-        {t:'BLOOM EN PRENSA',d:'<strong>40g de agua</strong> y espera 20 segundos. Sí, <span class="gterm" onclick="showTip(\'bloom\')">bloom</span> en prensa.',s:20,pct:13},
-        {t:'RESTO + TAPA',d:'Vierte el resto y pon la tapa <strong>sin presionar</strong>.',s:10,pct:87},
-        {t:'REPOSAR',d:'<strong>3 minutos</strong>.',s:180,pct:0},
-        {t:'PRESIONAR',d:'En <strong>20 segundos</strong>. Sirve inmediatamente.',s:20,pct:0}
+        {t:'BLOOM EN PRENSA',d:'<strong>40g de agua</strong> y espera 20 segundos.',s:20,ag:40},
+        {t:'RESTO + TAPA',d:'Vierte los <strong>220g restantes</strong>. Pon la tapa sin presionar.',s:10,ag:220},
+        {t:'REPOSAR',d:'<strong>3 minutos</strong>.',s:180,ag:0},
+        {t:'PRESIONAR',d:'En <strong>20 segundos</strong>. Sirve inmediatamente.',s:20,ag:0}
       ]},
       {nombre:'Mineral & Lima',desc:'La versión más luminosa de la prensa francesa.',ratio:14,temp:'89°C',tiempo:'03:15',sabor:{d:2,a:4,c:2},pasos:[
-        {t:'CAFÉ + AGUA',d:'Usa <strong>agua filtrada o mineral</strong>. Revuelve 10 veces.',s:20,pct:100},
-        {t:'REPOSAR',d:'<strong>3 minutos exactos</strong>.',s:180,pct:0},
-        {t:'PRESIONAR',d:'Opcionalmente filtra con papel para más claridad.',s:15,pct:0}
+        {t:'CAFÉ + AGUA',d:'Usa agua filtrada o mineral. Vierte <strong>280g</strong>. Revuelve 10 veces.',s:20,ag:280},
+        {t:'REPOSAR',d:'<strong>3 minutos exactos</strong>.',s:180,ag:0},
+        {t:'PRESIONAR',d:'Opcionalmente filtra con papel para más claridad.',s:15,ag:0}
       ]}
     ],
     balanceado:[
       {nombre:'Prensa Clásica',desc:'La receta más simple y consistente. Perfecta para la mañana.',ratio:12,temp:'93°C',tiempo:'04:00',sabor:{d:3,a:2,c:4},pasos:[
-        {t:'CAFÉ + AGUA',d:'<strong>Molienda gruesa</strong>. Vierte a <strong>93°C</strong> y revuelve una vez.',s:15,pct:100},
-        {t:'REPOSAR',d:'<strong>4 minutos</strong>. El estándar por buena razón.',s:225,pct:0},
-        {t:'PRESIONAR',d:'<strong>30 segundos de bajada suave</strong>. Sirve todo enseguida.',s:30,pct:0}
+        {t:'CAFÉ + AGUA',d:'Molienda gruesa. Vierte <strong>240g a 93°C</strong> y revuelve una vez.',s:15,ag:240},
+        {t:'REPOSAR',d:'<strong>4 minutos</strong>. El estándar por buena razón.',s:225,ag:0},
+        {t:'PRESIONAR',d:'<strong>30 segundos de bajada suave</strong>. Sirve todo enseguida.',s:30,ag:0}
       ]},
       {nombre:'Two Cups',desc:'Optimizada para dos tazas.',ratio:12,temp:'94°C',tiempo:'04:00',sabor:{d:3,a:2,c:4},pasos:[
-        {t:'CAFÉ + AGUA',d:'<strong>30g de café</strong> para 360g de agua. Revuelve <strong>una vez</strong>.',s:15,pct:100},
-        {t:'REPOSAR',d:'Espera 3 minutos. <strong>Rompe la costra</strong> que se forma arriba.',s:180,pct:0},
-        {t:'REPOSAR 2',d:'1 minuto más.',s:60,pct:0},
-        {t:'PRESIONAR',d:'Presiona y sirve.',s:20,pct:0}
+        {t:'CAFÉ + AGUA',d:'<strong>30g de café</strong> para <strong>360g de agua</strong>. Revuelve una vez.',s:15,ag:360},
+        {t:'REPOSAR',d:'Espera 3 minutos. Rompe la costra que se forma arriba.',s:180,ag:0},
+        {t:'REPOSAR 2',d:'1 minuto más.',s:60,ag:0},
+        {t:'PRESIONAR',d:'Presiona y sirve.',s:20,ag:0}
       ]},
       {nombre:'Sin Estrés',desc:'Para cuando no quieres pensar. Funciona aunque no seas preciso.',ratio:12,temp:'93°C',tiempo:'04:00',sabor:{d:3,a:2,c:4},pasos:[
-        {t:'CAFÉ',d:'Una <strong>cucharada llena</strong> por cada 120ml de agua.',s:15,pct:0},
-        {t:'AGUA',d:'Recién hervida esperando <strong>1 minuto</strong>. Eso es ~90-96°C.',s:10,pct:100},
-        {t:'REPOSAR',d:'<strong>4 minutos</strong>. Sin revisar.',s:240,pct:0},
-        {t:'LISTO',d:'Presiona, sirve. Esta receta no falla.',s:15,pct:0}
+        {t:'CAFÉ + AGUA',d:'Una cucharada de café por cada 120ml. Vierte <strong>240g a 93°C</strong>.',s:15,ag:240},
+        {t:'REPOSAR',d:'<strong>4 minutos</strong>. Sin revisar.',s:240,ag:0},
+        {t:'LISTO',d:'Presiona, sirve. Esta receta no falla.',s:15,ag:0}
       ]}
     ]
   },
   EvaSolo:{
     dulce:[
       {nombre:'Nórdico Dulce',desc:'El manga filtrante aporta cuerpo mientras suaviza la acidez.',ratio:15,temp:'93°C',tiempo:'04:00',sabor:{d:4,a:2,c:3},pasos:[
-        {t:'MANGA',d:'Asegúrate que la manga esté <strong>bien limpia</strong>.',s:15,pct:0},
-        {t:'AGUA',d:'<strong>93°C</strong>. Vierte en espiral desde afuera.',s:15,pct:100},
-        {t:'REPOSAR',d:'Cierra la tapa. <strong>4 minutos sin abrir</strong>.',s:225,pct:0},
-        {t:'SERVIR',d:'Sirve directamente.',s:15,pct:0}
+        {t:'MANGA',d:'Asegúrate que la manga esté bien limpia.',s:15,ag:0},
+        {t:'AGUA',d:'Vierte <strong>300g a 93°C</strong> en espiral desde afuera.',s:15,ag:300},
+        {t:'REPOSAR',d:'Cierra la tapa. <strong>4 minutos sin abrir</strong>.',s:225,ag:0},
+        {t:'SERVIR',d:'Sirve directamente.',s:15,ag:0}
       ]},
       {nombre:'Verano Caramelizado',desc:'Tiempo de contacto extendido para máximo dulzor.',ratio:14,temp:'91°C',tiempo:'05:00',sabor:{d:5,a:1,c:3},pasos:[
-        {t:'AGUA + REVOLVER',d:'<strong>91°C</strong>. Revuelve <strong>5 veces</strong>.',s:20,pct:100},
-        {t:'REPOSAR',d:'<strong>5 minutos completos</strong>.',s:280,pct:0},
-        {t:'SERVIR',d:'Sirve inclinando. El café sale limpio.',s:15,pct:0}
+        {t:'AGUA + REVOLVER',d:'Vierte <strong>280g a 91°C</strong>. Revuelve <strong>5 veces</strong>.',s:20,ag:280},
+        {t:'REPOSAR',d:'<strong>5 minutos completos</strong>.',s:280,ag:0},
+        {t:'SERVIR',d:'Sirve inclinando. El café sale limpio.',s:15,ag:0}
       ]},
       {nombre:'Dulzor Nublado',desc:'Técnica de remojo completo para extracción uniforme.',ratio:15,temp:'90°C',tiempo:'04:30',sabor:{d:4,a:2,c:4},pasos:[
-        {t:'PRE-SATURAR',d:'Vierte solo <strong>50g de agua primero</strong>. Agita.',s:30,pct:14},
-        {t:'COMPLETAR',d:'Vierte el <strong>resto del agua</strong>. Cierra.',s:15,pct:86},
-        {t:'REPOSAR',d:'<strong>4 minutos</strong>.',s:225,pct:0},
-        {t:'SERVIR',d:'Resultado más uniforme.',s:15,pct:0}
+        {t:'PRE-SATURAR',d:'Vierte solo <strong>60g de agua primero</strong>. Agita.',s:30,ag:60},
+        {t:'COMPLETAR',d:'Vierte los <strong>240g restantes</strong>. Cierra.',s:15,ag:240},
+        {t:'REPOSAR',d:'<strong>4 minutos</strong>.',s:225,ag:0},
+        {t:'SERVIR',d:'Resultado más uniforme.',s:15,ag:0}
       ]}
     ],
     acido:[
       {nombre:'Eva Fresca',desc:'Menos tiempo y temperatura baja para una infusión más ligera.',ratio:16,temp:'86°C',tiempo:'03:00',sabor:{d:2,a:4,c:2},pasos:[
-        {t:'AGUA',d:'<strong>86°C</strong>. Vierte sin agitar.',s:15,pct:100},
-        {t:'REPOSAR',d:'Solo <strong>3 minutos</strong>.',s:165,pct:0},
-        {t:'SERVIR RÁPIDO',d:'Sirve <strong>en cuanto termina</strong>.',s:15,pct:0}
+        {t:'AGUA',d:'Vierte <strong>320g a 86°C</strong>. Sin agitar.',s:15,ag:320},
+        {t:'REPOSAR',d:'Solo <strong>3 minutos</strong>.',s:165,ag:0},
+        {t:'SERVIR RÁPIDO',d:'Sirve en cuanto termina.',s:15,ag:0}
       ]},
       {nombre:'Mañana Brillante',desc:'Menos café, más agua, más acidez expresada.',ratio:17,temp:'88°C',tiempo:'03:30',sabor:{d:2,a:5,c:1},pasos:[
-        {t:'AGUA',d:'<strong>88°C</strong>. Deja la tapa <strong>entreabierta</strong>.',s:15,pct:100},
-        {t:'REPOSAR',d:'La temperatura baja más rápido con tapa abierta.',s:195,pct:0},
-        {t:'SERVIR',d:'A los 3:30, sirve todo.',s:15,pct:0}
+        {t:'AGUA',d:'Vierte <strong>340g a 88°C</strong>. Deja la tapa entreabierta.',s:15,ag:340},
+        {t:'REPOSAR',d:'La temperatura baja más rápido con tapa abierta.',s:195,ag:0},
+        {t:'SERVIR',d:'A los 3:30, sirve todo.',s:15,ag:0}
       ]},
       {nombre:'Otoño Cítrico',desc:'Eva Solo con café africano. La manga aporta cuerpo sin tapar los cítricos.',ratio:16,temp:'87°C',tiempo:'04:00',sabor:{d:2,a:4,c:2},pasos:[
-        {t:'CAFÉ AFRICANO',d:'Usa un <strong>café natural de Etiopía o Kenia</strong>.',s:15,pct:0},
-        {t:'AGUA',d:'<strong>87°C</strong>. Cierra.',s:15,pct:100},
-        {t:'REPOSAR',d:'<strong>4 minutos</strong>.',s:220,pct:0},
-        {t:'SERVIR',d:'Más cuerpo que el V60 pero con acidez presente.',s:15,pct:0}
+        {t:'CAFÉ AFRICANO',d:'Usa un café natural de Etiopía o Kenia.',s:15,ag:0},
+        {t:'AGUA',d:'Vierte <strong>320g a 87°C</strong>. Cierra.',s:15,ag:320},
+        {t:'REPOSAR',d:'<strong>4 minutos</strong>.',s:220,ag:0},
+        {t:'SERVIR',d:'Más cuerpo que el V60 pero con acidez presente.',s:15,ag:0}
       ]}
     ],
     balanceado:[
       {nombre:'Eva Classic',desc:'El método del manual. Simple, elegante, sin errores posibles.',ratio:15,temp:'92°C',tiempo:'04:00',sabor:{d:3,a:3,c:3},pasos:[
-        {t:'AGUA',d:'<strong>92°C</strong>. Revuelve <strong>3 veces suavemente</strong>.',s:15,pct:100},
-        {t:'REPOSAR',d:'Cierra la tapa. <strong>4 minutos</strong>.',s:225,pct:0},
-        {t:'SERVIR',d:'La manga retiene todos los finos.',s:15,pct:0}
+        {t:'AGUA',d:'Vierte <strong>300g a 92°C</strong>. Revuelve 3 veces suavemente.',s:15,ag:300},
+        {t:'REPOSAR',d:'Cierra la tapa. <strong>4 minutos</strong>.',s:225,ag:0},
+        {t:'SERVIR',d:'La manga retiene todos los finos.',s:15,ag:0}
       ]},
       {nombre:'Taza para Dos',desc:'Escala perfecta para dos personas.',ratio:15,temp:'93°C',tiempo:'04:00',sabor:{d:3,a:2,c:3},pasos:[
-        {t:'ESCALA',d:'<strong>34g de café</strong> para 510g de agua.',s:15,pct:0},
-        {t:'REVOLVER',d:'Dos vueltas suaves. Cierra.',s:10,pct:100},
-        {t:'REPOSAR',d:'<strong>4 minutos</strong>.',s:225,pct:0},
-        {t:'SERVIR',d:'Dos tazas iguales.',s:15,pct:0}
+        {t:'ESCALA',d:'<strong>34g de café</strong> para <strong>510g de agua</strong>.',s:15,ag:510},
+        {t:'REVOLVER',d:'Dos vueltas suaves. Cierra.',s:10,ag:0},
+        {t:'REPOSAR',d:'<strong>4 minutos</strong>.',s:225,ag:0},
+        {t:'SERVIR',d:'Dos tazas iguales.',s:15,ag:0}
       ]},
       {nombre:'Invierno Cálido',desc:'Temperatura alta y tiempo extendido para un café que calienta.',ratio:14,temp:'95°C',tiempo:'05:00',sabor:{d:3,a:2,c:4},pasos:[
-        {t:'PRECALENTAR',d:'Llena la Eva Solo con agua caliente, espera 1 min y descarta.',s:60,pct:0},
-        {t:'CAFÉ + AGUA',d:'<strong>95°C</strong>. Cierra.',s:15,pct:100},
-        {t:'REPOSAR',d:'<strong>5 minutos completos</strong>.',s:285,pct:0},
-        {t:'SERVIR',d:'Perfecta a los 10 minutos, cuando se enfría un poco.',s:15,pct:0}
+        {t:'PRECALENTAR',d:'Llena la Eva Solo con agua caliente, espera 1 min y descarta.',s:60,ag:0},
+        {t:'CAFÉ + AGUA',d:'Vierte <strong>280g a 95°C</strong>. Cierra.',s:15,ag:280},
+        {t:'REPOSAR',d:'<strong>5 minutos completos</strong>.',s:285,ag:0},
+        {t:'SERVIR',d:'Perfecta a los 10 minutos, cuando se enfría un poco.',s:15,ag:0}
       ]}
     ]
   },
   Espresso:{
     dulce:[
       {nombre:'Corto & Dulce',desc:'Extracción corta para capturar solo los azúcares sin llegar al amargor.',ratio:2,temp:'91°C',tiempo:'00:22',sabor:{d:5,a:2,c:4},pasos:[
-        {t:'DISTRIBUCIÓN',d:'Distribuye los <strong>18g de café</strong> uniformemente. Nivel parejo.',s:10,pct:0},
-        {t:'TAMPAR',d:'Presiona con <strong>15kg de fuerza</strong>. Firme y perpendicular.',s:10,pct:0},
-        {t:'EXTRAER',d:'Meta: <strong>22 segundos</strong> para sacar 36g.',s:22,pct:100}
+        {t:'DISTRIBUCIÓN',d:'Distribuye los <strong>18g de café</strong> uniformemente. Nivel parejo.',s:10,ag:0},
+        {t:'TAMPAR',d:'Presiona con <strong>15kg de fuerza</strong>. Firme y perpendicular.',s:10,ag:0},
+        {t:'EXTRAER',d:'Meta: <strong>22 segundos</strong> para sacar <strong>36g</strong> de espresso.',s:22,ag:36}
       ]},
       {nombre:'Ristretto Dulce',desc:'La mitad del líquido, el doble del sabor.',ratio:1.5,temp:'90°C',tiempo:'00:20',sabor:{d:5,a:1,c:5},pasos:[
-        {t:'DOSIS',d:'<strong>18g de café → 27g de líquido</strong>. <span class="gterm" onclick="showTip(\'ristretto\')">Ristretto</span>.',s:10,pct:0},
-        {t:'EXTRAER',d:'<strong>18–22 segundos</strong>.',s:20,pct:100}
+        {t:'DOSIS',d:'<strong>18g de café</strong> → <strong>27g de líquido</strong>. <span class="gterm" onclick="showTip(\'ristretto\')">Ristretto</span>.',s:10,ag:0},
+        {t:'EXTRAER',d:'<strong>18–22 segundos</strong>. Más dulce y denso que el espresso clásico.',s:20,ag:27}
       ]},
       {nombre:'Espresso Clásico',desc:'El espresso de referencia italiano.',ratio:2,temp:'92°C',tiempo:'00:25',sabor:{d:4,a:2,c:4},pasos:[
-        {t:'TAMPAR',d:'<span class="gterm" onclick="showTip(\'tampar\')">Tampar</span> firme y nivelado.',s:10,pct:0},
-        {t:'EXTRAER',d:'<strong>25 segundos exactos</strong>. Crema color avellana.',s:25,pct:100}
+        {t:'TAMPAR',d:'<span class="gterm" onclick="showTip(\'tampar\')">Tampar</span> firme y nivelado.',s:10,ag:0},
+        {t:'EXTRAER',d:'<strong>25 segundos exactos</strong>. Crema color avellana.',s:25,ag:40}
       ]}
     ],
     acido:[
       {nombre:'Espresso Largo',desc:'Lungo para maximizar la acidez.',ratio:3,temp:'90°C',tiempo:'00:35',sabor:{d:2,a:4,c:2},pasos:[
-        {t:'LUNGO',d:'<strong>18g → 54g de líquido</strong>. <span class="gterm" onclick="showTip(\'lungo\')">Lungo</span>.',s:10,pct:0},
-        {t:'EXTRAER',d:'<strong>30–35 segundos</strong>.',s:35,pct:100}
+        {t:'LUNGO',d:'<strong>18g</strong> de café → <strong>54g de líquido</strong>. <span class="gterm" onclick="showTip(\'lungo\')">Lungo</span>.',s:10,ag:0},
+        {t:'EXTRAER',d:'<strong>30–35 segundos</strong>.',s:35,ag:54}
       ]},
       {nombre:'Washed Natural',desc:'Para granos lavados de Etiopía. Acidez vinosa única.',ratio:2.5,temp:'89°C',tiempo:'00:28',sabor:{d:3,a:5,c:3},pasos:[
-        {t:'TAMPAR',d:'Tostado claro. <span class="gterm" onclick="showTip(\'washed\')">Washed</span> ligero a 89°C.',s:10,pct:0},
-        {t:'EXTRAER',d:'<strong>26–30 segundos</strong>.',s:28,pct:100}
+        {t:'TAMPAR',d:'Tostado claro. <span class="gterm" onclick="showTip(\'washed\')">Washed</span> ligero a 89°C.',s:10,ag:0},
+        {t:'EXTRAER',d:'<strong>26–30 segundos</strong>. No va bien con leche.',s:28,ag:45}
       ]},
       {nombre:'Turbo Shot',desc:'Molienda gruesa, extracción ultrarrápida. Acidez limpia sin amargor.',ratio:2,temp:'93°C',tiempo:'00:15',sabor:{d:2,a:5,c:2},pasos:[
-        {t:'MOLIENDA GRUESA',d:'<strong>Mucho más grueso</strong> de lo normal para espresso.',s:10,pct:0},
-        {t:'EXTRAER',d:'<strong>15 segundos</strong>. Sin amargor, acidez limpia.',s:15,pct:100}
+        {t:'MOLIENDA GRUESA',d:'Mucho más grueso de lo normal para espresso.',s:10,ag:0},
+        {t:'EXTRAER',d:'<strong>15 segundos</strong>. Sin amargor, acidez limpia.',s:15,ag:40}
       ]}
     ],
     balanceado:[
       {nombre:'Espresso de Bar',desc:'El espresso de los mejores bares de Italia.',ratio:2,temp:'92°C',tiempo:'00:25',sabor:{d:3,a:3,c:4},pasos:[
-        {t:'TAMPAR',d:'<strong>18g café → 36g líquido</strong>. El <span class="gterm" onclick="showTip(\'ratio\')">ratio</span> de oro.',s:10,pct:0},
-        {t:'EXTRAER',d:'<strong>25 segundos</strong>. Crema avellana dorado.',s:25,pct:100}
+        {t:'TAMPAR',d:'<strong>18g café</strong> → <strong>36g líquido</strong>. El <span class="gterm" onclick="showTip(\'ratio\')">ratio</span> de oro.',s:10,ag:0},
+        {t:'EXTRAER',d:'<strong>25 segundos</strong>. Crema avellana dorado.',s:25,ag:36}
       ]},
       {nombre:'Modern Specialty',desc:'El espresso de tercera ola.',ratio:2.5,temp:'93°C',tiempo:'00:28',sabor:{d:3,a:4,c:3},pasos:[
-        {t:'TAMPAR',d:'<strong>18g → 45g</strong>. Más largo que el italiano clásico.',s:10,pct:0},
-        {t:'EXTRAER',d:'<strong>28 segundos</strong>.',s:28,pct:100}
+        {t:'TAMPAR',d:'<strong>18g</strong> → <strong>45g</strong>. Más largo que el italiano clásico.',s:10,ag:0},
+        {t:'EXTRAER',d:'<strong>28 segundos</strong>.',s:28,ag:45}
       ]},
       {nombre:'Dialed In',desc:'La receta para calibrar tu máquina.',ratio:2,temp:'93°C',tiempo:'00:27',sabor:{d:3,a:3,c:3},pasos:[
-        {t:'TAMPAR',d:'Punto de partida neutral para <strong>calibrar</strong>.',s:10,pct:0},
-        {t:'EXTRAER',d:'Si en 27s sacas <strong>menos de 36g, muele más grueso</strong>.',s:27,pct:100},
-        {t:'REPETIR',d:'<strong>3 shots iguales</strong> = calibrado.',s:10,pct:0}
+        {t:'TAMPAR',d:'Punto de partida neutral para calibrar.',s:10,ag:0},
+        {t:'EXTRAER',d:'Si en 27s sacas menos de <strong>36g</strong>, muele más grueso.',s:27,ag:36},
+        {t:'REPETIR',d:'3 shots iguales = calibrado.',s:10,ag:0}
       ]}
     ]
   },
   Moka:{
     dulce:[
       {nombre:'Italiana Clásica',desc:'La moka como la hacían las abuelas italianas.',ratio:10,temp:'80°C',tiempo:'01:00',sabor:{d:4,a:1,c:5},pasos:[
-        {t:'AGUA CALIENTE',d:'Llena la base con <strong>agua ya caliente a 80°C</strong>. Nunca fría.',s:15,pct:0},
-        {t:'CAFÉ',d:'Llena el filtro <strong>sin compactar</strong>.',s:10,pct:0},
-        {t:'FUEGO BAJO',d:'<strong>Fuego bajo siempre</strong>. Escucha los sonidos.',s:45,pct:0},
-        {t:'BAÑO FRÍO',d:'Al escuchar el burbujeo, <strong>moja la base en agua fría</strong>.',s:10,pct:0}
+        {t:'AGUA CALIENTE',d:'Llena la base con <strong>agua ya caliente a 80°C</strong>. Nunca fría.',s:15,ag:0},
+        {t:'CAFÉ',d:'Llena el filtro sin compactar.',s:10,ag:0},
+        {t:'FUEGO BAJO',d:'Fuego bajo siempre. Escucha los sonidos.',s:45,ag:0},
+        {t:'BAÑO FRÍO',d:'Al escuchar el burbujeo, moja la base en agua fría.',s:10,ag:0}
       ]},
       {nombre:'Dulce Napolitano',desc:'Con menos café y más tiempo. Menos amarga, más dulce.',ratio:8,temp:'82°C',tiempo:'01:30',sabor:{d:5,a:1,c:4},pasos:[
-        {t:'FILTRO MEDIO',d:'Llena el filtro <strong>solo hasta la mitad</strong>.',s:10,pct:0},
-        {t:'EXTRAER',d:'Fuego más bajo posible. <strong>90 segundos</strong>. No abras la tapa.',s:90,pct:0},
-        {t:'EL PRIMER CAFÉ',d:'Los primeros 20ml son los más dulces. <strong>Cierra el fuego ahí</strong>.',s:10,pct:0}
+        {t:'FILTRO MEDIO',d:'Llena el filtro solo hasta la mitad.',s:10,ag:0},
+        {t:'EXTRAER',d:'Fuego más bajo posible. <strong>90 segundos</strong>. No abras la tapa.',s:90,ag:0},
+        {t:'EL PRIMER CAFÉ',d:'Los primeros 20ml son los más dulces. Cierra el fuego ahí.',s:10,ag:0}
       ]},
       {nombre:'Seda & Canela',desc:'Una pizca de canela antes de la extracción.',ratio:10,temp:'80°C',tiempo:'01:00',sabor:{d:5,a:1,c:4},pasos:[
-        {t:'CANELA',d:'<strong>Una pizca de canela en polvo</strong> encima del café. Sin revolver.',s:10,pct:0},
-        {t:'AGUA CALIENTE',d:'<strong>80°C</strong> en la base.',s:10,pct:0},
-        {t:'EXTRAER',d:'Fuego medio-bajo. <strong>60 segundos</strong>. La canela se integra sutilmente.',s:60,pct:0}
+        {t:'CANELA',d:'Una pizca de canela en polvo encima del café. Sin revolver.',s:10,ag:0},
+        {t:'AGUA CALIENTE',d:'80°C en la base.',s:10,ag:0},
+        {t:'EXTRAER',d:'Fuego medio-bajo. <strong>60 segundos</strong>. La canela se integra sutilmente.',s:60,ag:0}
       ]}
     ],
     acido:[
       {nombre:'Moka Ligera',desc:'Menos café y agua más fría para una moka más delicada.',ratio:12,temp:'75°C',tiempo:'01:30',sabor:{d:2,a:3,c:3},pasos:[
-        {t:'AGUA MUY FRÍA',d:'<strong>75°C</strong>. La moka menos caliente. Filtro a dos tercios.',s:10,pct:0},
-        {t:'EXTRAER',d:'Fuego bajo. No apures.',s:75,pct:0},
-        {t:'RESULTADO',d:'Más parecida al filter coffee. <strong>Más aromática</strong>.',s:15,pct:0}
+        {t:'AGUA MUY FRÍA',d:'<strong>75°C</strong>. Filtro a dos tercios.',s:10,ag:0},
+        {t:'EXTRAER',d:'Fuego bajo. No apures.',s:75,ag:0},
+        {t:'RESULTADO',d:'Más parecida al filter coffee. Más aromática.',s:15,ag:0}
       ]},
       {nombre:'Origen Lavado',desc:'Para cafés de especialidad lavados en la moka.',ratio:11,temp:'78°C',tiempo:'01:15',sabor:{d:2,a:4,c:3},pasos:[
-        {t:'GRANO LAVADO',d:'Café <span class="gterm" onclick="showTip(\'washed\')">washed</span> de Colombia o Etiopía. Molienda menos fina.',s:10,pct:0},
-        {t:'EXTRAER',d:'<strong>78°C</strong>. Fuego medio-bajo.',s:55,pct:0},
-        {t:'DETENER',d:'Al escuchar el burbujeo, <strong>cierra el fuego</strong>.',s:10,pct:0}
+        {t:'GRANO LAVADO',d:'Café <span class="gterm" onclick="showTip(\'washed\')">washed</span> de Colombia o Etiopía. Molienda menos fina.',s:10,ag:0},
+        {t:'EXTRAER',d:'<strong>78°C</strong>. Fuego medio-bajo.',s:55,ag:0},
+        {t:'DETENER',d:'Al escuchar el burbujeo, cierra el fuego.',s:10,ag:0}
       ]},
       {nombre:'Moka Americana',desc:'Más agua para revelar la acidez escondida.',ratio:13,temp:'80°C',tiempo:'01:00',sabor:{d:2,a:4,c:2},pasos:[
-        {t:'MÁS AGUA',d:'Llena la base <strong>por encima de la válvula</strong>.',s:10,pct:0},
-        {t:'EXTRAER',d:'Extrae normalmente. Saldrá <strong>más diluido pero más ácido</strong>.',s:55,pct:0},
-        {t:'OPCIONAL',d:'Agrega un poco de <strong>agua caliente</strong> al final.',s:10,pct:0}
+        {t:'MÁS AGUA',d:'Llena la base por encima de la válvula.',s:10,ag:0},
+        {t:'EXTRAER',d:'Extrae normalmente. Saldrá más diluido pero más ácido.',s:55,ag:0},
+        {t:'OPCIONAL',d:'Agrega un poco de agua caliente al final.',s:10,ag:0}
       ]}
     ],
     balanceado:[
       {nombre:'Moka de Diario',desc:'La receta para cada mañana. Simple, sin variaciones.',ratio:10,temp:'80°C',tiempo:'01:00',sabor:{d:3,a:2,c:4},pasos:[
-        {t:'RITUAL',d:'Agua caliente en la base. Café nivelado.',s:15,pct:0},
-        {t:'EXTRAER',d:'Fuego medio. <strong>Burbujeo suave = bien. Silbido fuerte = tarde</strong>.',s:45,pct:0},
-        {t:'SERVIR',d:'<strong>La moka no espera</strong>.',s:10,pct:0}
+        {t:'RITUAL',d:'Agua caliente en la base. Café nivelado.',s:15,ag:0},
+        {t:'EXTRAER',d:'Fuego medio. Burbujeo suave = bien. Silbido fuerte = tarde.',s:45,ag:0},
+        {t:'SERVIR',d:'La moka no espera.',s:10,ag:0}
       ]},
       {nombre:'Dos Tazas Iguales',desc:'Para sacar dos espressos idénticos.',ratio:10,temp:'80°C',tiempo:'01:00',sabor:{d:3,a:2,c:4},pasos:[
-        {t:'EXTRAER',d:'Extrae normalmente.',s:60,pct:0},
-        {t:'MEZCLA',d:'Vierte todo en una taza y <strong>mezcla bien</strong>.',s:10,pct:0},
-        {t:'DIVIDIR',d:'Divide en partes iguales. <strong>Dos tazas idénticas</strong>.',s:10,pct:0}
+        {t:'EXTRAER',d:'Extrae normalmente.',s:60,ag:0},
+        {t:'MEZCLA',d:'Vierte todo en una taza y mezcla bien.',s:10,ag:0},
+        {t:'DIVIDIR',d:'Divide en partes iguales. Dos tazas idénticas.',s:10,ag:0}
       ]},
       {nombre:'Mezcla de Casa',desc:'60% oscuro + 40% medio. Complejidad sin esfuerzo.',ratio:10,temp:'80°C',tiempo:'01:00',sabor:{d:3,a:3,c:4},pasos:[
-        {t:'MEZCLA',d:'<strong>60% tueste oscuro + 40% tueste medio</strong>. Muele juntos.',s:15,pct:0},
-        {t:'EXTRAER',d:'Extrae normalmente.',s:55,pct:0},
-        {t:'ANOTAR',d:'Prueba distintas proporciones. <strong>Anota la que más te guste</strong>.',s:10,pct:0}
+        {t:'MEZCLA',d:'<strong>60% tueste oscuro + 40% tueste medio</strong>. Muele juntos.',s:15,ag:0},
+        {t:'EXTRAER',d:'Extrae normalmente.',s:55,ag:0},
+        {t:'ANOTAR',d:'Prueba distintas proporciones. Anota la que más te guste.',s:10,ag:0}
       ]}
     ]
   }
@@ -1211,50 +1210,26 @@ function recalcRatio() {
 }
 
 // ── STEP CARDS ─────────────────────────────────────────
-// Extract all gram numbers from a step description string
-function extractGrams(desc) {
-  // Find all numbers followed by 'g' inside <strong> tags or standalone
-  const matches = desc.match(/<strong>~?(\d+)g/g) || [];
-  return matches.map(m => parseInt(m.replace(/<strong>~?/, '')));
-}
-
-// Build a scale map: for each step, what fraction of total agua does it use?
-function buildScaleMap(pasos) {
-  // Collect original gram amounts per step
-  const stepGrams = pasos.map(p => {
-    const gList = extractGrams(p.d);
-    // Use the largest number found (usually the cumulative/main amount)
-    // But for bloom/pour steps we want the actual pour amount
-    // Sum all gram mentions in the step
-    return gList.reduce((a, b) => a + b, 0);
-  });
-  const baseTotal = stepGrams.reduce((a, b) => a + b, 0);
-  return { stepGrams, baseTotal };
-}
-
 function renderStepCards() {
   if (!currentReceta?.pasos) return;
   const r = currentReceta;
+  // base agua = sum of ag fields in base recipe
+  const baseAgua = r.pasos.reduce((sum, p) => sum + (p.ag||0), 0);
   const userAgua = Math.round(cafeGrams * r.ratio);
+  const scale = baseAgua > 0 ? userAgua / baseAgua : 1;
   const cont = document.getElementById('steps-timer');
 
-  // Build scale map from original recipe text
-  const { stepGrams, baseTotal } = buildScaleMap(r.pasos);
-  const hasWaterSteps = baseTotal > 0;
-
-  // Summary card
+  // Summary card - only for methods that have water steps
   let summaryHTML = '';
-  if (hasWaterSteps) {
-    const scaledRows = r.pasos.map((p, i) => {
-      const orig = stepGrams[i];
-      if (!orig) return null;
-      const scaled = Math.round(userAgua * orig / baseTotal);
+  const waterSteps = r.pasos.filter(p => p.ag > 0);
+  if (waterSteps.length > 0) {
+    const rows = waterSteps.map(p => {
+      const scaled = Math.round(p.ag * scale);
       return `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
         <span style="font-size:.6em;letter-spacing:1.5px;color:rgba(237,232,224,.5)">${p.t}</span>
-        <span style="font-size:.75em;color:#c5a059;font-weight:600">${scaled}g</span>
+        <span style="font-size:.78em;color:#c5a059;font-weight:600">${scaled}g</span>
       </div>`;
-    }).filter(Boolean).join('');
-
+    }).join('');
     summaryHTML = `<div style="background:#1a1a1a;border:1px solid rgba(197,160,89,0.25);border-radius:14px;padding:14px 16px;margin-bottom:16px">
       <div style="font-size:.58em;letter-spacing:3px;color:rgba(237,232,224,.4);margin-bottom:10px">CANTIDADES PARA ${cafeGrams}g DE CAFÉ</div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.08)">
@@ -1268,34 +1243,26 @@ function renderStepCards() {
           <div style="font-size:.52em;letter-spacing:1px;color:rgba(237,232,224,.35);margin-top:2px">AGUA TOTAL</div>
         </div>
       </div>
-      ${scaledRows}
+      ${rows}
     </div>`;
   }
 
-  // Step cards - update gram amounts in descriptions
   const stepsHTML = r.pasos.map((p, i) => {
     const mm = Math.floor(p.s / 60), ss = p.s % 60;
     const durLabel = mm > 0 ? `${mm}:${pad(ss)} min` : `${p.s}s`;
-
-    // Scale gram amounts in description text
-    let desc = p.d;
-    if (hasWaterSteps && cafeGrams !== 20 && stepGrams[i] > 0) {
-      const factor = userAgua / baseTotal;
-      desc = desc.replace(/<strong>(~?)(\d+)g(<\/strong>)/g, (match, tilde, num, close) => {
-        const orig = parseInt(num);
-        const scaled = Math.round(orig * factor * (stepGrams[i] / (extractGrams(p.d).reduce((a,b)=>a+b,0)||1)) * (extractGrams(p.d).length || 1));
-        // Simpler: just scale the whole step proportionally
-        const simpleScaled = Math.round(orig * (userAgua / baseTotal));
-        return `<strong>${tilde}${simpleScaled}g${close}`;
-      });
+    // Show scaled water amount inline in step if it has water
+    let waterNote = '';
+    if (p.ag > 0 && baseAgua > 0) {
+      const scaled = Math.round(p.ag * scale);
+      waterNote = `<div style="display:inline-block;margin-top:6px;padding:3px 10px;background:rgba(197,160,89,0.12);border:1px solid rgba(197,160,89,0.25);border-radius:6px;font-size:.65em;color:#c5a059;letter-spacing:1px">${scaled}g agua</div>`;
     }
-
     return `<div class="step-card" id="sc-${i}">
       <div class="step-inner">
         <div class="step-num">${i+1}</div>
         <div class="step-body">
           <div class="step-title">${p.t}</div>
-          <div class="step-desc">${desc}</div>
+          <div class="step-desc">${p.d}</div>
+          ${waterNote}
         </div>
         <div class="step-right">
           <div class="step-duration">${durLabel}</div>
