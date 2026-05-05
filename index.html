@@ -1292,7 +1292,7 @@ function updateStepCards() {
 
 // ── TIMER ──────────────────────────────────────────────
 function toggleTimer() {
-  try{getAudio().resume()}catch(e){}
+  ensureAudio();
   if (!running) {
     if (stepIndex===0&&stepRemaining===0) {
       const p=currentReceta?.pasos; if (!p?.length) return;
@@ -1359,34 +1359,56 @@ function resetAllTimer() {
   renderStepCards();
 }
 
-function getAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
-function beep(){
+function getAudio(){
+  if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  return audioCtx;
+}
+
+// Resume AudioContext — must be called inside a user gesture
+function ensureAudio(){
+  const ctx=getAudio();
+  if(ctx.state==='suspended') return ctx.resume();
+  return Promise.resolve();
+}
+
+function playTone(freqs, delays, duration, gain){
   try{
     const ctx=getAudio();
-    [0,0.18].forEach(d=>{
-      const o=ctx.createOscillator(),g=ctx.createGain();
-      o.connect(g);g.connect(ctx.destination);
-      o.frequency.value=880;
-      g.gain.setValueAtTime(0,ctx.currentTime+d);
-      g.gain.linearRampToValueAtTime(.25,ctx.currentTime+d+.02);
-      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.25);
-      o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.3);
+    if(ctx.state==='suspended'){ ctx.resume().then(()=>playTone(freqs,delays,duration,gain)); return; }
+    delays.forEach((d,i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value=freqs[i]||freqs[0];
+      g.gain.setValueAtTime(0, ctx.currentTime+d);
+      g.gain.linearRampToValueAtTime(gain, ctx.currentTime+d+0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+d+duration);
+      o.start(ctx.currentTime+d);
+      o.stop(ctx.currentTime+d+duration+0.05);
     });
   }catch(e){}
 }
+
+function beep(){
+  // Two quick beeps — between steps
+  playTone([880,880],[0,0.18],0.25,0.3);
+  try{ navigator.vibrate && navigator.vibrate([80,60,80]); }catch(e){}
+}
+
 function beepFinish(){
-  try{
-    const ctx=getAudio();
-    [0,.2,.4].forEach((d,i)=>{
-      const o=ctx.createOscillator(),g=ctx.createGain();
-      o.connect(g);g.connect(ctx.destination);
-      o.frequency.value=[660,780,880][i];
-      g.gain.setValueAtTime(0,ctx.currentTime+d);
-      g.gain.linearRampToValueAtTime(.2,ctx.currentTime+d+.02);
-      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.4);
-      o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.5);
-    });
-  }catch(e){}
+  // Three ascending tones — recipe complete
+  playTone([660,780,940],[0,0.22,0.44],0.5,0.3);
+  try{ navigator.vibrate && navigator.vibrate([100,80,100,80,300]); }catch(e){}
+  // Visual pulse on timer display
+  const disp=document.getElementById('t-display');
+  if(disp){
+    disp.style.transition='color 0.15s';
+    let flashes=0;
+    const flash=setInterval(()=>{
+      disp.style.color=flashes%2===0?'#fff':'#5cb88a';
+      flashes++;
+      if(flashes>=6){ clearInterval(flash); disp.style.color=''; }
+    },150);
+  }
 }
 function pad(n){return n.toString().padStart(2,'0')}
 
