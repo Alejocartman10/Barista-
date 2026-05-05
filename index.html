@@ -4,6 +4,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111111">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="color-scheme" content="dark">
 <title>800 — La Química del Aroma</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -16,7 +20,15 @@
   --green: #5cb88a; --red: #e06060;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;overflow-x:hidden}
+html{background:#111111!important;color-scheme:dark}
+body{min-height:100%;background:#111111!important;color:var(--text);font-family:'DM Mono',monospace;overflow-x:hidden}
+@media (prefers-color-scheme:light){
+  html,body{background:#111111!important;color:#ede8e0!important}
+  input,select,textarea{background:#1a1a1a!important;color:#ede8e0!important;-webkit-appearance:none;appearance:none}
+  .method-btn,.obj-btn,.rcard,.step-card,.timer-control,.ratio-adjuster,.finput,.flavor-form,.grind-card,.tooltip-box{background:#1a1a1a!important;border-color:rgba(255,255,255,0.08)!important;color:#ede8e0!important}
+  .screen{background:#111111!important}
+  select.finput option{background:#1a1a1a!important;color:#ede8e0!important}
+}
 
 /* ── SCREENS ── */
 .screen{display:none;min-height:100vh;padding-bottom:50px;animation:fadeUp .3s ease both}
@@ -351,13 +363,18 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
     <div class="detail-desc" id="d-desc"></div>
     <div class="detail-pills" id="d-pills"></div>
     <div class="ratio-adjuster">
-      <div class="ratio-label">CAFÉ</div>
-      <div class="ratio-inputs">
-        <input class="ratio-field" type="number" id="r-cafe" value="20" min="1" max="100" oninput="recalcRatio()">
-        <span class="ratio-sep">g → </span>
-        <span class="ratio-result">Agua: <span id="r-agua">—</span>g</span>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div class="ratio-label">CAFÉ</div>
+          <input class="ratio-field" type="number" id="r-cafe" value="20" min="1" max="200" oninput="recalcRatio()">
+          <span class="ratio-sep">g</span>
+          <div class="ratio-result" style="margin-left:auto">→ <span id="r-agua">—</span>g agua</div>
+        </div>
+        <div style="display:flex;gap:16px">
+          <div style="font-size:.58em;letter-spacing:1px;color:var(--text-dim)">~<span id="r-tazas">—</span> tazas de <span id="r-ml-taza">—</span>ml</div>
+          <button class="grind-badge" id="grind-link" onclick="goTo('screen-grind')" style="margin-left:auto">⚙ molienda</button>
+        </div>
       </div>
-      <button class="grind-badge" id="grind-link" onclick="goTo('screen-grind')">ver molienda ›</button>
     </div>
   </div>
   <div class="flavor-section" id="d-flavor"></div>
@@ -426,9 +443,9 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
     </div>
     <div class="fgroup"><label class="flabel-form">PERFIL DE TAZA</label>
       <div class="flavor-form">
-        <div class="sl-row"><span class="sl-label">DULZOR</span><input type="range" min="1" max="5" value="3" oninput="updSl(this,'sv-d')"><span class="sl-val" id="sv-d">3</span></div>
-        <div class="sl-row"><span class="sl-label">ACIDEZ</span><input type="range" min="1" max="5" value="3" oninput="updSl(this,'sv-a')"><span class="sl-val" id="sv-a">3</span></div>
-        <div class="sl-row"><span class="sl-label">CUERPO</span><input type="range" min="1" max="5" value="3" oninput="updSl(this,'sv-c')"><span class="sl-val" id="sv-c">3</span></div>
+        <div class="sl-row"><span class="sl-label">DULZOR</span><input type="range" id="sl-d" min="1" max="5" value="3" oninput="updSl(this,'sv-d')"><span class="sl-val" id="sv-d">3</span></div>
+        <div class="sl-row"><span class="sl-label">ACIDEZ</span><input type="range" id="sl-a" min="1" max="5" value="3" oninput="updSl(this,'sv-a')"><span class="sl-val" id="sv-a">3</span></div>
+        <div class="sl-row"><span class="sl-label">CUERPO</span><input type="range" id="sl-c" min="1" max="5" value="3" oninput="updSl(this,'sv-c')"><span class="sl-val" id="sv-c">3</span></div>
       </div>
     </div>
     <button class="btn-save" onclick="saveReceta()">GUARDAR RECETA</button>
@@ -1134,6 +1151,11 @@ function recalcRatio() {
   cafeGrams=parseFloat(document.getElementById('r-cafe').value)||20;
   const agua=Math.round(cafeGrams*r.ratio);
   document.getElementById('r-agua').textContent=agua;
+  // tazas approx: espresso=30ml, moka=60ml, filter=200ml
+  const mlPorTaza = (r.ratio<=3) ? 30 : (r.ratio<=10) ? 60 : 200;
+  const tazas = (agua/mlPorTaza).toFixed(1).replace(/\.0$/,'');
+  document.getElementById('r-tazas').textContent=tazas;
+  document.getElementById('r-ml-taza').textContent=mlPorTaza;
   renderStepCards(); // re-render with updated gram amounts
 }
 
@@ -1317,7 +1339,7 @@ function renderMyRecipes(){
         <div class="rcard-name">${r.nombre}</div>
         <div class="rcard-desc" style="margin-bottom:4px">${mL[r.metodo]||r.metodo} ${oE[r.objetivo]||''}</div>
         <div class="rcard-desc">${r.desc}</div>
-        <div class="rcard-meta"><div class="rpill">1:${r.ratio}</div><div class="rpill">${r.temp}</div><div class="rpill">${r.tiempo}</div></div>
+        <div class="rcard-meta"><div class="rpill">1:${r.ratio}</div>${r.agua?`<div class="rpill">Agua <span>${r.agua}g</span></div>`:''}<div class="rpill">${r.temp}</div><div class="rpill">${r.tiempo}</div></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
         <div class="rcard-arrow">›</div>
@@ -1342,25 +1364,42 @@ function delReceta(e,idx){
 
 // ── NEW RECIPE ──────────────────────────────────────────
 function updSl(el,id){document.getElementById(id).textContent=el.value}
+function updNewAgua(){
+  const c=parseFloat(document.getElementById('f-cafe-new').value)||0;
+  const r=parseFloat(document.getElementById('f-ratio').value)||0;
+  const el=document.getElementById('f-agua-preview');
+  if(el) el.textContent=(c&&r)?Math.round(c*r)+'g agua':'— g agua';
+}
 function saveReceta(){
   const nombre=document.getElementById('f-nombre').value.trim();
   if (!nombre){alert('Ponle un nombre a la receta');return}
+  const ratioVal=parseInt(document.getElementById('f-ratio').value)||15;
+  const cafeVal=parseInt(document.getElementById('f-cafe-new').value)||20;
   const r={
     nombre,metodo:document.getElementById('f-metodo').value,
     objetivo:document.getElementById('f-obj').value,
     desc:document.getElementById('f-desc').value||'Receta personalizada.',
-    ratio:parseInt(document.getElementById('f-ratio').value)||15,
+    ratio:ratioVal,
+    cafe:cafeVal,
+    agua:Math.round(cafeVal*ratioVal),
     temp:document.getElementById('f-temp').value||'--',
     tiempo:document.getElementById('f-tiempo').value||'00:00',
     sabor:{
-      d:parseInt(document.querySelector('#screen-new input[type=range]:nth-of-type(1)').value),
-      a:parseInt(document.querySelector('#screen-new input[type=range]:nth-of-type(2)').value),
-      c:parseInt(document.querySelector('#screen-new input[type=range]:nth-of-type(3)').value),
+      d:parseInt(document.getElementById('sl-d').value)||3,
+      a:parseInt(document.getElementById('sl-a').value)||3,
+      c:parseInt(document.getElementById('sl-c').value)||3,
     },pasos:[]
   };
   const all=getUser();all.push(r);
   localStorage.setItem('recetas800',JSON.stringify(all));
-  document.getElementById('f-nombre').value='';document.getElementById('f-desc').value='';
+  document.getElementById('f-nombre').value='';
+  document.getElementById('f-desc').value='';
+  document.getElementById('f-cafe-new').value='20';
+  document.getElementById('f-ratio').value='15';
+  document.getElementById('sl-d').value='3'; document.getElementById('sv-d').textContent='3';
+  document.getElementById('sl-a').value='3'; document.getElementById('sv-a').textContent='3';
+  document.getElementById('sl-c').value='3'; document.getElementById('sv-c').textContent='3';
+  updNewAgua();
   state.method=r.metodo;state.obj=r.objetivo;
   goTo('screen-myrecipes');
 }
