@@ -188,7 +188,7 @@ textarea.finput{resize:vertical;min-height:72px;line-height:1.6}
 input[type=range]{flex:1;appearance:none;height:2px;background:var(–border);border-radius:2px;outline:none;cursor:pointer}
 input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(–oro);cursor:pointer}
 .sl-val{font-size:.7em;color:var(–oro);width:14px;text-align:right}
-.btn-save{width:100%;padding:16px;background:var(–green);border:none;border-radius:14px;font-family:‘DM Mono’,monospace;font-size:.78em;font-weight:500;letter-spacing:3px;color:#111;cursor:pointer;margin-top:8px}
+.btn-save{width:100%;padding:16px;background:#5cb88a;border:none;border-radius:14px;font-family:‘DM Mono’,monospace;font-size:.78em;font-weight:700;letter-spacing:3px;color:#111;cursor:pointer;margin-top:8px;box-shadow:0 4px 16px rgba(92,184,138,0.3);-webkit-appearance:none}
 
 /* ── ONBOARDING ── */
 #screen-onboarding{display:none;position:fixed;inset:0;background:var(–bg);z-index:100;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px}
@@ -436,9 +436,33 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
     <div class="fgroup"><label class="flabel-form">DESCRIPCIÓN</label><textarea class="finput" id="f-desc" placeholder="¿Qué hace especial esta receta?"></textarea></div>
     <div class="fgroup">
       <div class="frow">
-        <div><label class="flabel-form">RATIO 1:X</label><input class="finput" type="number" id="f-ratio" value="15"></div>
-        <div><label class="flabel-form">TEMP</label><input class="finput" type="text" id="f-temp" placeholder="92°C"></div>
-        <div><label class="flabel-form">TIEMPO</label><input class="finput" type="text" id="f-tiempo" placeholder="02:30"></div>
+        <div>
+          <label class="flabel-form">CAFÉ (g)</label>
+          <input class="finput" type="number" id="f-cafe-new" value="20" min="1" max="200" oninput="updNewAgua()">
+        </div>
+        <div>
+          <label class="flabel-form">RATIO 1:X</label>
+          <input class="finput" type="number" id="f-ratio" value="15" oninput="updNewAgua()">
+        </div>
+        <div>
+          <label class="flabel-form">AGUA</label>
+          <div class="finput" id="f-agua-preview" style="color:#c5a059;pointer-events:none;display:flex;align-items:center">300g</div>
+        </div>
+      </div>
+    </div>
+    <div class="fgroup">
+      <div class="frow">
+        <div>
+          <label class="flabel-form">TEMP (°C)</label>
+          <div style="display:flex;align-items:center;gap:0">
+            <input class="finput" type="number" id="f-temp" value="92" min="60" max="100" style="border-radius:10px 0 0 10px;border-right:none;flex:1">
+            <div class="finput" style="border-radius:0 10px 10px 0;padding:13px 10px;color:#c5a059;pointer-events:none;flex-shrink:0;width:36px;text-align:center">°C</div>
+          </div>
+        </div>
+        <div>
+          <label class="flabel-form">TIEMPO</label>
+          <input class="finput" type="text" id="f-tiempo" placeholder="02:30">
+        </div>
       </div>
     </div>
     <div class="fgroup"><label class="flabel-form">PERFIL DE TAZA</label>
@@ -1406,7 +1430,7 @@ function saveReceta(){
     ratio:ratioVal,
     cafe:cafeVal,
     agua:Math.round(cafeVal*ratioVal),
-    temp:document.getElementById('f-temp').value||'--',
+    temp:(document.getElementById('f-temp').value||'92')+'°C',
     tiempo:document.getElementById('f-tiempo').value||'00:00',
     sabor:{
       d:parseInt(document.getElementById('sl-d').value)||3,
@@ -1416,16 +1440,25 @@ function saveReceta(){
   };
   const all=getUser();all.push(r);
   localStorage.setItem('recetas800',JSON.stringify(all));
-  document.getElementById('f-nombre').value='';
-  document.getElementById('f-desc').value='';
-  document.getElementById('f-cafe-new').value='20';
-  document.getElementById('f-ratio').value='15';
-  document.getElementById('sl-d').value='3'; document.getElementById('sv-d').textContent='3';
-  document.getElementById('sl-a').value='3'; document.getElementById('sv-a').textContent='3';
-  document.getElementById('sl-c').value='3'; document.getElementById('sv-c').textContent='3';
-  updNewAgua();
-  state.method=r.metodo;state.obj=r.objetivo;
-  goTo('screen-myrecipes');
+  // Visual feedback
+  const btn = document.querySelector('.btn-save');
+  btn.textContent = '✓ GUARDADA';
+  btn.style.background = '#c5a059';
+  setTimeout(()=>{
+    document.getElementById('f-nombre').value='';
+    document.getElementById('f-desc').value='';
+    document.getElementById('f-cafe-new').value='20';
+    document.getElementById('f-temp').value='92';
+    document.getElementById('f-ratio').value='15';
+    document.getElementById('sl-d').value='3'; document.getElementById('sv-d').textContent='3';
+    document.getElementById('sl-a').value='3'; document.getElementById('sv-a').textContent='3';
+    document.getElementById('sl-c').value='3'; document.getElementById('sv-c').textContent='3';
+    btn.textContent='GUARDAR RECETA';
+    btn.style.background='';
+    updNewAgua();
+    state.method=r.metodo;state.obj=r.objetivo;
+    goTo('screen-myrecipes');
+  }, 800);
 }
 
 // ── GRIND BACK NAV ─────────────────────────────────────
