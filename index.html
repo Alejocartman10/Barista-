@@ -1211,51 +1211,91 @@ function recalcRatio() {
 }
 
 // ── STEP CARDS ─────────────────────────────────────────
+// Extract all gram numbers from a step description string
+function extractGrams(desc) {
+  // Find all numbers followed by 'g' inside <strong> tags or standalone
+  const matches = desc.match(/<strong>~?(\d+)g/g) || [];
+  return matches.map(m => parseInt(m.replace(/<strong>~?/, '')));
+}
+
+// Build a scale map: for each step, what fraction of total agua does it use?
+function buildScaleMap(pasos) {
+  // Collect original gram amounts per step
+  const stepGrams = pasos.map(p => {
+    const gList = extractGrams(p.d);
+    // Use the largest number found (usually the cumulative/main amount)
+    // But for bloom/pour steps we want the actual pour amount
+    // Sum all gram mentions in the step
+    return gList.reduce((a, b) => a + b, 0);
+  });
+  const baseTotal = stepGrams.reduce((a, b) => a + b, 0);
+  return { stepGrams, baseTotal };
+}
+
 function renderStepCards() {
   if (!currentReceta?.pasos) return;
-  const r=currentReceta;
-  const totalAgua=Math.round(cafeGrams*r.ratio);
-  const cont=document.getElementById('steps-timer');
+  const r = currentReceta;
+  const userAgua = Math.round(cafeGrams * r.ratio);
+  const cont = document.getElementById('steps-timer');
 
-  // Build quantities summary card if any step has pct > 0
-  const hasPct = r.pasos.some(p=>p.pct&&p.pct>0);
+  // Build scale map from original recipe text
+  const { stepGrams, baseTotal } = buildScaleMap(r.pasos);
+  const hasWaterSteps = baseTotal > 0;
+
+  // Summary card
   let summaryHTML = '';
-  if (hasPct) {
-    const rows = r.pasos
-      .filter(p=>p.pct&&p.pct>0)
-      .map(p=>{
-        const g=Math.round(totalAgua*(p.pct/100));
-        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
-          <span style="font-size:.6em;letter-spacing:1.5px;color:rgba(237,232,224,.5)">${p.t}</span>
-          <span style="font-size:.75em;color:#c5a059;font-weight:600">${g}g</span>
-        </div>`;
-      }).join('');
+  if (hasWaterSteps) {
+    const scaledRows = r.pasos.map((p, i) => {
+      const orig = stepGrams[i];
+      if (!orig) return null;
+      const scaled = Math.round(userAgua * orig / baseTotal);
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+        <span style="font-size:.6em;letter-spacing:1.5px;color:rgba(237,232,224,.5)">${p.t}</span>
+        <span style="font-size:.75em;color:#c5a059;font-weight:600">${scaled}g</span>
+      </div>`;
+    }).filter(Boolean).join('');
+
     summaryHTML = `<div style="background:#1a1a1a;border:1px solid rgba(197,160,89,0.25);border-radius:14px;padding:14px 16px;margin-bottom:16px">
-      <div style="font-size:.58em;letter-spacing:3px;color:rgba(237,232,224,.4);margin-bottom:8px">CANTIDADES CALCULADAS</div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+      <div style="font-size:.58em;letter-spacing:3px;color:rgba(237,232,224,.4);margin-bottom:10px">CANTIDADES PARA ${cafeGrams}g DE CAFÉ</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.08)">
         <div style="text-align:center">
-          <div style="font-size:1.4em;color:#c5a059;font-weight:600">${cafeGrams}g</div>
-          <div style="font-size:.55em;letter-spacing:1px;color:rgba(237,232,224,.4);margin-top:2px">CAFÉ</div>
+          <div style="font-size:1.5em;color:#c5a059;font-weight:600">${cafeGrams}g</div>
+          <div style="font-size:.52em;letter-spacing:1px;color:rgba(237,232,224,.35);margin-top:2px">CAFÉ</div>
         </div>
-        <div style="color:rgba(237,232,224,.3);align-self:center">→</div>
+        <div style="color:rgba(237,232,224,.25);font-size:1.2em">→</div>
         <div style="text-align:center">
-          <div style="font-size:1.4em;color:#c5a059;font-weight:600">${totalAgua}g</div>
-          <div style="font-size:.55em;letter-spacing:1px;color:rgba(237,232,224,.4);margin-top:2px">AGUA TOTAL</div>
+          <div style="font-size:1.5em;color:#c5a059;font-weight:600">${userAgua}g</div>
+          <div style="font-size:.52em;letter-spacing:1px;color:rgba(237,232,224,.35);margin-top:2px">AGUA TOTAL</div>
         </div>
       </div>
-      ${rows}
+      ${scaledRows}
     </div>`;
   }
 
-  const stepsHTML = r.pasos.map((p,i)=>{
-    const mm=Math.floor(p.s/60), ss=p.s%60;
-    const durLabel=mm>0?`${mm}:${pad(ss)} min`:`${p.s}s`;
+  // Step cards - update gram amounts in descriptions
+  const stepsHTML = r.pasos.map((p, i) => {
+    const mm = Math.floor(p.s / 60), ss = p.s % 60;
+    const durLabel = mm > 0 ? `${mm}:${pad(ss)} min` : `${p.s}s`;
+
+    // Scale gram amounts in description text
+    let desc = p.d;
+    if (hasWaterSteps && cafeGrams !== 20 && stepGrams[i] > 0) {
+      const factor = userAgua / baseTotal;
+      desc = desc.replace(/<strong>(~?)(\d+)g(<\/strong>)/g, (match, tilde, num, close) => {
+        const orig = parseInt(num);
+        const scaled = Math.round(orig * factor * (stepGrams[i] / (extractGrams(p.d).reduce((a,b)=>a+b,0)||1)) * (extractGrams(p.d).length || 1));
+        // Simpler: just scale the whole step proportionally
+        const simpleScaled = Math.round(orig * (userAgua / baseTotal));
+        return `<strong>${tilde}${simpleScaled}g${close}`;
+      });
+    }
+
     return `<div class="step-card" id="sc-${i}">
       <div class="step-inner">
         <div class="step-num">${i+1}</div>
         <div class="step-body">
           <div class="step-title">${p.t}</div>
-          <div class="step-desc">${p.d}</div>
+          <div class="step-desc">${desc}</div>
         </div>
         <div class="step-right">
           <div class="step-duration">${durLabel}</div>
