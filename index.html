@@ -189,6 +189,16 @@ input[type=range]{flex:1;appearance:none;height:2px;background:var(–border);bo
 input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(–oro);cursor:pointer}
 .sl-val{font-size:.7em;color:var(–oro);width:14px;text-align:right}
 .btn-save{width:100%;padding:16px;background:#5cb88a;border:none;border-radius:14px;font-family:‘DM Mono’,monospace;font-size:.78em;font-weight:700;letter-spacing:3px;color:#111;cursor:pointer;margin-top:8px;box-shadow:0 4px 16px rgba(92,184,138,0.3);-webkit-appearance:none}
+/* Steps builder */
+.step-builder{display:flex;flex-direction:column;gap:8px}
+.step-builder-row{background:#1a1a1a;border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:12px 14px;display:flex;gap:8px;align-items:center}
+.step-builder-row input{background:#222;border:1px solid rgba(255,255,255,0.07);border-radius:8px;color:#ede8e0;font-family:‘DM Mono’,monospace;font-size:.75em;padding:8px 10px}
+.step-builder-row .step-name-input{flex:1}
+.step-builder-row .step-sec-input{width:58px;text-align:center}
+.step-builder-row .step-sec-label{font-size:.58em;letter-spacing:1px;color:rgba(237,232,224,.4);flex-shrink:0}
+.step-del-btn{background:none;border:none;color:#e06060;font-size:1em;cursor:pointer;padding:0 4px;flex-shrink:0;line-height:1}
+.btn-add-step{width:100%;padding:11px;background:none;border:1px dashed rgba(197,160,89,0.3);border-radius:10px;color:rgba(197,160,89,0.7);font-family:‘DM Mono’,monospace;font-size:.68em;letter-spacing:2px;cursor:pointer;margin-top:4px;transition:all .2s}
+.btn-add-step:hover{border-color:#c5a059;color:#c5a059}
 
 /* ── ONBOARDING ── */
 #screen-onboarding{display:none;position:fixed;inset:0;background:var(–bg);z-index:100;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px}
@@ -472,6 +482,11 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
         <div class="sl-row"><span class="sl-label">CUERPO</span><input type="range" id="sl-c" min="1" max="5" value="3" oninput="updSl(this,'sv-c')"><span class="sl-val" id="sv-c">3</span></div>
       </div>
     </div>
+    <div class="fgroup">
+      <label class="flabel-form">PASOS DE PREPARACIÓN</label>
+      <div class="step-builder" id="step-builder"></div>
+      <button class="btn-add-step" onclick="addStepRow()">+ AGREGAR PASO</button>
+    </div>
     <button class="btn-save" onclick="saveReceta()">GUARDAR RECETA</button>
   </div>
 </div>
@@ -480,7 +495,7 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
 
 <div class="screen" id="screen-grind">
   <div class="topbar">
-    <button class="btn-back" id="grind-back" onclick="goTo('screen-home')">← VOLVER</button>
+    <button class="btn-back" id="grind-back">← VOLVER</button>
     <span class="topbar-title">GUÍA DE MOLIENDA</span>
   </div>
   <div class="grind-body">
@@ -562,7 +577,7 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
 
 <div class="screen" id="screen-glossary">
   <div class="topbar">
-    <button class="btn-back" onclick="goTo('screen-home')">← VOLVER</button>
+    <button class="btn-back" id="glossary-back">← VOLVER</button>
     <span class="topbar-title">GLOSARIO</span>
   </div>
   <div class="glossary-body">
@@ -1076,13 +1091,25 @@ function finishOnboarding() {
 }
 
 // ── NAVIGATION ─────────────────────────────────────────
+let navHistory = [];
+
 function goTo(id) {
+  // Track current screen before leaving
+  const current = document.querySelector('.screen.active');
+  if (current && current.id !== id) navHistory.push(current.id);
+  if (navHistory.length > 10) navHistory = navHistory.slice(-10);
+
   document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');s.style.display='none'});
   const s = document.getElementById(id);
   s.style.display = id==='screen-home' ? 'flex' : 'block';
   requestAnimationFrame(()=>s.classList.add('active'));
   if (id==='screen-myrecipes') renderMyRecipes();
   window.scrollTo(0,0);
+}
+
+function goBack(fallback='screen-home') {
+  const prev = navHistory.pop();
+  goTo(prev || fallback);
 }
 
 // ── HOME ───────────────────────────────────────────────
@@ -1412,6 +1439,54 @@ function delReceta(e,idx){
 
 // ── NEW RECIPE ──────────────────────────────────────────
 function updSl(el,id){document.getElementById(id).textContent=el.value}
+
+// ── STEP BUILDER ──────────────────────────────────────
+let stepBuilderCount = 0;
+
+function addStepRow(titulo='', segundos='') {
+  stepBuilderCount++;
+  const id = stepBuilderCount;
+  const row = document.createElement('div');
+  row.className = 'step-builder-row';
+  row.id = `sb-row-${id}`;
+  row.innerHTML = `
+    <div style="width:20px;height:20px;border-radius:50%;border:1px solid rgba(197,160,89,0.4);display:flex;align-items:center;justify-content:center;font-size:.58em;color:#c5a059;flex-shrink:0">${id}</div>
+    <input class="step-name-input" type="text" placeholder="Nombre del paso" value="${titulo}" maxlength="30">
+    <input class="step-sec-input" type="number" placeholder="seg" value="${segundos}" min="1" max="3600">
+    <span class="step-sec-label">seg</span>
+    <button class="step-del-btn" onclick="delStepRow(${id})">✕</button>
+  `;
+  document.getElementById('step-builder').appendChild(row);
+}
+
+function delStepRow(id) {
+  const row = document.getElementById(`sb-row-${id}`);
+  if (row) row.remove();
+  // Renumber
+  document.querySelectorAll('.step-builder-row').forEach((r, i) => {
+    const num = r.querySelector('div');
+    if (num) num.textContent = i + 1;
+  });
+}
+
+function getStepBuilderPasos() {
+  const rows = document.querySelectorAll('.step-builder-row');
+  const pasos = [];
+  rows.forEach(row => {
+    const inputs = row.querySelectorAll('input');
+    const titulo = inputs[0]?.value?.trim();
+    const seg = parseInt(inputs[1]?.value) || 0;
+    if (titulo && seg > 0) {
+      pasos.push({ t: titulo.toUpperCase(), d: titulo, s: seg, pct: 0 });
+    }
+  });
+  return pasos;
+}
+
+function resetStepBuilder() {
+  document.getElementById('step-builder').innerHTML = '';
+  stepBuilderCount = 0;
+}
 function updNewAgua(){
   const c=parseFloat(document.getElementById('f-cafe-new').value)||0;
   const r=parseFloat(document.getElementById('f-ratio').value)||0;
@@ -1436,7 +1511,7 @@ function saveReceta(){
       d:parseInt(document.getElementById('sl-d').value)||3,
       a:parseInt(document.getElementById('sl-a').value)||3,
       c:parseInt(document.getElementById('sl-c').value)||3,
-    },pasos:[]
+    },pasos:getStepBuilderPasos()
   };
   const all=getUser();all.push(r);
   localStorage.setItem('recetas800',JSON.stringify(all));
@@ -1455,6 +1530,7 @@ function saveReceta(){
     document.getElementById('sl-c').value='3'; document.getElementById('sv-c').textContent='3';
     btn.textContent='GUARDAR RECETA';
     btn.style.background='';
+    resetStepBuilder();
     updNewAgua();
     state.method=r.metodo;state.obj=r.objetivo;
     goTo('screen-myrecipes');
@@ -1463,10 +1539,8 @@ function saveReceta(){
 
 // ── GRIND BACK NAV ─────────────────────────────────────
 // grind-back button needs to go back to where we came from
-document.getElementById('grind-back').onclick=()=>{
-  // if detail was active, go back to detail
-  goTo('screen-home');
-};
+document.getElementById('grind-back').onclick=()=>{ goBack('screen-home'); };
+document.getElementById('glossary-back').onclick=()=>{ goBack('screen-home'); };
 
 // ── INIT ───────────────────────────────────────────────
 window.onload=()=>{
