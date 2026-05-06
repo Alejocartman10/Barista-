@@ -646,7 +646,6 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
 </div>
 
 <script>
-// ── GLOSSARY DATA ──────────────────────────────────────
 const GLOSSARY = {
   bloom: { term:'BLOOM / PRE-INFUSIÓN', def:'La primera humectación del café molido. El CO₂ atrapado escapa en burbujas.', ex:'Si no haces bloom, ese gas bloquea la extracción pareja y el café sabe plano.' },
   extraccion: { term:'EXTRACCIÓN', def:'El proceso en que el agua disuelve los compuestos solubles del café molido.', ex:'Extracción corta = acidez. Extracción larga = amargor. El objetivo es el punto medio.' },
@@ -659,9 +658,6 @@ const GLOSSARY = {
   tds: { term:'TDS / CONCENTRACIÓN', def:'Total de sólidos disueltos. Qué tan concentrado está el café en taza.', ex:'Espresso ~10% TDS. Filter coffee ~1.2-1.5% TDS. Son experiencias distintas, no mejor/peor.' },
 };
 
-// ── RECIPE DATA ────────────────────────────────────────
-// Steps: t=title, d=description (may include <span class="gterm"> for glossary),
-//        s=seconds, pct=percentage of total water (optional, for ratio recalc)
 const RECETAS = {
   V60:{
     dulce:[
@@ -732,7 +728,7 @@ const RECETAS = {
         {t:'PRESIONAR',d:'Voltea y presiona <strong>suavemente en 15 segundos</strong>.',s:15,ag:0}
       ]},
       {nombre:'Agave & Vainilla',desc:'Tiempo de contacto largo para extraer los azúcares más complejos.',ratio:13,temp:'90°C',tiempo:'02:30',sabor:{d:5,a:1,c:4},pasos:[
-        {t:'CAFÉ + AGUA',d:'<strong>18g de café</strong>. Vierte <strong>220g a 90°C</strong> de una vez.',s:15,ag:220},
+        {t:'CAFÉ + AGUA',d:'<strong>20g de café</strong>. Vierte <strong>260g a 90°C</strong> de una vez.',s:15,ag:260},
         {t:'REPOSAR',d:'<strong>2 minutos completos</strong> sin tocar.',s:120,ag:0},
         {t:'PRESIONAR',d:'Presiona <strong>muy lentamente en 30 segundos</strong>.',s:30,ag:0}
       ]},
@@ -1056,13 +1052,11 @@ const RECETAS = {
   }
 };
 
-// ── GRIND INFO PER METHOD ──────────────────────────────
 const GRIND_INFO = {
   V60:'Media-fina', AeroPress:'Media-fina a Media', Chemex:'Media a Media-gruesa',
   Prensa:'Gruesa', EvaSolo:'Media', Espresso:'Muy fina', Moka:'Fina a Media-fina'
 };
 
-// ── STATE ──────────────────────────────────────────────
 const state = { method:null, obj:null };
 let currentReceta = null;
 let stepIndex = 0, stepRemaining = 0;
@@ -1093,11 +1087,9 @@ function finishOnboarding() {
 let navHistory = [];
 
 function goTo(id) {
-  // Track current screen before leaving
   const current = document.querySelector('.screen.active');
   if (current && current.id !== id) navHistory.push(current.id);
   if (navHistory.length > 10) navHistory = navHistory.slice(-10);
-
   document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');s.style.display='none'});
   const s = document.getElementById(id);
   s.style.display = id==='screen-home' ? 'flex' : 'block';
@@ -1168,7 +1160,6 @@ function openDetail(tipo,idx) {
   currentReceta=r; cafeGrams=20;
   renderDetail(); resetAllTimer();
   document.getElementById('detail-back').onclick=()=>goTo('screen-list');
-  // update grind badge
   document.getElementById('grind-link').textContent=(GRIND_INFO[state.method]||'ver molienda')+' ›';
   goTo('screen-detail');
 }
@@ -1188,11 +1179,21 @@ function renderDetail() {
     fbarHTML('DULZOR',s.d||s.dulzor||3)+
     fbarHTML('ACIDEZ',s.a||s.acidez||3)+
     fbarHTML('CUERPO',s.c||s.cuerpo||3);
+  // FIX 1: animate flavor bars after DOM insertion
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      document.querySelectorAll('#d-flavor .ffill[data-pct]').forEach(el=>{
+        el.style.width = el.getAttribute('data-pct') + '%';
+      });
+    });
+  });
   renderStepCards();
 }
 
+// FIX 1: fbarHTML renders bars at 0% with data-pct for animation
 function fbarHTML(label,val) {
-  return `<div class="flavor-row"><div class="flabel">${label}</div><div class="fbar"><div class="ffill" style="width:${(val/5)*100}%"></div></div></div>`;
+  const pct = Math.round((val/5)*100);
+  return `<div class="flavor-row"><div class="flabel">${label}</div><div class="fbar"><div class="ffill" data-pct="${pct}" style="width:0%"></div></div></div>`;
 }
 
 // ── RATIO RECALC ───────────────────────────────────────
@@ -1201,25 +1202,23 @@ function recalcRatio() {
   cafeGrams=parseFloat(document.getElementById('r-cafe').value)||20;
   const agua=Math.round(cafeGrams*r.ratio);
   document.getElementById('r-agua').textContent=agua;
-  // tazas approx: espresso=30ml, moka=60ml, filter=200ml
   const mlPorTaza = (r.ratio<=3) ? 30 : (r.ratio<=10) ? 60 : 200;
   const tazas = (agua/mlPorTaza).toFixed(1).replace(/\.0$/,'');
   document.getElementById('r-tazas').textContent=tazas;
   document.getElementById('r-ml-taza').textContent=mlPorTaza;
-  renderStepCards(); // re-render with updated gram amounts
+  renderStepCards();
 }
 
 // ── STEP CARDS ─────────────────────────────────────────
 function renderStepCards() {
   if (!currentReceta?.pasos) return;
   const r = currentReceta;
-  // base agua = sum of ag fields in base recipe
   const baseAgua = r.pasos.reduce((sum, p) => sum + (p.ag||0), 0);
   const userAgua = Math.round(cafeGrams * r.ratio);
   const scale = baseAgua > 0 ? userAgua / baseAgua : 1;
   const cont = document.getElementById('steps-timer');
 
-  // Summary card - only for methods that have water steps
+  // Summary card
   let summaryHTML = '';
   const waterSteps = r.pasos.filter(p => p.ag > 0);
   if (waterSteps.length > 0) {
@@ -1250,18 +1249,29 @@ function renderStepCards() {
   const stepsHTML = r.pasos.map((p, i) => {
     const mm = Math.floor(p.s / 60), ss = p.s % 60;
     const durLabel = mm > 0 ? `${mm}:${pad(ss)} min` : `${p.s}s`;
-    // Show scaled water amount inline in step if it has water
+
+    // FIX 2 & 3: scale gram values in prose description
+    let desc = p.d;
+    if (p.ag > 0 && baseAgua > 0 && Math.abs(scale - 1) > 0.01) {
+      const scaled = Math.round(p.ag * scale);
+      // Replace base ag value (e.g. "220g") with scaled value in description
+      const baseStr = p.ag + 'g';
+      const scaledStr = scaled + 'g';
+      desc = desc.split(baseStr).join(scaledStr);
+    }
+
     let waterNote = '';
     if (p.ag > 0 && baseAgua > 0) {
       const scaled = Math.round(p.ag * scale);
       waterNote = `<div style="display:inline-block;margin-top:6px;padding:3px 10px;background:rgba(197,160,89,0.12);border:1px solid rgba(197,160,89,0.25);border-radius:6px;font-size:.65em;color:#c5a059;letter-spacing:1px">${scaled}g agua</div>`;
     }
+
     return `<div class="step-card" id="sc-${i}">
       <div class="step-inner">
         <div class="step-num">${i+1}</div>
         <div class="step-body">
           <div class="step-title">${p.t}</div>
-          <div class="step-desc">${p.d}</div>
+          <div class="step-desc">${desc}</div>
           ${waterNote}
         </div>
         <div class="step-right">
@@ -1370,14 +1380,11 @@ function getAudio(){
   if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
   return audioCtx;
 }
-
-// Resume AudioContext — must be called inside a user gesture
 function ensureAudio(){
   const ctx=getAudio();
   if(ctx.state==='suspended') return ctx.resume();
   return Promise.resolve();
 }
-
 function playTone(freqs, delays, duration, gain){
   try{
     const ctx=getAudio();
@@ -1394,18 +1401,13 @@ function playTone(freqs, delays, duration, gain){
     });
   }catch(e){}
 }
-
 function beep(){
-  // Two quick beeps — between steps
   playTone([880,880],[0,0.18],0.25,0.3);
   try{ navigator.vibrate && navigator.vibrate([80,60,80]); }catch(e){}
 }
-
 function beepFinish(){
-  // Three ascending tones — recipe complete
   playTone([660,780,940],[0,0.22,0.44],0.5,0.3);
   try{ navigator.vibrate && navigator.vibrate([100,80,100,80,300]); }catch(e){}
-  // Visual pulse on timer display
   const disp=document.getElementById('t-display');
   if(disp){
     disp.style.transition='color 0.15s';
@@ -1469,9 +1471,7 @@ function delReceta(e,idx){
 // ── NEW RECIPE ──────────────────────────────────────────
 function updSl(el,id){document.getElementById(id).textContent=el.value}
 
-// ── STEP BUILDER ──────────────────────────────────────
 let stepBuilderCount = 0;
-
 function addStepRow(titulo='', segundos='') {
   stepBuilderCount++;
   const id = stepBuilderCount;
@@ -1487,17 +1487,14 @@ function addStepRow(titulo='', segundos='') {
   `;
   document.getElementById('step-builder').appendChild(row);
 }
-
 function delStepRow(id) {
   const row = document.getElementById(`sb-row-${id}`);
   if (row) row.remove();
-  // Renumber
   document.querySelectorAll('.step-builder-row').forEach((r, i) => {
     const num = r.querySelector('div');
     if (num) num.textContent = i + 1;
   });
 }
-
 function getStepBuilderPasos() {
   const rows = document.querySelectorAll('.step-builder-row');
   const pasos = [];
@@ -1511,7 +1508,6 @@ function getStepBuilderPasos() {
   });
   return pasos;
 }
-
 function resetStepBuilder() {
   document.getElementById('step-builder').innerHTML = '';
   stepBuilderCount = 0;
@@ -1531,9 +1527,7 @@ function saveReceta(){
     nombre,metodo:document.getElementById('f-metodo').value,
     objetivo:document.getElementById('f-obj').value,
     desc:document.getElementById('f-desc').value||'Receta personalizada.',
-    ratio:ratioVal,
-    cafe:cafeVal,
-    agua:Math.round(cafeVal*ratioVal),
+    ratio:ratioVal,cafe:cafeVal,agua:Math.round(cafeVal*ratioVal),
     temp:(document.getElementById('f-temp').value||'92')+'°C',
     tiempo:document.getElementById('f-tiempo').value||'00:00',
     sabor:{
@@ -1544,7 +1538,6 @@ function saveReceta(){
   };
   const all=getUser();all.push(r);
   localStorage.setItem('recetas800',JSON.stringify(all));
-  // Visual feedback
   const btn = document.querySelector('.btn-save');
   btn.textContent = '✓ GUARDADA';
   btn.style.background = '#c5a059';
@@ -1566,19 +1559,15 @@ function saveReceta(){
   }, 800);
 }
 
-// ── GRIND BACK NAV ─────────────────────────────────────
-// grind-back button needs to go back to where we came from
 document.getElementById('grind-back').onclick=()=>{ goBack('screen-home'); };
 document.getElementById('glossary-back').onclick=()=>{ goBack('screen-home'); };
 
-// ── INIT ───────────────────────────────────────────────
 window.onload=()=>{
   if (localStorage.getItem('800_onboarded')) {
     document.getElementById('screen-onboarding').classList.remove('active');
     document.getElementById('screen-onboarding').style.display='none';
     goTo('screen-home');
   }
-  // onboarding already shown by default via CSS active class
 };
 </script>
 
