@@ -28,6 +28,11 @@ body{min-height:100%;background:#111111!important;color:var(--text);font-family:
   .method-btn,.obj-btn,.rcard,.step-card,.timer-control,.ratio-adjuster,.finput,.flavor-form,.grind-card,.tooltip-box{background:#1a1a1a!important;border-color:rgba(255,255,255,0.08)!important;color:#ede8e0!important}
   .screen{background:#111111!important}
   select.finput option{background:#1a1a1a!important;color:#ede8e0!important}
+  /* Explicit overrides for elements that must not inherit color from above */
+  .btn-timer-start{background:#c5a059!important;color:#111111!important}
+  .btn-timer-start.paused{background:#e06060!important;color:#ffffff!important}
+  .btn-timer-reset{color:rgba(237,232,224,0.45)!important}
+  .ffill{background:linear-gradient(90deg,rgba(197,160,89,.4) 0%,#c5a059 100%)!important}
 }
 
 /* ── SCREENS ── */
