@@ -172,6 +172,8 @@ body{min-height:100%;background:#111111!important;color:var(--text);font-family:
 .finish-banner.visible{display:block}
 .finish-text{font-family:‘Playfair Display’,serif;font-style:italic;font-size:1em;color:var(–green)}
 .finish-sub{font-size:.62em;letter-spacing:1px;color:rgba(92,184,138,.6);margin-top:4px}
+.finish-aroma{margin-top:14px;padding-top:14px;border-top:1px solid rgba(92,184,138,.2);font-family:‘DM Mono’,monospace;font-size:.65em;letter-spacing:2px;color:rgba(237,232,224,.4)}
+.finish-aroma span{color:#c5a059}
 
 /* ── MY RECIPES ── */
 #screen-myrecipes{padding-bottom:100px}
@@ -383,7 +385,7 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
           <div class="ratio-label">CAFÉ</div>
           <input class="ratio-field" type="number" id="r-cafe" value="20" min="1" max="200" oninput="recalcRatio()">
           <span class="ratio-sep">g</span>
-          <div class="ratio-result" style="margin-left:auto">→ <span id="r-agua">—</span>g agua</div>
+          <div class="ratio-result" style="margin-left:auto">→ <span id="r-agua">—</span>ml</div>
         </div>
         <div style="display:flex;gap:16px">
           <div style="font-size:.58em;letter-spacing:1px;color:var(--text-dim)">~<span id="r-tazas">—</span> tazas de <span id="r-ml-taza">—</span>ml</div>
@@ -410,6 +412,7 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
   <div class="finish-banner" id="finish-banner">
     <div class="finish-text">¡Café listo para servir!</div>
     <div class="finish-sub">BUEN PROVECHO</div>
+    <div class="finish-aroma" id="finish-aroma"></div>
   </div>
 </div>
 
@@ -651,6 +654,30 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
 </div>
 
 <script>
+const AROMAS = [
+  {n:'012',a:'Jazmín'},{n:'025',a:'Rosa Silvestre'},{n:'038',a:'Flor de Azahar'},
+  {n:'054',a:'Lavanda'},{n:'067',a:'Violeta'},{n:'078',a:'Magnolia'},
+  {n:'085',a:'Bergamota'},{n:'092',a:'Limón Meyer'},{n:'105',a:'Lima Kaffir'},
+  {n:'120',a:'Mandarina'},{n:'135',a:'Pomelo Rosado'},{n:'148',a:'Naranja Sanguina'},
+  {n:'162',a:'Maracuyá'},{n:'178',a:'Guayaba'},{n:'195',a:'Mango'},
+  {n:'210',a:'Arándano Azul'},{n:'224',a:'Mora Silvestre'},{n:'234',a:'Cereza Negra'},
+  {n:'256',a:'Frambuesa'},{n:'270',a:'Grosella Roja'},{n:'289',a:'Fresa Silvestre'},
+  {n:'312',a:'Durazno'},{n:'325',a:'Albaricoque'},{n:'338',a:'Ciruela Pasa'},
+  {n:'347',a:'Caramelo'},{n:'360',a:'Melaza'},{n:'378',a:'Mantequilla'},
+  {n:'392',a:'Vainilla'},{n:'405',a:'Chocolate con Leche'},{n:'420',a:'Cacao al 70%'},
+  {n:'435',a:'Chocolate Blanco'},{n:'450',a:'Praliné'},{n:'468',a:'Avellana'},
+  {n:'482',a:'Nuez de Nogal'},{n:'494',a:'Almendra Tostada'},{n:'501',a:'Pimienta Blanca'},
+  {n:'519',a:'Ajenjo / Ají'},{n:'534',a:'Canela en Rama'},{n:'550',a:'Clavo de Olor'},
+  {n:'572',a:'Cardamomo'},{n:'585',a:'Jengibre'},{n:'598',a:'Anís Estrellado'},
+  {n:'605',a:'Cedro'},{n:'618',a:'Pino'},{n:'628',a:'Tierra Húmeda'},
+  {n:'640',a:'Tabaco de Pipa'},{n:'655',a:'Madera de Roble'},{n:'668',a:'Cuero'},
+  {n:'680',a:'Musgo'},{n:'702',a:'Té Negro'},{n:'715',a:'Menta'},
+  {n:'730',a:'Lemongrass'},{n:'745',a:'Hierba Fresca'},{n:'756',a:'Sidra de Manzana'},
+  {n:'772',a:'Champaña'},{n:'789',a:'Vino Malbec'},{n:'795',a:'Ron Añejo'},
+  {n:'800',a:'Café en Flor'}
+];
+function getRandomAroma(){return AROMAS[Math.floor(Math.random()*AROMAS.length)];}
+
 const GLOSSARY = {
   bloom: { term:'BLOOM / PRE-INFUSIÓN', def:'La primera humectación del café molido. El CO₂ atrapado escapa en burbujas.', ex:'Si no haces bloom, ese gas bloquea la extracción pareja y el café sabe plano.' },
   extraccion: { term:'EXTRACCIÓN', def:'El proceso en que el agua disuelve los compuestos solubles del café molido.', ex:'Extracción corta = acidez. Extracción larga = amargor. El objetivo es el punto medio.' },
@@ -727,7 +754,7 @@ const RECETAS = {
   AeroPress:{
     dulce:[
       {nombre:'Tropical Invertido',desc:'Técnica invertida con temperatura baja para resaltar el dulzor de tuestes medios.',ratio:14,temp:'88°C',tiempo:'01:45',sabor:{d:5,a:2,c:3},pasos:[
-        {t:'INVERTIDO',d:'Coloca el AeroPress <strong>boca abajo</strong>. Agrega <strong>15g de café</strong>.',s:15,ag:0},
+        {t:'INVERTIDO',d:'Coloca el AeroPress <strong>boca abajo</strong>. Agrega <strong>14g de café</strong>.',s:15,ag:0},
         {t:'AGUA',d:'Vierte <strong>200g a 88°C</strong>. Revuelve 5 veces.',s:10,ag:200},
         {t:'REPOSAR',d:'La temperatura baja resalta los azúcares.',s:65,ag:0},
         {t:'PRESIONAR',d:'Voltea y presiona <strong>suavemente en 15 segundos</strong>.',s:15,ag:0}
@@ -1223,7 +1250,7 @@ function renderStepCards() {
       const scaled = Math.round(p.ag * scale);
       return `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
         <span style="font-size:.6em;letter-spacing:1.5px;color:rgba(237,232,224,.5)">${p.t}</span>
-        <span style="font-size:.78em;color:#c5a059;font-weight:600">${scaled}g</span>
+        <span style="font-size:.78em;color:#c5a059;font-weight:600">${scaled}ml</span>
       </div>`;
     }).join('');
     summaryHTML = `<div style="background:#1a1a1a;border:1px solid rgba(197,160,89,0.25);border-radius:14px;padding:14px 16px;margin-bottom:16px">
@@ -1235,7 +1262,7 @@ function renderStepCards() {
         </div>
         <div style="color:rgba(237,232,224,.25);font-size:1.2em">→</div>
         <div style="text-align:center">
-          <div style="font-size:1.5em;color:#c5a059;font-weight:600">${userAgua}g</div>
+          <div style="font-size:1.5em;color:#c5a059;font-weight:600">${userAgua}ml</div>
           <div style="font-size:.52em;letter-spacing:1px;color:rgba(237,232,224,.35);margin-top:2px">AGUA TOTAL</div>
         </div>
       </div>
@@ -1247,16 +1274,15 @@ function renderStepCards() {
     const mm = Math.floor(p.s / 60), ss = p.s % 60;
     const durLabel = mm > 0 ? `${mm}:${pad(ss)} min` : `${p.s}s`;
 
-    // FIX 2 & 3: scale water AND café gram values in prose description
+    // Scale water AND café gram values in prose description
     let desc = p.d;
+    // Water: always convert g→ml, scaling if needed
+    if (p.ag > 0 && baseAgua > 0) {
+      const scaledAg = Math.round(p.ag * scale);
+      desc = desc.split(p.ag + 'g').join(scaledAg + 'ml');
+    }
+    // Café: scale if user changed the amount
     if (baseAgua > 0 && Math.abs(scale - 1) > 0.01) {
-      // Scale water amount in prose
-      if (p.ag > 0) {
-        const scaledAg = Math.round(p.ag * scale);
-        desc = desc.split(p.ag + 'g').join(scaledAg + 'g');
-      }
-      // Scale café grams in prose: base café = baseAgua / ratio
-      // Handle both plain and <strong>-wrapped variants
       const baseCafe = Math.round(baseAgua / r.ratio);
       if (baseCafe > 0 && cafeGrams !== baseCafe) {
         const bStr = baseCafe + 'g de café';
@@ -1269,7 +1295,7 @@ function renderStepCards() {
     let waterNote = '';
     if (p.ag > 0 && baseAgua > 0) {
       const scaled = Math.round(p.ag * scale);
-      waterNote = `<div style="display:inline-block;margin-top:6px;padding:3px 10px;background:rgba(197,160,89,0.12);border:1px solid rgba(197,160,89,0.25);border-radius:6px;font-size:.65em;color:#c5a059;letter-spacing:1px">${scaled}g agua</div>`;
+      waterNote = `<div style="display:inline-block;margin-top:6px;padding:3px 10px;background:rgba(197,160,89,0.12);border:1px solid rgba(197,160,89,0.25);border-radius:6px;font-size:.65em;color:#c5a059;letter-spacing:1px">${scaled}ml</div>`;
     }
 
     return `<div class="step-card" id="sc-${i}">
@@ -1366,6 +1392,8 @@ function finishAll() {
   document.getElementById('t-start').classList.remove('paused');
   document.getElementById('t-start').onclick=resetAllTimer;
   document.getElementById('finish-banner').classList.add('visible');
+  const ar=getRandomAroma();
+  document.getElementById('finish-aroma').innerHTML=`AROMA · <span>#${ar.n} ${ar.a}</span>`;
   beepFinish();
 }
 
