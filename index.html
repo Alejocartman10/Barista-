@@ -1447,12 +1447,9 @@ function ensureAudio() {
     const ctx = getAudioCtx();
     const resume = ctx.state === 'suspended' ? ctx.resume() : Promise.resolve();
     return resume.then(() => {
-      if (!_beepBuf) {
-        _beepBuf = buildBuffer(ctx, [880, 880], [0, 0.18], 0.25, 0.3);
-      }
-      if (!_finishBuf) {
-        _finishBuf = buildBuffer(ctx, [660, 780, 940], [0, 0.22, 0.44], 0.5, 0.3);
-      }
+      // Always rebuild buffers to ensure they're valid
+      _beepBuf = buildBuffer(ctx, [880, 880], [0, 0.18], 0.25, 0.3);
+      _finishBuf = buildBuffer(ctx, [660, 780, 940], [0, 0.22, 0.44], 0.5, 0.3);
     });
   } catch(e) {}
   return Promise.resolve();
@@ -1461,12 +1458,19 @@ function ensureAudio() {
 function playBuffer(buf) {
   if (!buf || !_audioCtx) return;
   try {
-    // iOS: resume context if it went suspended mid-timer
-    if (_audioCtx.state === 'suspended') _audioCtx.resume();
-    const src = _audioCtx.createBufferSource();
-    src.buffer = buf;
-    src.connect(_audioCtx.destination);
-    src.start(0);
+    if (_audioCtx.state === 'suspended') {
+      _audioCtx.resume().then(() => {
+        const src = _audioCtx.createBufferSource();
+        src.buffer = buf;
+        src.connect(_audioCtx.destination);
+        src.start(0);
+      });
+    } else {
+      const src = _audioCtx.createBufferSource();
+      src.buffer = buf;
+      src.connect(_audioCtx.destination);
+      src.start(0);
+    }
   } catch(e) {}
 }
 
