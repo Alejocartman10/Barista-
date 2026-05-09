@@ -312,7 +312,8 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
     <button class="method-btn" onclick="selectMethod(this,'Prensa')">Prensa Francesa</button>
     <button class="method-btn" onclick="selectMethod(this,'EvaSolo')">Eva Solo</button>
     <button class="method-btn" onclick="selectMethod(this,'Espresso')">Espresso</button>
-    <button class="method-btn" onclick="selectMethod(this,'Moka')" style="grid-column:span 2">Moka Italiana</button>
+    <button class="method-btn" onclick="selectMethod(this,'Moka')">Moka Italiana</button>
+    <button class="method-btn" onclick="selectMethod(this,'ColdBrew')">Cold Brew</button>
   </div>
   <div class="step-label">OBJETIVO</div>
   <div class="objectives">
@@ -1081,7 +1082,74 @@ const RECETAS = {
         {t:'ANOTAR',d:'Prueba distintas proporciones. Anota la que más te guste.',s:10,ag:0}
       ]}
     ]
+  },
+  ColdBrew:{
+    dulce:[
+      {nombre:'Vanilla Sweet Cream',desc:'Cold Brew suave con crema de vainilla. Dulce, sedoso y perfecto para la tarde.',ratio:0,temp:'Frío',tiempo:'05:00',sabor:{d:5,a:1,c:4},pasos:[
+        {t:'VASO',d:'Llena un vaso alto con hielo hasta el tope.',s:10,ag:0},
+        {t:'COLD BREW',d:'Vierte <strong>180ml de Cold Brew</strong> sobre el hielo.',s:10,ag:180},
+        {t:'DULCE',d:'Agrega <strong>15ml de jarabe de azúcar</strong>. Revuelve suavemente.',s:15,ag:0},
+        {t:'CREMA',d:'Vierte <strong>30ml de crema de leche</strong> y <strong>10ml de extracto de vainilla</strong> encima. No revuelvas — deja que caiga sola.',s:30,ag:0}
+      ]},
+      {nombre:'Salted Caramel Cold Brew',desc:'Caramelo con una pizca de sal marina. El contraste que lo hace adictivo.',ratio:0,temp:'Frío',tiempo:'04:00',sabor:{d:5,a:1,c:3},pasos:[
+        {t:'HIELO',d:'Llena el vaso con hielo.',s:10,ag:0},
+        {t:'COLD BREW',d:'Vierte <strong>180ml de Cold Brew</strong>.',s:10,ag:180},
+        {t:'CARAMELO',d:'Agrega <strong>15ml de jarabe de caramelo</strong>. Revuelve.',s:15,ag:0},
+        {t:'ESPUMA',d:'Corona con espuma de leche fría. Termina con <strong>1g de sal marina</strong> encima.',s:30,ag:0}
+      ]},
+      {nombre:'Coconut Cold Brew',desc:'Leche de coco con miel. Tropical, suave y sin lácteos.',ratio:0,temp:'Frío',tiempo:'04:00',sabor:{d:4,a:2,c:3},pasos:[
+        {t:'HIELO',d:'Llena el vaso con hielo.',s:10,ag:0},
+        {t:'COLD BREW',d:'Vierte <strong>150ml de Cold Brew</strong>.',s:10,ag:150},
+        {t:'COCO',d:'Agrega <strong>60ml de leche de coco</strong>.',s:10,ag:60},
+        {t:'MIEL',d:'Disuelve <strong>10ml de miel o agave</strong>. Revuelve bien.',s:20,ag:0}
+      ]}
+    ],
+    acido:[
+      {nombre:'Orange Cold Brew',desc:'Cítrico y aromático. El romero eleva los aceites de la naranja.',ratio:0,temp:'Frío',tiempo:'05:00',sabor:{d:3,a:5,c:2},pasos:[
+        {t:'COPA',d:'Llena una copa o vaso con hielo y una rama de romero.',s:15,ag:0},
+        {t:'COLD BREW',d:'Vierte <strong>150ml de Cold Brew concentrado</strong>.',s:10,ag:150},
+        {t:'NARANJA',d:'Agrega <strong>50ml de jugo de naranja natural</strong>.',s:10,ag:50},
+        {t:'TÓNICA',d:'Vierte <strong>30ml de agua tónica</strong> muy despacio por el borde.',s:20,ag:30},
+        {t:'DECORAR',d:'Exprime una piel de naranja sobre la copa para liberar los aceites.',s:15,ag:0}
+      ]},
+      {nombre:'Cold Brew Lemonade',desc:'Refrescante y vivo. La limonada activa la acidez natural del café.',ratio:0,temp:'Frío',tiempo:'04:00',sabor:{d:2,a:5,c:1},pasos:[
+        {t:'HIELO',d:'Llena el vaso con hielo abundante.',s:10,ag:0},
+        {t:'COLD BREW',d:'Vierte <strong>120ml de Cold Brew</strong>.',s:10,ag:120},
+        {t:'LIMONADA',d:'Agrega <strong>100ml de limonada fresca</strong>.',s:10,ag:100},
+        {t:'DULCE',d:'Agrega <strong>15ml de jarabe simple</strong> si lo quieres menos ácido.',s:10,ag:0},
+        {t:'MENTA',d:'Agita suavemente con menta fresca.',s:15,ag:0}
+      ]},
+      {nombre:'Cold Brew Tonic',desc:'El más minimalista. Burbujas y café. Amargor limpio con acidez tónica.',ratio:0,temp:'Frío',tiempo:'03:00',sabor:{d:1,a:5,c:2},pasos:[
+        {t:'COPA',d:'Copa de balón o vaso alto. Hielo hasta el tope.',s:10,ag:0},
+        {t:'COLD BREW',d:'Vierte <strong>90ml de Cold Brew concentrado</strong>.',s:10,ag:90},
+        {t:'TÓNICA',d:'<strong>150ml de agua tónica premium</strong> muy fría. Vierte lento por el borde — no rompas la burbuja.',s:20,ag:150},
+        {t:'LIMÓN',d:'Una rodaja de limón. Listo.',s:10,ag:0}
+      ]}
+    ],
+    balanceado:[
+      {nombre:'Cold Brew Base',desc:'La preparación base. Ratio 1:10, extracción en frío. El punto de partida para todas las demás recetas.',ratio:10,temp:'4°C',tiempo:'12:00–24:00h',sabor:{d:3,a:3,c:4},pasos:[
+        {t:'MOLIENDA',d:'Muele <strong>100g de café en molienda gruesa</strong> — como sal marina.',s:20,ag:0},
+        {t:'MEZCLA',d:'Combina con <strong>1000ml de agua fría</strong> en un frasco o jarra. Revuelve bien.',s:30,ag:1000},
+        {t:'REPOSAR',d:'Cubre y refrigera <strong>12 a 24 horas</strong>. A más tiempo, más concentrado.',s:30,ag:0},
+        {t:'FILTRAR',d:'Filtra con papel de café, manta de cielo o filtro de metal. Descarta el café.',s:60,ag:0},
+        {t:'LISTO',d:'Guarda en el refrigerador hasta 2 semanas. Sirve sobre hielo o usa como base.',s:10,ag:0}
+      ]},
+      {nombre:'Maple Pecan Cold Brew',desc:'Notas a jarabe de arce y nuez. Reconfortante y complejo.',ratio:0,temp:'Frío',tiempo:'04:00',sabor:{d:4,a:2,c:3},pasos:[
+        {t:'HIELO',d:'Vaso alto con hielo.',s:10,ag:0},
+        {t:'COLD BREW',d:'Vierte <strong>180ml de Cold Brew</strong>.',s:10,ag:180},
+        {t:'MAPLE',d:'Agrega <strong>20ml de jarabe de arce</strong>. Revuelve.',s:15,ag:0},
+        {t:'LECHE',d:'<strong>40ml de leche al gusto</strong>. Una pizca de nuez moscada encima.',s:15,ag:40}
+      ]},
+      {nombre:'Honey Lavender Cold Brew',desc:'Floral y delicado. La lavanda en equilibrio con el café.',ratio:0,temp:'Frío',tiempo:'04:00',sabor:{d:4,a:2,c:2},pasos:[
+        {t:'HIELO',d:'Llena el vaso con hielo.',s:10,ag:0},
+        {t:'COLD BREW',d:'Vierte <strong>180ml de Cold Brew</strong>.',s:10,ag:180},
+        {t:'LAVANDA',d:'Agrega <strong>15ml de sirope de lavanda</strong>.',s:10,ag:0},
+        {t:'MIEL',d:'<strong>10ml de miel diluida</strong>. Revuelve suave.',s:15,ag:0},
+        {t:'DECORAR',d:'Flores de lavanda secas encima.',s:10,ag:0}
+      ]}
+    ]
   }
+
 };
 
 const GRIND_INFO = {
@@ -1224,6 +1292,14 @@ function fbarHTML(label,val) {
 function recalcRatio() {
   const r=currentReceta; if (!r) return;
   cafeGrams=parseFloat(document.getElementById('r-cafe').value)||20;
+  // ColdBrew drinks (ratio=0): hide ratio adjuster, show fixed note
+  const adjuster = document.querySelector('.ratio-adjuster');
+  if (r.ratio===0) {
+    if (adjuster) adjuster.style.display='none';
+    renderStepCards();
+    return;
+  }
+  if (adjuster) adjuster.style.display='';
   const agua=Math.round(cafeGrams*r.ratio);
   document.getElementById('r-agua').textContent=agua;
   const mlPorTaza = (r.ratio<=3) ? 30 : (r.ratio<=10) ? 60 : 200;
