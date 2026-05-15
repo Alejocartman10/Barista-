@@ -57,6 +57,7 @@ body{min-height:100%;background:#111111!important;color:var(--text);font-family:
 .brand-number{font-family:‘Playfair Display’,serif;font-size:5.5em;font-weight:700;color:var(–oro);line-height:1;letter-spacing:-2px}
 .brand-name{font-family:‘Playfair Display’,serif;font-style:italic;font-size:.95em;color:var(–text-dim);letter-spacing:1px;margin-top:4px}
 .brand-line{width:40px;height:1px;background:var(–oro);margin:14px auto 0;opacity:.4}
+.bean-svg{display:inline-block;width:.72em;height:.88em;vertical-align:-.1em;margin:0 .01em}
 .step-label{font-size:.6em;letter-spacing:3px;color:var(–text-dim);margin-bottom:12px;text-transform:uppercase}
 .methods-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:28px}
 .method-btn{padding:14px 10px;background:#1a1a1a;border:1.5px solid rgba(255,255,255,0.07);border-radius:14px;color:rgba(237,232,224,0.45);font-family:‘DM Mono’,monospace;font-size:.72em;letter-spacing:1px;cursor:pointer;transition:all .2s;text-align:center;-webkit-appearance:none}
@@ -265,7 +266,7 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
     <div class="onboard-slide active" id="ob-0">
       <div class="onboard-emoji">☕</div>
       <div class="onboard-title">Bienvenido a 800</div>
-      <div class="onboard-body">La temperatura perfecta para extraer los mejores sabores del café.<br><br>Esta app te guía paso a paso para preparar café de especialidad en casa.</div>
+      <div class="onboard-body">Donde la ciencia se convierte en aroma.<br><br>Esta app te guía paso a paso para preparar café de especialidad en casa.</div>
     </div>
     <div class="onboard-slide" id="ob-1">
       <div class="onboard-emoji">🎯</div>
@@ -300,8 +301,10 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
 <div class="screen" id="screen-home">
 <div class="home-content">
   <div class="brand">
-    <div class="brand-number">800</div>
-    <div class="brand-name">La Química del Aroma</div>
+    <div class="brand-number">
+      8<svg class="bean-svg" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="40" rx="26" ry="36" fill="#c5a059"/><path d="M30 8 Q30 40 30 72" stroke="#111" stroke-width="4" stroke-linecap="round" fill="none"/></svg><svg class="bean-svg" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="40" rx="26" ry="36" fill="#c5a059"/><path d="M30 8 Q30 40 30 72" stroke="#111" stroke-width="4" stroke-linecap="round" fill="none"/></svg>
+    </div>
+    <div class="brand-name">Donde la ciencia se convierte en aroma</div>
     <div class="brand-line"></div>
   </div>
   <div class="step-label">MÉTODO DE EXTRACCIÓN</div>
