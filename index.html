@@ -30,6 +30,8 @@ body{min-height:100%;background:#111111!important;color:var(--text);font-family:
   select.finput option{background:#1a1a1a!important;color:#ede8e0!important}
 }
 /* Global overrides — always apply regardless of color scheme */
+.rcard{background:#1e1e1e!important;border:1px solid rgba(255,255,255,0.12)!important}
+.rcard.user-card{border-left:3px solid var(--green)!important}
 .btn-timer-start{background:#c5a059!important;color:#111111!important;-webkit-appearance:none!important;appearance:none!important}
 .btn-timer-start.paused{background:#e06060!important;color:#ffffff!important}
 .btn-timer-reset{-webkit-appearance:none!important;appearance:none!important}
@@ -87,7 +89,7 @@ body{min-height:100%;background:#111111!important;color:var(--text);font-family:
 .combo-obj{font-family:‘Playfair Display’,serif;font-style:italic;font-size:1.3em;color:var(–oro)}
 .list-sub{font-size:.6em;letter-spacing:2px;color:var(–text-dim)}
 .recipe-cards{padding:0 20px;display:flex;flex-direction:column;gap:12px}
-.rcard{background:var(–surface);border:1px solid var(–border);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:16px}
+.rcard{background:var(–surface);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:16px}
 .rcard:active{transform:scale(.99);background:var(–surface2)}
 .rcard.user-card{border-left:3px solid var(–green)}
 .rcard-left{flex:1}
