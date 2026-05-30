@@ -1439,20 +1439,31 @@ function updateStepCards() {
 
 // ── TIMER ──────────────────────────────────────────────
 // Keep AudioContext alive during long recipes
+// iOS suspends AudioContext after inactivity — we play a silent buffer every 10s
 let _audioKeepAlive = null;
 function startAudioKeepAlive() {
   stopAudioKeepAlive();
   _audioKeepAlive = setInterval(() => {
-    if (_audioCtx && _audioCtx.state === 'suspended') {
-      _audioCtx.resume().then(() => {
-        // Rebuild buffers if needed after resume
-        if (!_beepBuf || !_finishBuf) {
-          _beepBuf = buildBuffer(_audioCtx, [880, 880], [0, 0.18], 0.25, 0.3);
-          _finishBuf = buildBuffer(_audioCtx, [660, 780, 940], [0, 0.22, 0.44], 0.5, 0.3);
-        }
-      });
+    if (!_audioCtx) return;
+    const run = () => {
+      try {
+        // Rebuild buffers if lost
+        if (!_beepBuf) _beepBuf = buildBuffer(_audioCtx, [880,880],[0,0.18],0.25,0.3);
+        if (!_finishBuf) _finishBuf = buildBuffer(_audioCtx, [660,780,940],[0,0.22,0.44],0.5,0.3);
+        // Play 1-sample silent buffer to keep context active
+        const silBuf = _audioCtx.createBuffer(1, 1, _audioCtx.sampleRate);
+        const src = _audioCtx.createBufferSource();
+        src.buffer = silBuf;
+        src.connect(_audioCtx.destination);
+        src.start(0);
+      } catch(e) {}
+    };
+    if (_audioCtx.state === 'suspended') {
+      _audioCtx.resume().then(run);
+    } else {
+      run();
     }
-  }, 20000); // every 20s
+  }, 10000); // every 10s
 }
 function stopAudioKeepAlive() {
   if (_audioKeepAlive) { clearInterval(_audioKeepAlive); _audioKeepAlive = null; }
@@ -1667,7 +1678,7 @@ function delReceta(e,idx){
 function updSl(el,id){document.getElementById(id).textContent=el.value}
 
 let stepBuilderCount = 0;
-function addStepRow(titulo='', segundos='') {
+function addStepRow(titulo='', segundos='', desc='') {
   stepBuilderCount++;
   const id = stepBuilderCount;
   const row = document.createElement('div');
@@ -1682,7 +1693,7 @@ function addStepRow(titulo='', segundos='') {
           <input class="step-sec-input" type="number" placeholder="seg" value="${segundos}" min="1" max="3600">
           <span class="step-sec-label">seg</span>
         </div>
-        <input class="step-desc-input" type="text" placeholder="Instrucción detallada (opcional)" value="${desc||''}" style="width:100%;background:#222;border:1px solid rgba(255,255,255,0.07);border-radius:8px;color:#ede8e0;font-family:'DM Mono',monospace;font-size:.72em;padding:7px 10px">
+        <input class="step-desc-input" type="text" placeholder="Instrucción detallada (opcional)" value="${desc}" style="width:100%;background:#222;border:1px solid rgba(255,255,255,0.07);border-radius:8px;color:#ede8e0;font-family:'DM Mono',monospace;font-size:.72em;padding:7px 10px">
       </div>
       <button class="step-del-btn" onclick="delStepRow(${id})" style="margin-top:10px">✕</button>
     </div>
