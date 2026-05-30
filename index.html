@@ -1438,6 +1438,23 @@ function updateStepCards() {
 }
 
 // ── TIMER ──────────────────────────────────────────────
+// ── WAKE LOCK — prevent screen from sleeping during timer ──
+let _wakeLock = null;
+async function requestWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      _wakeLock = await navigator.wakeLock.request('screen');
+    }
+  } catch(e) {}
+}
+function releaseWakeLock() {
+  try { if (_wakeLock) { _wakeLock.release(); _wakeLock = null; } } catch(e) {}
+}
+// Re-request on visibility change (iOS releases it when tab goes background)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && running) requestWakeLock();
+});
+
 // Keep AudioContext alive during long recipes
 // iOS suspends AudioContext after inactivity — we play a silent buffer every 10s
 let _audioKeepAlive = null;
@@ -1481,9 +1498,11 @@ function toggleTimer() {
     document.getElementById('t-start').classList.add('paused');
     timerInterval=setInterval(tick,1000);
     startAudioKeepAlive();
+    requestWakeLock();
   } else {
     running=false; clearInterval(timerInterval); timerInterval=null;
     stopAudioKeepAlive();
+    releaseWakeLock();
     document.getElementById('t-start').textContent='CONTINUAR';
     document.getElementById('t-start').classList.remove('paused');
   }
@@ -1516,6 +1535,7 @@ function updateDisplay() {
 function finishAll() {
   clearInterval(timerInterval);timerInterval=null;running=false;
   stopAudioKeepAlive();
+  releaseWakeLock();
   updateStepCards();
   document.getElementById('t-display').textContent='00:00';
   document.getElementById('t-display').classList.add('done-all');
