@@ -1371,6 +1371,8 @@ function renderStepCards() {
     const cumEnd = cumStart + p.s;
     const fmtT = t => pad(Math.floor(t/60))+':'+pad(t%60);
     const rangeLabel = `${fmtT(cumStart)} → ${fmtT(cumEnd)}`;
+    // Cumulative water up to and including this step
+    const cumWater = Math.round(r.pasos.slice(0, i+1).reduce((a, x) => a + (x.ag||0), 0) * scale);
 
     // Scale water AND café gram values in prose description
     let desc = p.d;
@@ -1406,6 +1408,7 @@ function renderStepCards() {
         </div>
         <div class="step-right">
           <div class="step-duration">${rangeLabel}</div>
+          ${cumWater > 0 ? `<div style="font-size:.55em;letter-spacing:1px;color:rgba(197,160,89,0.55);margin-top:1px">↑ ${cumWater}ml</div>` : ''}
           <div class="step-countdown" id="cd-${i}">—</div>
           <div class="step-check">✓</div>
         </div>
@@ -1675,6 +1678,7 @@ function renderMyRecipes(){
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
         <div class="rcard-arrow">›</div>
+        <button onclick="editReceta(event,${i})" style="background:none;border:none;color:#c5a059;font-size:.72em;cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:1px">✎</button>
         <button onclick="delReceta(event,${i})" style="background:none;border:none;color:var(--red);font-size:.72em;cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:1px">✕</button>
       </div>
     </div>`).join('');
@@ -1687,6 +1691,33 @@ function openDetailFromMine(idx){
   document.getElementById('grind-link').textContent=(GRIND_INFO[state.method]||'ver molienda')+' ›';
   goTo('screen-detail');
 }
+function editReceta(e,idx){
+  e.stopPropagation();
+  const all=getUser();
+  const r=all[idx]; if (!r) return;
+  // Pre-fill form
+  document.getElementById('f-nombre').value=r.nombre||'';
+  document.getElementById('f-metodo').value=r.metodo||'V60';
+  document.getElementById('f-obj').value=r.objetivo||'dulce';
+  document.getElementById('f-desc').value=r.desc||'';
+  document.getElementById('f-cafe-new').value=r.cafe||20;
+  document.getElementById('f-ratio').value=r.ratio||15;
+  document.getElementById('f-temp').value=(r.temp||'92°C').replace('°C','');
+  document.getElementById('f-tiempo').value=r.tiempo||'';
+  document.getElementById('sl-d').value=r.sabor?.d||3; document.getElementById('sv-d').textContent=r.sabor?.d||3;
+  document.getElementById('sl-a').value=r.sabor?.a||3; document.getElementById('sv-a').textContent=r.sabor?.a||3;
+  document.getElementById('sl-c').value=r.sabor?.c||3; document.getElementById('sv-c').textContent=r.sabor?.c||3;
+  updNewAgua();
+  // Rebuild step builder
+  resetStepBuilder();
+  (r.pasos||[]).forEach(p=>addStepRow(p.t, p.s, p.d!==p.t?p.d:''));
+  // Mark as editing
+  document.querySelector('.btn-save').setAttribute('data-edit-idx', idx);
+  document.querySelector('.btn-save').textContent='GUARDAR CAMBIOS';
+  document.querySelector('.btn-save').style.background='#c5a059';
+  goTo('screen-new');
+}
+
 function delReceta(e,idx){
   e.stopPropagation();
   const all=getUser();all.splice(idx,1);
@@ -1771,7 +1802,10 @@ function saveReceta(){
       c:parseInt(document.getElementById('sl-c').value)||3,
     },pasos:getStepBuilderPasos()
   };
-  const all=getUser();all.push(r);
+  const all=getUser();
+  const editIdx=parseInt(document.querySelector('.btn-save').getAttribute('data-edit-idx')??'-1');
+  if (editIdx>=0) { all[editIdx]=r; } else { all.push(r); }
+  document.querySelector('.btn-save').removeAttribute('data-edit-idx');
   localStorage.setItem('recetas800',JSON.stringify(all));
   const btn = document.querySelector('.btn-save');
   btn.textContent = '✓ GUARDADA';
@@ -1787,6 +1821,7 @@ function saveReceta(){
     document.getElementById('sl-c').value='3'; document.getElementById('sv-c').textContent='3';
     btn.textContent='GUARDAR RECETA';
     btn.style.background='';
+    btn.removeAttribute('data-edit-idx');
     resetStepBuilder();
     updNewAgua();
     state.method=r.metodo;state.obj=r.objetivo;
