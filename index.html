@@ -189,6 +189,18 @@ body{min-height:100%;background:#111111!important;color:var(--text);font-family:
 .finish-sub{font-size:.62em;letter-spacing:1px;color:rgba(92,184,138,.6);margin-top:4px}
 .finish-aroma{margin-top:14px;padding-top:14px;border-top:1px solid rgba(92,184,138,.2);font-family:'DM Mono',monospace;font-size:.65em;letter-spacing:2px;color:rgba(237,232,224,.4)}
 .finish-aroma span{color:#c5a059}
+.diag-section{margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.07)}
+.diag-question{font-family:'DM Mono',monospace;font-size:.6em;letter-spacing:2px;color:rgba(237,232,224,.5);margin-bottom:10px;text-transform:uppercase}
+.diag-options{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.diag-btn{padding:7px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);font-family:'DM Mono',monospace;font-size:.62em;letter-spacing:1px;color:rgba(237,232,224,.6);cursor:pointer;transition:all .2s;-webkit-appearance:none}
+.diag-btn:active{transform:scale(.97)}
+.diag-btn.selected{border-color:#c5a059;background:rgba(197,160,89,.12);color:#c5a059}
+.diag-result{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;display:none}
+.diag-result.visible{display:block}
+.diag-result-title{font-family:'DM Mono',monospace;font-size:.6em;letter-spacing:2px;color:#c5a059;margin-bottom:8px}
+.diag-result-tips{list-style:none;padding:0;margin:0}
+.diag-result-tips li{font-family:'Playfair Display',serif;font-style:italic;font-size:.82em;color:rgba(237,232,224,.7);line-height:1.6;padding:4px 0;padding-left:14px;position:relative}
+.diag-result-tips li::before{content:'→';position:absolute;left:0;color:#c5a059;font-style:normal;font-size:.8em}
 
 /* ── MY RECIPES ── */
 #screen-myrecipes{padding-bottom:100px}
@@ -431,6 +443,20 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
     <div class="finish-text">¡Café listo para servir!</div>
     <div class="finish-sub">BUEN PROVECHO</div>
     <div class="finish-aroma" id="finish-aroma"></div>
+    <div class="diag-section">
+      <div class="diag-question">¿Cómo salió la taza?</div>
+      <div class="diag-options">
+        <button class="diag-btn" onclick="selectDiag(this,'acida')">😬 Muy ácida</button>
+        <button class="diag-btn" onclick="selectDiag(this,'amarga')">😣 Muy amarga</button>
+        <button class="diag-btn" onclick="selectDiag(this,'debil')">😶 Muy débil</button>
+        <button class="diag-btn" onclick="selectDiag(this,'intensa')">😮 Muy intensa</button>
+        <button class="diag-btn" onclick="selectDiag(this,'perfecta')">😍 Perfecta</button>
+      </div>
+      <div class="diag-result" id="diag-result">
+        <div class="diag-result-title" id="diag-title"></div>
+        <ul class="diag-result-tips" id="diag-tips"></ul>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -672,6 +698,67 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
 </div>
 
 <script>
+
+// ── DIAGNÓSTICO ────────────────────────────────────────
+const DIAG = {
+  acida:{
+    title:'La taza salió muy ácida',
+    tips:[
+      'Muele más fino — más superficie de contacto extrae más sólidos',
+      'Sube la temperatura 1–2°C para favorecer extracción',
+      'Aumenta el tiempo de contacto o reduce el ratio de agua',
+      'Verifica que el bloom haya sido suficiente (mínimo 30s)'
+    ]
+  },
+  amarga:{
+    title:'La taza salió muy amarga',
+    tips:[
+      'Muele más grueso — menos superficie reduce sobreextracción',
+      'Baja la temperatura 1–2°C',
+      'Reduce el tiempo de extracción o aumenta el ratio de agua',
+      'Verifica que el café no esté pasado de tueste o vencido'
+    ]
+  },
+  debil:{
+    title:'La taza salió muy débil',
+    tips:[
+      'Usa más café — prueba subir 1–2g manteniendo el agua igual',
+      'Muele más fino para extraer más sólidos',
+      'Reduce el ratio de agua (menos agua por gramo de café)',
+      'Asegúrate de que el agua esté a la temperatura correcta'
+    ]
+  },
+  intensa:{
+    title:'La taza salió muy intensa',
+    tips:[
+      'Reduce la dosis de café o aumenta el agua',
+      'Muele más grueso para una extracción más rápida',
+      'Sube el ratio — prueba 1:16 o 1:17 en lugar del actual',
+      'Para espresso: reduce el tiempo de extracción'
+    ]
+  },
+  perfecta:{
+    title:'¡Taza perfecta!',
+    tips:[
+      'Anota los parámetros exactos — gramos, temperatura y tiempo',
+      'Guarda esta receta en Mis Recetas para repetirla',
+      'El aroma que sentiste es tu referencia para este café',
+      'Pequeños ajustes futuros: varía solo una variable a la vez'
+    ]
+  }
+};
+
+function selectDiag(btn, key) {
+  document.querySelectorAll('.diag-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const d = DIAG[key];
+  document.getElementById('diag-title').textContent = d.title;
+  document.getElementById('diag-tips').innerHTML = d.tips.map(t => `<li>${t}</li>`).join('');
+  const res = document.getElementById('diag-result');
+  res.classList.add('visible');
+  setTimeout(() => res.scrollIntoView({behavior:'smooth', block:'nearest'}), 100);
+}
+
 const AROMAS = [
   {n:'012',a:'Jazmín'},{n:'025',a:'Rosa Silvestre'},{n:'038',a:'Flor de Azahar'},
   {n:'054',a:'Lavanda'},{n:'067',a:'Violeta'},{n:'078',a:'Magnolia'},
@@ -1562,6 +1649,8 @@ function resetAllTimer() {
   document.getElementById('t-start').classList.remove('paused');
   document.getElementById('t-start').onclick=toggleTimer;
   document.getElementById('finish-banner').classList.remove('visible');
+  document.querySelectorAll('.diag-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('diag-result').classList.remove('visible');
   renderStepCards();
 }
 
