@@ -273,6 +273,33 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
 
 /* ── GLOSSARY ── */
 #screen-glossary{padding-bottom:40px}
+/* ── BIBLIOTECA DE AROMAS ── */
+#screen-aromas{padding-bottom:60px}
+.aroma-search{margin:16px 20px 0;position:relative}
+.aroma-search input{width:100%;padding:12px 14px 12px 36px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.08);border-radius:12px;color:#ede8e0;font-family:'DM Mono',monospace;font-size:.75em;-webkit-appearance:none}
+.aroma-search input:focus{outline:none;border-color:rgba(197,160,89,0.4)}
+.aroma-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:rgba(237,232,224,0.3);font-size:.8em;pointer-events:none}
+.aroma-families{display:flex;gap:8px;padding:12px 20px;overflow-x:auto;scrollbar-width:none}
+.aroma-families::-webkit-scrollbar{display:none}
+.aroma-fam-btn{flex-shrink:0;padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:transparent;font-family:'DM Mono',monospace;font-size:.6em;letter-spacing:1px;color:rgba(237,232,224,0.5);cursor:pointer;-webkit-appearance:none;transition:all .2s}
+.aroma-fam-btn.active{background:rgba(197,160,89,0.15);border-color:#c5a059;color:#c5a059}
+.aroma-grid{padding:8px 20px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.aroma-card{background:#1a1a1a;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent}
+.aroma-card:active{transform:scale(.98)}
+.aroma-card-num{font-family:'DM Mono',monospace;font-size:.55em;color:rgba(197,160,89,0.5);letter-spacing:2px;margin-bottom:4px}
+.aroma-card-name{font-family:'Playfair Display',serif;font-size:.95em;color:#ede8e0;line-height:1.2;margin-bottom:4px}
+.aroma-card-fam{font-size:.55em;letter-spacing:1px;color:rgba(237,232,224,0.35)}
+/* Modal aroma */
+.aroma-overlay{display:none;position:fixed;inset:0;z-index:200;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.7)}
+.aroma-overlay.visible{display:flex;animation:fadeUp .25s ease}
+.aroma-modal{width:100%;max-width:440px;background:#1a1a1a;border:1px solid rgba(197,160,89,0.3);border-radius:24px 24px 0 0;padding:28px 24px 44px;position:relative;max-height:80vh;overflow-y:auto}
+.aroma-modal-num{font-family:'DM Mono',monospace;font-size:.6em;letter-spacing:3px;color:rgba(197,160,89,0.6);margin-bottom:6px}
+.aroma-modal-name{font-family:'Playfair Display',serif;font-size:1.6em;color:#ede8e0;margin-bottom:4px}
+.aroma-modal-fam{display:inline-block;font-size:.58em;letter-spacing:2px;padding:3px 10px;border-radius:6px;background:rgba(197,160,89,0.1);border:1px solid rgba(197,160,89,0.25);color:#c5a059;margin-bottom:16px}
+.aroma-modal-desc{font-family:'Playfair Display',serif;font-style:italic;font-size:.95em;color:rgba(237,232,224,0.75);line-height:1.7;margin-bottom:14px}
+.aroma-modal-label{font-size:.58em;letter-spacing:2px;color:rgba(237,232,224,0.35);margin-bottom:6px}
+.aroma-modal-cafes{font-family:'DM Mono',monospace;font-size:.68em;color:#c5a059;line-height:1.6}
+.aroma-close{position:absolute;top:16px;right:20px;background:none;border:none;color:rgba(237,232,224,0.4);font-size:1.2em;cursor:pointer}
 .glossary-body{padding:20px 24px}
 .gitem{border-bottom:1px solid var(--border);padding:18px 0}
 .gitem:first-child{padding-top:0}
@@ -376,6 +403,7 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
     <button class="btn-home-link" onclick="goTo('screen-myrecipes')">⭐ Mis recetas</button>
     <button class="btn-home-link" onclick="goTo('screen-grind')">⚙ Guía de molienda</button>
     <button class="btn-home-link" onclick="goTo('screen-glossary')">📖 Glosario</button>
+    <button class="btn-home-link" onclick="goTo('screen-aromas')">🌸 Aromas</button>
   </div>
 </div>
 </div>
@@ -643,6 +671,34 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
   </div>
 </div>
 
+
+<!-- ══ BIBLIOTECA DE AROMAS ══ -->
+<div class="screen" id="screen-aromas">
+  <div class="topbar">
+    <button class="btn-back" id="aromas-back">← VOLVER</button>
+    <span class="topbar-title">BIBLIOTECA DE AROMAS</span>
+  </div>
+  <div class="aroma-search">
+    <span class="aroma-search-icon">⌕</span>
+    <input type="text" id="aroma-search-input" placeholder="Buscar aroma..." oninput="filterAromas()">
+  </div>
+  <div class="aroma-families" id="aroma-families"></div>
+  <div class="aroma-grid" id="aroma-grid"></div>
+</div>
+
+<!-- ══ MODAL AROMA ══ -->
+<div class="aroma-overlay" id="aroma-overlay" onclick="closeAromaModal()">
+  <div class="aroma-modal" onclick="event.stopPropagation()">
+    <button class="aroma-close" onclick="closeAromaModal()">✕</button>
+    <div class="aroma-modal-num" id="am-num"></div>
+    <div class="aroma-modal-name" id="am-name"></div>
+    <div class="aroma-modal-fam" id="am-fam"></div>
+    <div class="aroma-modal-desc" id="am-desc"></div>
+    <div class="aroma-modal-label">DÓNDE APARECE</div>
+    <div class="aroma-modal-cafes" id="am-cafes"></div>
+  </div>
+</div>
+
 <!-- ══ GLOSSARY ══ -->
 
 <div class="screen" id="screen-glossary">
@@ -878,26 +934,64 @@ function selectDiag(btn, key) {
 }
 
 const AROMAS = [
-  {n:'012',a:'Jazmín'},{n:'025',a:'Rosa Silvestre'},{n:'038',a:'Flor de Azahar'},
-  {n:'054',a:'Lavanda'},{n:'067',a:'Violeta'},{n:'078',a:'Magnolia'},
-  {n:'085',a:'Bergamota'},{n:'092',a:'Limón Meyer'},{n:'105',a:'Lima Kaffir'},
-  {n:'120',a:'Mandarina'},{n:'135',a:'Pomelo Rosado'},{n:'148',a:'Naranja Sanguina'},
-  {n:'162',a:'Maracuyá'},{n:'178',a:'Guayaba'},{n:'195',a:'Mango'},
-  {n:'210',a:'Arándano Azul'},{n:'224',a:'Mora Silvestre'},{n:'234',a:'Cereza Negra'},
-  {n:'256',a:'Frambuesa'},{n:'270',a:'Grosella Roja'},{n:'289',a:'Fresa Silvestre'},
-  {n:'312',a:'Durazno'},{n:'325',a:'Albaricoque'},{n:'338',a:'Ciruela Pasa'},
-  {n:'347',a:'Caramelo'},{n:'360',a:'Melaza'},{n:'378',a:'Mantequilla'},
-  {n:'392',a:'Vainilla'},{n:'405',a:'Chocolate con Leche'},{n:'420',a:'Cacao al 70%'},
-  {n:'435',a:'Chocolate Blanco'},{n:'450',a:'Praliné'},{n:'468',a:'Avellana'},
-  {n:'482',a:'Nuez de Nogal'},{n:'494',a:'Almendra Tostada'},{n:'501',a:'Pimienta Blanca'},
-  {n:'519',a:'Ajenjo / Ají'},{n:'534',a:'Canela en Rama'},{n:'550',a:'Clavo de Olor'},
-  {n:'572',a:'Cardamomo'},{n:'585',a:'Jengibre'},{n:'598',a:'Anís Estrellado'},
-  {n:'605',a:'Cedro'},{n:'618',a:'Pino'},{n:'628',a:'Tierra Húmeda'},
-  {n:'640',a:'Tabaco de Pipa'},{n:'655',a:'Madera de Roble'},{n:'668',a:'Cuero'},
-  {n:'680',a:'Musgo'},{n:'702',a:'Té Negro'},{n:'715',a:'Menta'},
-  {n:'730',a:'Lemongrass'},{n:'745',a:'Hierba Fresca'},{n:'756',a:'Sidra de Manzana'},
-  {n:'772',a:'Champaña'},{n:'789',a:'Vino Malbec'},{n:'795',a:'Ron Añejo'},
-  {n:'800',a:'Café en Flor'}
+  {n:'012',a:'Jazmín',f:'Floral',d:'Delicado y perfumado, como flores frescas de jazmín en la noche. Uno de los aromas más reconocibles del café etíope.',c:'Etiopía washed, Geisha, tuestes claros'},
+  {n:'025',a:'Rosa Silvestre',f:'Floral',d:'Sutil y elegante, menos intenso que el jazmín. Aparece como un fondo floral en cafés de altura procesados en lavado.',c:'Colombia Geisha, Panamá, Kenia AA'},
+  {n:'038',a:'Flor de Azahar',f:'Floral',d:'Cítrico y floral a la vez, como la flor del naranjo. Muy característico de los naturales etíopes fermentados.',c:'Etiopía natural, Yemen, Sidama'},
+  {n:'054',a:'Lavanda',f:'Floral',d:'Herbal y floral con un toque mentolado. Aparece en cafés con fermentaciones largas y tuestes muy claros.',c:'Etiopía washed, Costa Rica honey, Panamá'},
+  {n:'067',a:'Violeta',f:'Floral',d:'Floral intenso y ligeramente terroso, como pétalos de violeta. Característico de los Geisha de alta altitud.',c:'Panamá Geisha, Etiopía Yirgacheffe, Colombia Geisha'},
+  {n:'078',a:'Magnolia',f:'Floral',d:'Floral cremoso con notas a vainilla. Más denso que el jazmín, aparece en cafés con mucho cuerpo y fermentación controlada.',c:'Colombia natural, Brasil Cerrado, Geisha'},
+  {n:'085',a:'Bergamota',f:'Cítrico',d:'Cítrico floral y aromático, como el té Earl Grey. Muy característico de los Yirgacheffe etíopes de proceso lavado.',c:'Etiopía Yirgacheffe, Kenia, Burundi'},
+  {n:'092',a:'Limón Meyer',f:'Cítrico',d:'Cítrico brillante y jugoso, menos ácido que el limón común. Aparece como una acidez limpia y prolongada.',c:'Kenia AA, Colombia lavado, Guatemala'},
+  {n:'105',a:'Lima Kaffir',f:'Cítrico',d:'Cítrico intenso con notas herbales. Más complejo que la lima común, aparece en cafés con acidez muy pronunciada.',c:'Ruanda, Burundi, Kenia Nyeri'},
+  {n:'120',a:'Mandarina',f:'Cítrico',d:'Dulce y cítrico, menos ácido que el limón. Aparece en la fase media de la cata, después de la acidez inicial.',c:'El Salvador, Honduras, México Chiapas'},
+  {n:'135',a:'Pomelo Rosado',f:'Cítrico',d:'Cítrico con amargor sutil y notas florales. Característico de los cafés con alta acidez málica.',c:'Kenia, Etiopía natural, Colombia Nariño'},
+  {n:'148',a:'Naranja Sanguina',f:'Cítrico',d:'Cítrico oscuro y complejo, entre naranja y baya. Aparece en naturales africanos con fermentación prolongada.',c:'Etiopía natural, Ruanda natural, Burundi'},
+  {n:'162',a:'Maracuyá',f:'Tropical',d:'Tropical intenso y ácido, con notas fermentadas. Uno de los aromas más llamativos de los cafés africanos naturales.',c:'Etiopía natural, Kenia, Colombia natural'},
+  {n:'178',a:'Guayaba',f:'Tropical',d:'Tropical dulce y ligeramente fermentado. Aparece especialmente en cafés de proceso honey y natural de Centroamérica.',c:'Costa Rica honey, El Salvador, Honduras'},
+  {n:'195',a:'Mango',f:'Tropical',d:'Frutal tropical dulce con notas a fibra. Característico de los naturales brasileños y centroamericanos de tueste medio.',c:'Brasil natural, Nicaragua, Perú'},
+  {n:'210',a:'Arándano Azul',f:'Baya',d:'Frutal oscuro, dulce y ligeramente ácido. Uno de los aromas más codiciados del café de especialidad, asociado a fermentaciones limpias.',c:'Etiopía Yirgacheffe, Kenia, Burundi'},
+  {n:'224',a:'Mora Silvestre',f:'Baya',d:'Frutal oscuro con taninos suaves. Aparece en cafés con acidez cítrica combinada con cuerpo medio.',c:'Colombia, Guatemala, Ruanda'},
+  {n:'234',a:'Cereza Negra',f:'Baya',d:'Dulce y oscuro, como cereza en almíbar. Muy característico del proceso natural y de los cafés de fermentación anaeróbica.',c:'Brasil natural, Etiopía natural, Colombia anaeróbico'},
+  {n:'256',a:'Frambuesa',f:'Baya',d:'Ácido y frutal, con una dulzura que aparece al final. Característico de los Kenia AA bien manejados.',c:'Kenia AA, Ruanda, Burundi Kayanza'},
+  {n:'270',a:'Grosella Roja',f:'Baya',d:'Ácido brillante con notas a baya silvestre. Aparece en cafés con acidez tánica, especialmente de África del Este.',c:'Kenia, Etiopía washed, Tanzania'},
+  {n:'289',a:'Fresa Silvestre',f:'Baya',d:'Dulce y ácido, menos intenso que la frambuesa. Aparece en la retronasal después de tragar el café.',c:'Colombia Huila, El Salvador Bourbon, Kenia'},
+  {n:'312',a:'Durazno',f:'Fruta de hueso',d:'Dulce y jugoso, con notas florales. Característico de los honey costaricenses y los colombianos de altitude media.',c:'Costa Rica honey, Colombia Cauca, El Salvador'},
+  {n:'325',a:'Albaricoque',f:'Fruta de hueso',d:'Dulce con acidez sutil y textura densa. Aparece en cafés con mucho cuerpo y proceso honey o natural.',c:'Yemen, Etiopía natural, Colombia honey'},
+  {n:'338',a:'Ciruela Pasa',f:'Fruta de hueso',d:'Oscuro, denso y dulce, como fruta deshidratada. Aparece en cafés de tueste medio-oscuro o con fermentaciones muy largas.',c:'Brasil Cerrado, Sumatra, Yemen Mocha'},
+  {n:'347',a:'Caramelo',f:'Dulce',d:'Dulce tostado como azúcar caramelizada o panela caliente. Uno de los aromas más comunes en cafés bien extraídos de tueste medio.',c:'Colombia lavado, Brasil, Guatemala'},
+  {n:'360',a:'Melaza',f:'Dulce',d:'Dulce oscuro y denso, como panela sin refinar. Aparece en cafés con mucho cuerpo de proceso natural o tueste oscuro controlado.',c:'Brasil natural, Sumatra, El Salvador'},
+  {n:'378',a:'Mantequilla',f:'Dulce',d:'Cremoso y suave, con notas a lácteo tostado. Característica de los cafés brasileños de proceso natural de baja altitud.',c:'Brasil Cerrado, Colombia Huila, Honduras'},
+  {n:'392',a:'Vainilla',f:'Dulce',d:'Dulce floral y cremoso. Aparece en cafés procesados en honey o natural con secado lento, especialmente de Centroamérica.',c:'Costa Rica honey, El Salvador, Nicaragua'},
+  {n:'405',a:'Chocolate con Leche',f:'Chocolate',d:'Dulce y cremoso, como tableta de chocolate con leche. El aroma más común en cafés latinoamericanos de tueste medio.',c:'Colombia, Brasil, Guatemala, Honduras'},
+  {n:'420',a:'Cacao al 70%',f:'Chocolate',d:'Chocolate oscuro con amargor sutil. Aparece en cafés con acidez baja y mucho cuerpo, especialmente procesados en natural.',c:'Brasil natural, Perú, Bolivia'},
+  {n:'435',a:'Chocolate Blanco',f:'Chocolate',d:'Dulce y graso, como chocolate blanco. Característica de cafés muy dulces con fermentación controlada y secado en cama elevada.',c:'Costa Rica, Panamá, Colombia Cauca'},
+  {n:'450',a:'Praliné',f:'Nuez',d:'Dulce tostado con notas a fruto seco. La combinación de azúcar caramelizada y nuez que aparece en cafés de tueste medio bien desarrollado.',c:'Brasil, Colombia, Guatemala Antigua'},
+  {n:'468',a:'Avellana',f:'Nuez',d:'Tostado y dulce, como pasta de avellana. Muy común en espressos equilibrados y cafés de tueste medio.',c:'Brasil, Colombia, Italia blend'},
+  {n:'482',a:'Nuez de Nogal',f:'Nuez',d:'Tostado con taninos suaves y amargor sutil. Aparece en la retronasal de cafés con cuerpo alto y acidez baja.',c:'Sumatra, Brasil oscuro, Perú'},
+  {n:'494',a:'Almendra Tostada',f:'Nuez',d:'Seco y tostado con dulzura sutil. Característica de los espressos italianos de blend y cafés de tueste medio-oscuro.',c:'Brasil, Colombia oscuro, blend italiano'},
+  {n:'501',a:'Pimienta Blanca',f:'Especia',d:'Picante sutil y aromático. Aparece en cafés de altura con acidez alta, especialmente de África del Este.',c:'Kenia, Etiopía washed, Ruanda'},
+  {n:'519',a:'Ajenjo / Ají',f:'Especia',d:'Herbal intenso con notas picantes. Inusual y complejo, aparece en fermentaciones anaeróbicas y cafés de origen Yemen.',c:'Yemen Mocha, Etiopía natural, anaeróbico'},
+  {n:'534',a:'Canela en Rama',f:'Especia',d:'Dulce y especiado, cálido y envolvente. Aparece en cafés con acidez media y mucho dulzor, especialmente de proceso honey.',c:'Costa Rica, El Salvador honey, Colombia'},
+  {n:'550',a:'Clavo de Olor',f:'Especia',d:'Especiado intenso y aromático. Aparece en cafés de fermentación muy larga o en naturales de proceso tradicional.',c:'Yemen, Etiopía natural, Indonesia'},
+  {n:'572',a:'Cardamomo',f:'Especia',d:'Floral y especiado, exótico y complejo. Muy característico de los cafés del Yemen y algunos etíopes de proceso tradicional.',c:'Yemen Mocha, Etiopía Harar, India'},
+  {n:'585',a:'Jengibre',f:'Especia',d:'Picante y fresco, con notas cítricas. Aparece en cafés de alta acidez con fermentaciones específicas.',c:'Kenia, Colombia Nariño, Ruanda'},
+  {n:'598',a:'Anís Estrellado',f:'Especia',d:'Dulce y especiado, con notas a regaliz. Poco común, aparece en algunos naturales de fermentación controlada.',c:'Etiopía natural, Vietnam Robusta blend, Indonesia'},
+  {n:'605',a:'Cedro',f:'Madera',d:'Madera aromática y seca, con notas resinas. Aparece en la fase larga de la cata, como nota de fondo.',c:'Sumatra Mandheling, Guatemala, México'},
+  {n:'618',a:'Pino',f:'Madera',d:'Resinoso y fresco, como madera de pino. Inusual, aparece en cafés de altura extrema con notas herbales.',c:'Colombia Nariño, Etiopía washed, Bolivia'},
+  {n:'628',a:'Tierra Húmeda',f:'Terroso',d:'Como tierra mojada después de la lluvia. Característico de los cafés sumatras procesados por vía húmeda.',c:'Sumatra, Java, Sulawesi, India Monsoon'},
+  {n:'640',a:'Tabaco de Pipa',f:'Terroso',d:'Ahumado dulce y terroso. Aparece en cafés de tueste oscuro bien controlado o en algunos naturales de secado en el suelo.',c:'Sumatra oscuro, Brasil oscuro, Cuba'},
+  {n:'655',a:'Madera de Roble',f:'Terroso',d:'Madera tostada con notas a vainilla, como barrica de roble. Aparece en cafés envejecidos o procesados en barricas.',c:'Café en barrica, Sumatra, algunos colombianos'},
+  {n:'668',a:'Cuero',f:'Terroso',d:'Animal y seco, como cuero viejo. Poco valorado en especialidad pero característico de algunos Robusta y cafés indonesios.',c:'Sumatra wet-hulled, India Robusta, Vietnam'},
+  {n:'680',a:'Musgo',f:'Terroso',d:'Vegetal húmedo y terroso. Aparece como defecto en cafés mal secados pero en pequeñas cantidades aporta complejidad.',c:'Sumatra, Java, cafés de proceso húmedo'},
+  {n:'702',a:'Té Negro',f:'Herbal',d:'Taninos suaves y notas herbales, como té negro sin azúcar. Muy característico de los Kenia lavados de alta altitud.',c:'Kenia, Tanzania, Etiopía washed'},
+  {n:'715',a:'Menta',f:'Herbal',d:'Fresco y herbal, con un toque mentolado. Aparece en cafés de altura con fermentaciones muy limpias.',c:'Colombia Nariño, Etiopía washed, Bolivia'},
+  {n:'730',a:'Lemongrass',f:'Herbal',d:'Cítrico y herbal, como hierba limón. Característico de algunos cafés vietnamitas y de ciertos naturales africanos.',c:'Vietnam, Etiopía natural, Ruanda'},
+  {n:'745',a:'Hierba Fresca',f:'Herbal',d:'Vegetal verde y fresco. En pequeñas cantidades aporta viveza; en exceso indica subextracción o café verde.',c:'Colombia lavado claro, Panamá, Guatemala'},
+  {n:'756',a:'Sidra de Manzana',f:'Fermentado',d:'Frutal fermentado con notas a levadura. Muy característico de los naturales etíopes y de las fermentaciones anaeróbicas.',c:'Etiopía natural, anaeróbico, Colombia natural'},
+  {n:'772',a:'Champaña',f:'Fermentado',d:'Burbujeante y ácido, como vino espumoso seco. Aparece en cafés con fermentaciones muy limpias y acidez muy alta.',c:'Kenia, Etiopía washed, Colombia Geisha'},
+  {n:'789',a:'Vino Malbec',f:'Fermentado',d:'Frutal oscuro con taninos y cuerpo, como vino tinto. Característico de los anaeróbicos y naturales con fermentación larga.',c:'Colombia anaeróbico, Etiopía natural, Brasil natural'},
+  {n:'795',a:'Ron Añejo',f:'Fermentado',d:'Dulce fermentado con notas a melaza y madera. Aparece en cafés procesados en barricas de ron o con fermentaciones muy largas.',c:'Café en barrica de ron, Jamaica Blue Mountain, Brasil'},
+  {n:'800',a:'Café en Flor',f:'Floral',d:'El aroma más efímero del café: la flor del cafeto florece solo unos días al año. Dulce, jazmínico y delicado. Es el origen de todos los aromas.',c:'Cafetos en floración, Etiopía, Colombia de altura'}
 ];
 function getRandomAroma(){return AROMAS[Math.floor(Math.random()*AROMAS.length)];}
 
@@ -1417,6 +1511,7 @@ function goTo(id) {
   s.style.display = id==='screen-home' ? 'flex' : 'block';
   requestAnimationFrame(()=>s.classList.add('active'));
   if (id==='screen-myrecipes') renderMyRecipes();
+  if (id==='screen-aromas') initAromaLibrary();
   window.scrollTo(0,0);
 }
 
@@ -1765,7 +1860,7 @@ function finishAll() {
   document.getElementById('t-start').onclick=resetAllTimer;
   document.getElementById('finish-banner').classList.add('visible');
   const ar=getRandomAroma();
-  document.getElementById('finish-aroma').innerHTML=`AROMA · <span>#${ar.n} ${ar.a}</span>`;
+  document.getElementById('finish-aroma').innerHTML=`<span style="cursor:pointer" onclick="openAromaModal('${ar.n}')">AROMA · <span style="color:#c5a059">#${ar.n} ${ar.a}</span> <span style="font-size:.8em;opacity:.5">›</span></span>`;
   beepFinish();
 }
 
@@ -2048,8 +2143,65 @@ function saveReceta(){
   }, 800);
 }
 
+
+// ── BIBLIOTECA DE AROMAS ───────────────────────────────
+let _aromaFilter = 'Todos';
+let _aromaSearch = '';
+
+function initAromaLibrary() {
+  // Build family filter buttons
+  const families = ['Todos', ...new Set(AROMAS.map(a => a.f))];
+  document.getElementById('aroma-families').innerHTML = families.map(f =>
+    `<button class="aroma-fam-btn${f==='Todos'?' active':''}" onclick="setAromaFamily('${f}',this)">${f}</button>`
+  ).join('');
+  renderAromaGrid();
+}
+
+function setAromaFamily(fam, btn) {
+  _aromaFilter = fam;
+  document.querySelectorAll('.aroma-fam-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAromaGrid();
+}
+
+function filterAromas() {
+  _aromaSearch = document.getElementById('aroma-search-input').value.toLowerCase();
+  renderAromaGrid();
+}
+
+function renderAromaGrid() {
+  const filtered = AROMAS.filter(a => {
+    const matchFam = _aromaFilter === 'Todos' || a.f === _aromaFilter;
+    const matchSearch = !_aromaSearch || a.a.toLowerCase().includes(_aromaSearch) || a.n.includes(_aromaSearch);
+    return matchFam && matchSearch;
+  });
+  document.getElementById('aroma-grid').innerHTML = filtered.map(a =>
+    `<div class="aroma-card" onclick="openAromaModal('${a.n}')">
+      <div class="aroma-card-num">#${a.n}</div>
+      <div class="aroma-card-name">${a.a}</div>
+      <div class="aroma-card-fam">${a.f}</div>
+    </div>`
+  ).join('');
+}
+
+function openAromaModal(num) {
+  const a = AROMAS.find(x => x.n === num);
+  if (!a) return;
+  document.getElementById('am-num').textContent = '#' + a.n;
+  document.getElementById('am-name').textContent = a.a;
+  document.getElementById('am-fam').textContent = a.f;
+  document.getElementById('am-desc').textContent = a.d;
+  document.getElementById('am-cafes').textContent = a.c;
+  document.getElementById('aroma-overlay').classList.add('visible');
+}
+
+function closeAromaModal() {
+  document.getElementById('aroma-overlay').classList.remove('visible');
+}
+
 document.getElementById('grind-back').onclick=()=>{ goBack('screen-home'); };
 document.getElementById('glossary-back').onclick=()=>{ goBack('screen-home'); };
+document.getElementById('aromas-back').onclick=()=>{ goBack('screen-home'); };
 
 window.onload=()=>{
   if (localStorage.getItem('800_onboarded')) {
