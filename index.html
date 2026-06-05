@@ -142,6 +142,15 @@ body{min-height:100%;background:#111111!important;color:var(--text);font-family:
 .grind-badge:hover{background:var(--oro-dim)}
 
 .flavor-section{padding:20px 24px;border-bottom:1px solid var(--border)}
+.why-section{margin:0 20px 12px;border:1px solid rgba(197,160,89,0.3);border-radius:14px;overflow:hidden;background:rgba(197,160,89,0.05)}
+.why-toggle{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;background:none;border:none;width:100%;text-align:left}
+.why-toggle-label{font-family:'DM Mono',monospace;font-size:.62em;letter-spacing:2px;color:#c5a059;font-weight:500}
+.why-toggle-icon{font-size:.9em;color:#c5a059;transition:transform .3s;flex-shrink:0}
+.why-toggle-icon.open{transform:rotate(90deg)}
+.why-body{display:none;padding:0 16px 16px}
+.why-body.open{display:block}
+.why-text{font-family:'Playfair Display',serif;font-style:italic;font-size:.88em;color:rgba(237,232,224,0.75);line-height:1.8;border-top:1px solid rgba(197,160,89,0.15);padding-top:12px}
+.why-text strong{color:#ede8e0;font-style:normal;font-weight:400}
 .flavor-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
 .flavor-row:last-child{margin-bottom:0}
 .flabel{font-size:.58em;letter-spacing:2px;color:var(--text-dim);width:56px;flex-shrink:0}
@@ -425,6 +434,15 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
     </div>
   </div>
   <div class="flavor-section" id="d-flavor"></div>
+  <div class="why-section" id="why-section" style="display:none">
+    <button class="why-toggle" onclick="toggleWhy()">
+      <span class="why-toggle-label">¿POR QUÉ FUNCIONA ESTA RECETA?</span>
+      <span class="why-toggle-icon" id="why-icon">›</span>
+    </button>
+    <div class="why-body" id="why-body">
+      <div class="why-text" id="why-text"></div>
+    </div>
+  </div>
   <div class="steps-timer" id="steps-timer"></div>
   <div class="timer-control">
     <div class="timer-top">
@@ -698,6 +716,106 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
 </div>
 
 <script>
+
+
+// ── WHY DATA ───────────────────────────────────────────
+const WHY = {
+  // V60
+  'Panela & Chocolate': 'El vertido en <strong>cuatro tiempos</strong> permite que el lecho de café drene entre vertido y vertido, logrando una extracción por capas. Cada pausa da tiempo al CO₂ residual para escapar, lo que resulta en una taza más dulce y con más cuerpo que un vertido continuo.',
+  'Miel Tostada': 'La <strong>temperatura reducida a 90°C</strong> limita la extracción de compuestos amargos que aparecen a temperaturas más altas. La molienda gruesa acelera el drenaje para compensar, obteniendo solo los azúcares más nobles del grano.',
+  'Caramelo de Altura': 'Los cafés de altura tienen <strong>mayor densidad celular</strong> por el crecimiento lento en frío. Necesitan más temperatura (94°C) y más tiempo para abrir esa estructura compacta. Los cinco vertidos distribuyen la extracción de forma muy uniforme.',
+  'Cítrico Etíope': 'La <strong>temperatura baja (86°C) y el bloom mínimo</strong> preservan los compuestos volátiles responsables de la acidez floral. A temperaturas más altas esos aromas se evaporan antes de llegar a la taza. El vertido continuo sin interrupciones mantiene el perfil limpio.',
+  'Frambuesa Kenia': 'El <strong>doble bloom</strong> es una técnica que libera el CO₂ en dos etapas, activando la acidez en capas. Los cafés AA de Kenia tienen una densidad muy alta que necesita esa apertura extra para que el agua penetre de forma pareja.',
+  'Maracuyá & Té': 'El agua a <strong>84°C y el vertido ultrarrápido</strong> producen una extracción casi como la del té: muy corta, capturando solo los compuestos más solubles. El resultado es una taza translúcida con acidez viva y sin amargor.',
+  'V60 Clásico': 'Este método es la <strong>referencia universal del pour over</strong>. Los cuatro vertidos en proporción creciente (bloom pequeño → vertidos medios → cierre) imitan el protocolo SCAA de extracción óptima. Funciona con casi cualquier origen porque no extrema ninguna variable.',
+  'Hoffmann 4:6': 'El método de James Hoffmann divide la extracción en <strong>dos fases</strong>: los primeros dos vertidos (40% del agua) controlan dulzor y acidez. Los tres siguientes (60% restante) controlan la concentración. Cambiar el tamaño del primer vertido cambia el perfil sin tocar la molienda.',
+  'Lento & Constante': 'Un vertido continuo de exactamente <strong>2 minutos</strong> produce la extracción más uniforme posible porque la velocidad constante evita puntos de sobreextracción. Ideal para cafés equilibrados que no necesitan énfasis en ninguna característica.',
+
+  // AeroPress
+  'Tropical Invertido': 'La <strong>técnica invertida</strong> elimina el goteo prematuro durante el reposo, logrando un tiempo de contacto total controlado. La temperatura baja (88°C) resalta los azúcares sin extraer los amargos. El resultado es más parecido a una inmersión que a un filtrado.',
+  'Agave & Vainilla': 'El <strong>tiempo de contacto largo (2 minutos)</strong> extrae los azúcares más complejos que requieren más tiempo para solubilizarse. A 90°C la extracción es eficiente sin quemarse. La presión suave al final filtra sin forzar los finos amargos.',
+  'Melaza Oscura': 'A <strong>85°C los tuestes oscuros</strong> extraen su mejor perfil. Las temperaturas altas con café oscuro producen amargor quemado. El tiempo largo compensa la temperatura baja para lograr cuerpo completo sin aspereza.',
+  'Etíope Flash': 'La <strong>extracción en menos de 60 segundos</strong> captura solo los compuestos más volátiles y solubles del grano. Los aromas florales del Etiopía son extremadamente delicados y se degradan con el calor prolongado. Velocidad es la clave.',
+  'Kenia Express': 'Los <strong>dos filtros apilados</strong> eliminan prácticamente todos los finos y aceites, produciendo una taza de claridad excepcional. Para cafés con acidez vinosa como el Kenia, esa transparencia permite que los sabores frutales brillen sin interferencia.',
+  'Acidez Viva': 'El <strong>ratio alto (1:17) y temperatura baja</strong> trabajan juntos para producir una extracción subóptima controlada. Menos sólidos disueltos significan más acidez percibida. Las tres vueltas de agitación distribuyen sin sobre-extraer.',
+  'AeroPress Clásico': 'El <strong>minuto de reposo</strong> es el estándar del creador Alan Adler. Permite que el café se hidrate completamente antes de la presión. La presión mecánica extrae de forma más eficiente que la gravedad, por eso el AeroPress puede usar temperaturas más bajas que otros métodos.',
+  'Nordic Style': 'A <strong>95°C la extracción es más rápida</strong>, lo que compensa el tiempo corto (45 segundos). Muy popular en países nórdicos donde prefieren cafés claros con acidez presente. La tapa cierra el sistema para mantener la temperatura constante.',
+  'Todo Terreno': 'Las <strong>15 vueltas de agitación</strong> reemplazan la precisión del vertido. Al mover el café en lugar de controlar el flujo de agua, esta receta perdona imprecisiones en la molienda y la dosis. Ideal para cuando priorizas consistencia sobre perfección.',
+
+  // Chemex
+  'Caramelo Lento': 'El <strong>filtro triple de Chemex</strong> es 20-30% más grueso que un filtro V60, eliminando todos los aceites y finos. El resultado es una taza extraordinariamente limpia donde solo los azúcares y los ácidos más nobles llegan a la copa. El bloom largo (45s) es necesario por esa densidad del filtro.',
+  'Panela Colombiana': 'El <strong>bloom de 60 segundos</strong> es más largo de lo habitual porque los cafés colombianos de altura tienen mucho CO₂ residual. Si no se libera completamente, ese gas bloquea la extracción pareja y el café sabe plano. El vertido lento posterior maximiza el tiempo de contacto.',
+  'Chocolate & Nuez': 'Los <strong>cafés brasileños</strong> tienen menor acidez natural y necesitan más tiempo de extracción para desarrollar su perfil complejo. La temperatura a 91°C y los tres vertidos pausados extraen el chocolate y la nuez sin volverse amargos.',
+  'Floral Etíope': 'La <strong>claridad del Chemex</strong> es ideal para cafés africanos porque no interfiere con sus aromas florales. La temperatura baja (88°C) preserva los terpenos volátiles responsables del jazmín y la bergamota. El filtro elimina los aceites que ensuciarían esos aromas.',
+  'Té de Hibisco': 'El <strong>ratio muy alto (1:17) y temperatura baja</strong> producen una extracción mínima que resulta en una bebida casi transparente. El color rojizo natural que mencionamos viene de los antocianinos del café natural, no de ningún aditivo.',
+  'Naranja & Bergamota': 'El <strong>ratio extremo (1:18)</strong> es el más alto de todas las recetas. Produce una taza con muy pocos sólidos disueltos pero con aromas cítricos muy intensos porque esos compuestos se extraen rápido. Es casi como hacer un té de café.',
+  'Chemex Clásico': 'El <strong>enjuague del filtro</strong> es crítico en el Chemex: elimina el sabor a papel y precalienta el servidor. La espiral lenta de 2 minutos garantiza que toda la superficie del lecho de café reciba agua por igual, algo difícil de lograr con vertido rápido.',
+  'Domingo en Casa': 'Escalar una receta para <strong>4-6 tazas</strong> requiere más bloom proporcional porque hay más café liberando CO₂. Los tres vertidos en escalera mantienen la temperatura del lecho constante durante la extracción prolongada.',
+  'Media Jornada': 'El <strong>bloom del doble del café (44g para 22g)</strong> es la proporción técnicamente correcta según el SCA. Esa cantidad exacta de agua hidrata cada partícula sin exceso que cause extracción prematura durante el bloom.',
+
+  // Prensa
+  'Terciopelo': 'La <strong>prensa francesa es inmersión total</strong>: el café está en contacto con el agua todo el tiempo, a diferencia del pour over donde el agua fluye. Sin papel de por medio, todos los aceites y cuerpo pasan a la taza. La molienda muy gruesa evita que los finos pasen el émbolo.',
+  'Cacao & Roca': 'Los <strong>5 minutos completos</strong> son necesarios para tuestes oscuros de molienda gruesa. La extracción por inmersión es más lenta que el pour over y necesita ese tiempo extra. Presionar sin fuerza evita que los finos amargos pasen al filtro.',
+  'Panela & Roble': 'La <strong>temperatura alta (96°C) con tiempo largo</strong> extrae los compuestos de madera y azúcar moreno característicos de los granos procesados en barrica o fermentados. Tapar durante el reposo mantiene la temperatura constante.',
+  'Prensa Ligera': 'Solo <strong>3 minutos de extracción</strong> producen una prensa con más acidez porque los compuestos ácidos se extraen antes que los amargos. La temperatura media (88°C) refuerza ese perfil más ligero. Técnicamente es una subextracción controlada.',
+  'Colombia Vivo': 'El <strong>bloom en prensa</strong> no es habitual pero funciona: los 20 segundos iniciales liberan el CO₂ que de otra forma crearía canales de extracción irregular. Para cafés lavados con mucha acidez, esa uniformidad es importante.',
+  'Mineral & Lima': 'El <strong>agua filtrada o mineral</strong> no es un capricho: los minerales del agua afectan directamente cómo se percibe la acidez. El magnesio potencia la acidez y el calcio el dulzor. Filtrar elimina el cloro que tapa los aromas.',
+  'Prensa Clásica': 'El <strong>estándar de 4 minutos</strong> existe porque es el punto donde la inmersión extrae el equilibrio óptimo entre acidez, dulzor y amargor para la mayoría de cafés. Menos tiempo da acidez, más tiempo da amargor.',
+  'Two Cups': 'Romper la <strong>costra a los 3 minutos</strong> es una técnica de baristas: la capa de café flotante sobreextrae porque está en contacto con el aire. Al romperla y dejar reposar 1 minuto más los finos caen al fondo, produciendo una taza más limpia.',
+  'Sin Estrés': 'Esta receta existe para demostrar que la <strong>prensa francesa perdona</strong>. La inmersión es el método más robusto: si la molienda no es exacta, si el tiempo varía 30 segundos, el resultado sigue siendo bueno. Ideal para aprender.',
+
+  // EvaSolo
+  'Nórdico Dulce': 'La <strong>manga filtrante de Eva Solo</strong> retiene los finos pero deja pasar parte de los aceites, produciendo un perfil entre el Chemex (muy limpio) y la prensa francesa (muy oleoso). El diseño de sistema cerrado mantiene la temperatura constante durante el reposo.',
+  'Verano Caramelizado': 'Los <strong>5 minutos de reposo</strong> en sistema cerrado maximizan la extracción de azúcares complejos. Al estar sellado, la temperatura cae más lento que en un sistema abierto, manteniendo la extracción activa durante más tiempo.',
+  'Dulzor Nublado': 'La <strong>pre-saturación con 60g</strong> antes de añadir el resto del agua garantiza que todo el lecho de café se moje uniformemente antes de la infusión principal. Evita puntos secos que causarían subextracción localizada.',
+  'Eva Fresca': 'Menos tiempo (<strong>3 minutos en lugar de 4</strong>) y temperatura baja producen una extracción incompleta donde la acidez domina. La tapa entreabierta permite que la temperatura baje más rápido, acortando la ventana de extracción efectiva.',
+  'Mañana Brillante': 'El <strong>ratio 1:17</strong> es muy alto para Eva Solo, produciendo una bebida ligera donde la acidez se percibe más intensa. La tapa entreabierta enfría el sistema más rápido, deteniendo la extracción antes de que los compuestos amargos se solubilicen.',
+  'Otoño Cítrico': 'La <strong>manga Eva Solo con café africano</strong> es una combinación inusual pero efectiva: la manga aporta algo de cuerpo que el Chemex eliminaría, manteniendo la acidez cítrica pero con más textura en boca.',
+  'Eva Classic': 'La <strong>agitación de 3 veces</strong> al inicio asegura que todo el café entre en contacto con el agua caliente desde el primer momento. En sistemas de inmersión cerrada, esa distribución inicial es más importante que en pour over.',
+  'Taza para Dos': 'Escalar a <strong>34g de café</strong> mantiene exactamente el ratio 1:15. La Eva Solo tiene capacidad para hasta 1L, por lo que escalar es directo. El diseño sellado hace que dos tazas simultáneas sean idénticas en temperatura y extracción.',
+  'Invierno Cálido': 'El <strong>precalentamiento del recipiente</strong> reduce la caída de temperatura durante los 5 minutos de reposo. Sin precalentamiento, el vidrio frío absorbe calor del agua y la extracción se vuelve irregular hacia el final.',
+
+  // Espresso
+  'Corto & Dulce': 'La extracción corta de <strong>22 segundos</strong> captura los primeros compuestos que se disuelven: los azúcares y los ácidos frutales. Los compuestos amargos requieren más tiempo de extracción. Parar antes del amargor es el secreto de un espresso dulce.',
+  'Ristretto Dulce': 'El <strong>ristretto (ratio 1:1.5)</strong> extrae menos líquido del mismo café, concentrando solo los compuestos más solubles. Es técnicamente más dulce que el espresso porque el amargor (menos soluble) casi no aparece en tan poco volumen.',
+  'Espresso Clásico': 'Los <strong>25 segundos y ratio 1:2</strong> son el estándar italiano desde los años 50. La crema color avellana indica extracción óptima: muy oscura significa sobreextracción, muy clara significa subextracción o café viejo.',
+  'Espresso Largo': 'El <strong>lungo extrae más allá del punto óptimo</strong>, solubilizando compuestos que normalmente no estarían en el espresso. El resultado es más volumen pero con más amargor y menos concentración. Popular en Italia para beber despacio.',
+  'Washed Natural': 'Los cafés <strong>lavados etíopes a 89°C</strong> producen un espresso único: la temperatura ligeramente baja preserva los ésteres florales y frutales que se degradan a 93°C. No va bien con leche porque los lácteos tapan exactamente esos compuestos delicados.',
+  'Turbo Shot': 'El <strong>turbo shot con molienda gruesa</strong> es una tendencia reciente en especialidad. La extracción ultrarrápida (15s) con molienda gruesa produce acidez limpia sin amargor porque el agua no tiene tiempo de extraer los compuestos amargos aunque el lecho sea más permeable.',
+  'Espresso de Bar': 'El <strong>ratio de oro 1:2 en 25 segundos</strong> es el punto donde físicamente ocurre la mayor concentración de sólidos disueltos por mililitro. Todos los estándares de competición WBC usan este punto como referencia de extracción óptima.',
+  'Modern Specialty': 'El espresso de <strong>tercera ola usa ratio 1:2.5</strong> porque los cafés de especialidad tienen más acidez y azúcares que los blends tradicionales. El volumen extra diluye ligeramente la intensidad sin perder complejidad.',
+  'Dialed In': 'El proceso de <strong>calibración (dial in)</strong> existe porque cada bolsa de café es diferente. El mismo molino en el mismo click produce resultados distintos según la densidad del grano, la humedad y el tueste. Tres shots iguales confirman que encontraste el punto.',
+
+  // Moka
+  'Italiana Clásica': 'El <strong>agua precalentada</strong> es el secreto de la moka italiana: el agua fría tarda más en hervir y durante ese tiempo el café recibe calor seco que lo quema antes de que el agua pase. Con agua caliente la extracción es más rápida y el café nunca se quema.',
+  'Dulce Napolitano': 'Los <strong>primeros 20ml de la moka</strong> son los más dulces porque son los primeros en pasar por el café. Contienen la mayor concentración de azúcares y ácidos. Detener ahí es técnicamente correcto para máximo dulzor.',
+  'Seda & Canela': 'La <strong>canela en contacto con el café molido</strong> no aromatiza el agua sino el vapor que precede a la extracción. Ese vapor caliente abre los poros de la canela y los del café simultáneamente, integrando el aroma de forma más sutil que añadirla después.',
+  'Moka Ligera': 'El agua a <strong>75°C produce una moka subextraída</strong> de forma controlada. Menos temperatura significa menos sólidos disueltos, resultado más ligero y más aromático. Es técnicamente lo opuesto a la italiana clásica pero produce un perfil completamente diferente.',
+  'Origen Lavado': 'Los <strong>cafés lavados en la moka</strong> son inusuales porque la moka fue diseñada para tuestes oscuros. La molienda menos fina y temperatura baja (78°C) evita la sobreextracción que destruiría la acidez limpia de un café lavado.',
+  'Moka Americana': 'Llenar la base <strong>por encima de la válvula</strong> aumenta la presión inicial de vapor, acelerando la extracción. Con más agua total el café se diluye ligeramente pero la acidez se percibe más porque hay menos cuerpo que la neutralice.',
+  'Moka de Diario': 'El <strong>burbujeo suave versus el silbido fuerte</strong> son las dos señales auditivas de la moka. Silbido suave = extracción activa. Silbido fuerte = agua acabándose, vapor pasando solo. Cerrar el fuego al primer silbido fuerte previene el sabor a quemado.',
+  'Dos Tazas Iguales': 'Mezclar todo en una taza antes de dividir garantiza <strong>homogeneidad completa</strong>. La moka extrae progresivamente: los primeros ml son más concentrados que los últimos. Mezclar iguala la concentración en ambas tazas.',
+  'Mezcla de Casa': 'El <strong>blend 60/40 oscuro-medio</strong> combina el cuerpo del tueste oscuro con la acidez y los aromas del tueste medio. Es el principio detrás de los grandes blends italianos: ningún origen solo tiene todo, la mezcla crea complejidad.',
+
+  // ColdBrew
+  'Cold Brew Base': 'La <strong>extracción en frío durante 12-24 horas</strong> produce compuestos diferentes al café caliente. El calor es un solvente más agresivo que extrae ácidos clorogénicos en segundos. El agua fría solo extrae los azúcares y compuestos dulces, produciendo un café menos ácido y con más dulzor natural.',
+  'Orange Cold Brew': 'El <strong>jugo de naranja y el cold brew</strong> comparten compuestos cítricos (limoneno, linalool) que se complementan en lugar de competir. El romero aporta terpenos que elevan esos cítricos. El agua tónica añade amargor de quinina que equilibra el dulzor.',
+  'Cold Brew Lemonade': 'La <strong>limonada activa la acidez natural</strong> del cold brew que normalmente queda suprimida por el dulzor. El ácido cítrico de la limón interactúa con los ácidos del café produciendo una acidez brillante que no existe en ninguno de los dos por separado.',
+  'Vanilla Sweet Cream': 'La <strong>crema sin revolver</strong> crea un gradiente visual y de sabor: los primeros sorbos son más cremosos y dulces, los últimos más puros al café. La vainilla potencia los ésteres naturales del cold brew que recuerdan a ese mismo aroma.',
+  'Salted Caramel Cold Brew': 'La <strong>sal marina no solo sazona</strong> — suprime la percepción del amargor y potencia el dulzor. Es el mismo principio del chocolate salado: una pizca de sal hace que el caramelo sepa más a caramelo.',
+  'Coconut Cold Brew': 'La <strong>leche de coco</strong> comparte compuestos aromáticos (lactonas) con los cafés naturales que tienen notas a coco. La combinación produce una sinergia: cada elemento refuerza las notas del otro en lugar de taparlas.',
+  'Cold Brew Tonic': 'El <strong>amargor de la quinina</strong> en el agua tónica y el amargor natural del café se combinan de forma paradójica: dos amargos juntos se perciben como menos amargos que cada uno por separado, pero más complejos.',
+  'Maple Pecan Cold Brew': 'El <strong>jarabe de arce</strong> tiene compuestos de caramelo (furanos, maltol) que se encuentran naturalmente en cafés de tueste medio. Añadirlo es técnicamente amplificar notas que ya existen en el café, no agregar algo ajeno.',
+  'Honey Lavender Cold Brew': 'La <strong>lavanda contiene linalool</strong>, el mismo compuesto floral que aparece en los cafés etíopes washed. Combinarlos crea resonancia aromática: el aroma se percibe más intenso porque el cerebro recibe la misma señal desde dos fuentes distintas.',
+};
+
+function toggleWhy() {
+  const body = document.getElementById('why-body');
+  const icon = document.getElementById('why-icon');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  icon.classList.toggle('open', !isOpen);
+}
 
 // ── DIAGNÓSTICO ────────────────────────────────────────
 const DIAG = {
@@ -1383,6 +1501,18 @@ function renderDetail() {
     fbarHTML('DULZOR',s.d||s.dulzor||3)+
     fbarHTML('ACIDEZ',s.a||s.acidez||3)+
     fbarHTML('CUERPO',s.c||s.cuerpo||3);
+  // Why section
+  const whyText = WHY[r.nombre];
+  const whySec = document.getElementById('why-section');
+  if (whyText) {
+    document.getElementById('why-text').innerHTML = whyText;
+    whySec.style.display = '';
+    // Reset collapsed state
+    document.getElementById('why-body').classList.remove('open');
+    document.getElementById('why-icon').classList.remove('open');
+  } else {
+    whySec.style.display = 'none';
+  }
 
   renderStepCards();
 }
