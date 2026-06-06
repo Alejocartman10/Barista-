@@ -140,6 +140,14 @@ body{min-height:100%;background:#111111!important;color:var(--text);font-family:
 .ratio-result span{color:var(--oro)}
 .grind-badge{font-size:.6em;padding:4px 10px;border-radius:8px;background:rgba(197,160,89,.08);border:1px solid var(--oro-border);color:var(--oro);cursor:pointer;letter-spacing:1px;flex-shrink:0;white-space:nowrap}
 .grind-badge:hover{background:var(--oro-dim)}
+.grind-card-detail{margin:12px 20px 0;background:#1a1a1a;border:1px solid rgba(197,160,89,0.25);border-radius:14px;padding:16px;display:none}
+.grind-card-detail.visible{display:block}
+.grind-detail-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.grind-detail-tipo{font-family:'Playfair Display',serif;font-size:1em;color:#c5a059}
+.grind-detail-ref{font-size:.58em;letter-spacing:1px;color:rgba(237,232,224,0.4);margin-top:2px}
+.grind-detail-visual{display:flex;gap:3px;align-items:center;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.grind-detail-cal{font-family:'Playfair Display',serif;font-style:italic;font-size:.8em;color:rgba(237,232,224,0.6);line-height:1.6}
+.grind-detail-cal strong{color:#ede8e0;font-style:normal;font-weight:400}
 
 .flavor-section{padding:20px 24px;border-bottom:1px solid var(--border)}
 .why-section{margin:0 20px 12px;border:1px solid rgba(197,160,89,0.3);border-radius:14px;overflow:hidden;background:rgba(197,160,89,0.05)}
@@ -456,11 +464,12 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
         </div>
         <div style="display:flex;gap:16px">
           <div style="font-size:.58em;letter-spacing:1px;color:var(--text-dim)">~<span id="r-tazas">—</span> tazas de <span id="r-ml-taza">—</span>ml</div>
-          <button class="grind-badge" id="grind-link" onclick="goTo('screen-grind')" style="margin-left:auto">⚙ molienda</button>
+          <button class="grind-badge" id="grind-link" onclick="toggleGrindCard()" style="margin-left:auto">⚙ molienda ›</button>
         </div>
       </div>
     </div>
   </div>
+  <div class="grind-card-detail" id="grind-card-detail"></div>
   <div class="flavor-section" id="d-flavor"></div>
   <div class="why-section" id="why-section" style="display:none">
     <button class="why-toggle" onclick="toggleWhy()">
@@ -773,6 +782,51 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
 
 <script>
 
+
+
+// ── GRIND DETAIL PER METHOD ────────────────────────────
+const GRIND_DETAIL = {
+  V60: {
+    tipo: 'Media-fina',
+    ref: 'Como sal de mesa',
+    cal: 'Si drena en menos de 1:30 min, muele más fino. Si tarda más de 3:30, muele más grueso.'
+  },
+  AeroPress: {
+    tipo: 'Media-fina a Media',
+    ref: 'Entre sal de mesa y azúcar moreno',
+    cal: 'Si sientes mucha resistencia al presionar, muele más grueso. Si casi no hay resistencia, más fino.'
+  },
+  Chemex: {
+    tipo: 'Media a Media-gruesa',
+    ref: 'Como azúcar moreno',
+    cal: 'El drenaje total debe estar entre 3 y 4 minutos. Fuera de ese rango, ajusta la molienda.'
+  },
+  Prensa: {
+    tipo: 'Gruesa',
+    ref: 'Como sal marina o panela rallada',
+    cal: 'Si el café sale turbio con mucho sedimento, muele más grueso. Si sabe muy débil, más fino.'
+  },
+  EvaSolo: {
+    tipo: 'Media',
+    ref: 'Como azúcar moreno fino',
+    cal: 'Si el café sale con sedimento visible, muele más grueso. Si sabe muy ligero, más fino.'
+  },
+  Espresso: {
+    tipo: 'Muy fina',
+    ref: 'Como harina de maíz fina',
+    cal: 'Si extrae en menos de 20s, muele más fino. Si tarda más de 35s o no sale, muele más grueso.'
+  },
+  Moka: {
+    tipo: 'Fina a Media-fina',
+    ref: 'Entre harina y sal de mesa',
+    cal: 'Si silba fuerte y rápido, muele más grueso. Si tarda mucho en subir o queda amargo, ajusta más fino.'
+  },
+  ColdBrew: {
+    tipo: 'Gruesa',
+    ref: 'Como sal marina gruesa',
+    cal: 'La molienda fina en cold brew produce sabores amargos y dificulta el filtrado. Siempre gruesa.'
+  }
+};
 
 // ── WHY DATA ───────────────────────────────────────────
 const WHY = {
@@ -1583,6 +1637,11 @@ function openDetail(tipo,idx) {
 
 function renderDetail() {
   const r=currentReceta;
+  // Reset grind card
+  const gc = document.getElementById('grind-card-detail');
+  if (gc) { gc.classList.remove('visible'); gc.innerHTML=''; }
+  const gl = document.getElementById('grind-link');
+  if (gl) gl.textContent='⚙ molienda ›';
   document.getElementById('d-name').textContent=r.nombre;
   document.getElementById('d-desc').textContent=r.desc;
   document.getElementById('d-pills').innerHTML=`
@@ -2197,6 +2256,52 @@ function openAromaModal(num) {
 
 function closeAromaModal() {
   document.getElementById('aroma-overlay').classList.remove('visible');
+}
+
+function toggleGrindCard() {
+  const card = document.getElementById('grind-card-detail');
+  const isVisible = card.classList.contains('visible');
+  if (isVisible) {
+    card.classList.remove('visible');
+    document.getElementById('grind-link').textContent = '⚙ molienda ›';
+  } else {
+    renderGrindCard();
+    card.classList.add('visible');
+    document.getElementById('grind-link').textContent = '⚙ molienda ↓';
+    setTimeout(() => card.scrollIntoView({behavior:'smooth', block:'nearest'}), 100);
+  }
+}
+
+function renderGrindCard() {
+  const method = state.method || currentReceta?.metodo;
+  if (!method) return;
+  const g = GRIND_DETAIL[method];
+  if (!g) return;
+
+  // Particle sizes per method
+  const sizes = {
+    V60: [6,7,6,7,6], AeroPress: [7,8,7,8,7], Chemex: [8,9,8,9],
+    Prensa: [11,12,10,11], EvaSolo: [8,9,8], Espresso: [3,3,3,3,3,3,3,3],
+    Moka: [4,5,4,5,4,5], ColdBrew: [12,13,11,12]
+  };
+  const particles = (sizes[method] || [6,7,6]).map(s =>
+    `<div style="width:${s}px;height:${s}px;border-radius:50%;background:#c5a059;opacity:.6;flex-shrink:0"></div>`
+  ).join('');
+
+  document.getElementById('grind-card-detail').innerHTML = `
+    <div class="grind-detail-top">
+      <div>
+        <div class="grind-detail-tipo">${g.tipo}</div>
+        <div class="grind-detail-ref">${g.ref}</div>
+      </div>
+      <button onclick="goTo('screen-grind')" style="background:none;border:none;font-family:'DM Mono',monospace;font-size:.58em;letter-spacing:1px;color:rgba(197,160,89,0.5);cursor:pointer">VER GUÍA →</button>
+    </div>
+    <div class="grind-detail-visual" style="display:flex;gap:3px;align-items:flex-end;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.06)">
+      ${particles}
+      <span style="font-size:.55em;letter-spacing:1px;color:rgba(237,232,224,.3);margin-left:8px">${g.tipo.toUpperCase()}</span>
+    </div>
+    <div class="grind-detail-cal">⚠︎ ${g.cal}</div>
+  `;
 }
 
 document.getElementById('grind-back').onclick=()=>{ goBack('screen-home'); };
