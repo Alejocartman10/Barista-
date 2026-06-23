@@ -857,6 +857,9 @@ const WHY = {
   'AeroPress Clásico': 'El <strong>minuto de reposo</strong> es el estándar del creador Alan Adler. Permite que el café se hidrate completamente antes de la presión. La presión mecánica extrae de forma más eficiente que la gravedad, por eso el AeroPress puede usar temperaturas más bajas que otros métodos.',
   'Nordic Style': 'A <strong>95°C la extracción es más rápida</strong>, lo que compensa el tiempo corto (45 segundos). Muy popular en países nórdicos donde prefieren cafés claros con acidez presente. La tapa cierra el sistema para mantener la temperatura constante.',
   'Todo Terreno': 'Las <strong>15 vueltas de agitación</strong> reemplazan la precisión del vertido. Al mover el café en lugar de controlar el flujo de agua, esta receta perdona imprecisiones en la molienda y la dosis. Ideal para cuando priorizas consistencia sobre perfección.',
+  'James Hoffmann (Ultimate AeroPress)': 'Al insertar el émbolo apenas un centímetro tras verter, se crea un <strong>vacío parcial</strong> que frena el goteo sin necesidad de invertir el AeroPress. El swirl al final agita los finos sin la turbulencia agresiva de revolver, evitando amargor extra.',
+  'Tim Wendelboe': 'El número exacto de revueltas —<strong>3 al inicio, 3 al final</strong>— no es capricho: menos revueltas subextraen, más revueltas sobreextraen. Bloquear el goteo con el émbolo apoyado (sin presionar) deja que el café repose como inmersión real durante el minuto de contacto.',
+  'World AeroPress Championship': 'El método de <strong>concentrado y dilución</strong> que usan muchos campeones del WAC separa dos decisiones: primero se extrae fuerte (ratio bajo, agua caliente, tiempos largos de inmersión invertida) y después se diluye al gusto. Esto da control total sobre la fuerza final sin sacrificar la extracción inicial.',
 
   // Chemex
   'Caramelo Lento': 'El <strong>filtro triple de Chemex</strong> es 20-30% más grueso que un filtro V60, eliminando todos los aceites y finos. El resultado es una taza extraordinariamente limpia donde solo los azúcares y los ácidos más nobles llegan a la copa. El bloom largo (45s) es necesario por esa densidad del filtro.',
@@ -868,6 +871,9 @@ const WHY = {
   'Chemex Clásico': 'El <strong>enjuague del filtro</strong> es crítico en el Chemex: elimina el sabor a papel y precalienta el servidor. La espiral lenta de 2 minutos garantiza que toda la superficie del lecho de café reciba agua por igual, algo difícil de lograr con vertido rápido.',
   'Domingo en Casa': 'Escalar una receta para <strong>4-6 tazas</strong> requiere más bloom proporcional porque hay más café liberando CO₂. Los tres vertidos en escalera mantienen la temperatura del lecho constante durante la extracción prolongada.',
   'Media Jornada': 'El <strong>bloom del doble del café (44g para 22g)</strong> es la proporción técnicamente correcta según el SCA. Esa cantidad exacta de agua hidrata cada partícula sin exceso que cause extracción prematura durante el bloom.',
+  'James Hoffmann Chemex': 'Hoffmann aplica al Chemex la misma lógica de su V60: un bloom generoso (3x el peso del café) seguido de dos vertidos amplios que llevan el total en dos etapas. Las dos revueltas finales —horario y antihorario— asientan los finos antes del drenaje, reduciendo turbidez sin necesidad de más agitación.',
+  'Stumptown Clásica': 'El <strong>ratio 1:17</strong> de Stumptown es más diluido que el estándar de otras recetas, compensado con un bloom largo (150g) que extrae bien los azúcares antes de que el resto del agua pase. Los tres vertidos amplios mantienen el lecho de café en movimiento sin sobre-agitarlo.',
+  'Onyx Coffee Lab': 'Los <strong>cuatro vertidos iguales con drenaje parcial entre cada uno</strong> mantienen el nivel del lecho de café estable, lo que agita los granos al verter en el centro sin necesidad de removerlos con cuchara. Esa agitación controlada es lo que Onyx asocia con su perfil limpio y brillante.',
 
   // Prensa
   'Terciopelo': 'La <strong>prensa francesa es inmersión total</strong>: el café está en contacto con el agua todo el tiempo, a diferencia del pour over donde el agua fluye. Sin papel de por medio, todos los aceites y cuerpo pasan a la taza. La molienda muy gruesa evita que los finos pasen el émbolo.',
@@ -1213,6 +1219,26 @@ const RECETAS = {
         {t:'REVOLVER',d:'Revuelve <strong>15 veces</strong>.',s:15,ag:0},
         {t:'REPOSAR',d:'<strong>90 segundos</strong>.',s:90,ag:0},
         {t:'PRESIONAR',d:'Presiona. Lento o rápido, el resultado es similar.',s:20,ag:0}
+      ]},
+      {nombre:'James Hoffmann (Ultimate AeroPress)',desc:'11g de café, sin invertir, sin precalentar. Un solo vertido, vacío con el émbolo para frenar el goteo, y swirl en vez de revolver.',ratio:18.2,temp:'94°C',tiempo:'03:15',sabor:{d:3,a:3,c:4},pasos:[
+        {t:'AGUA',d:'Vierte <strong>200g de agua</strong> de una sola vez, mojando todo el café. Inserta el émbolo apenas 1cm para crear vacío y frenar el goteo.',s:15,ag:200},
+        {t:'REPOSAR',d:'Deja reposar <strong>2 minutos completos</strong> sin tocar. El vacío evita que gotee.',s:120,ag:0},
+        {t:'SWIRL',d:'Retira el émbolo y agita suavemente en círculos (swirl, no revolver). Espera 30 segundos más.',s:30,ag:0},
+        {t:'PRENSAR',d:'Prensa muy lento y suave durante 30 segundos, hasta el silbido final.',s:30,ag:0}
+      ]},
+      {nombre:'Tim Wendelboe',desc:'14g de café, agua casi en punto de hervor y dos series de exactamente 3 revueltas. La receta que usan a diario en su café de Oslo.',ratio:14.3,temp:'96°C',tiempo:'01:50',sabor:{d:3,a:4,c:3},pasos:[
+        {t:'AGUA + REVOLVER',d:'Vierte <strong>200g de agua</strong> de una vez. Revuelve exactamente 3 veces.',s:10,ag:200},
+        {t:'REPOSO TAPADO',d:'Coloca el émbolo apoyado arriba (sin presionar) para bloquear el goteo. Reposa <strong>60 segundos</strong>.',s:60,ag:0},
+        {t:'SEGUNDA REVUELTA',d:'Retira el émbolo y revuelve exactamente <strong>3 veces más</strong>. Ni más ni menos — cambia la extracción.',s:10,ag:0},
+        {t:'PRENSAR',d:'Prensa con el peso del cuerpo, sin apurar, hasta el final.',s:30,ag:0}
+      ]},
+      {nombre:'World AeroPress Championship',desc:'Receta inspirada en el método de concentrado-y-dilución usado por campeones del World AeroPress Championship: extracción fuerte invertida, diluida al final al gusto.',ratio:10,temp:'79°C',tiempo:'04:30',sabor:{d:3,a:3,c:4},pasos:[
+        {t:'INVERTIDO + AGUA',d:'Coloca el AeroPress invertido. Vierte <strong>60g de agua</strong> y revuelve por 12 segundos.',s:12,ag:60},
+        {t:'REPOSAR',d:'Deja reposar 1 minuto sin tocar.',s:60,ag:0},
+        {t:'SEGUNDA AGUA',d:'Agrega <strong>110g más</strong> de agua.',s:10,ag:110},
+        {t:'REPOSO LARGO',d:'Deja reposar 2 minutos y medio.',s:150,ag:0},
+        {t:'PRENSAR',d:'Voltea y prensa suavemente durante 30 segundos.',s:30,ag:0},
+        {t:'DILUIR',d:'Agrega agua hasta completar <strong>30g</strong> más, al gusto, para llegar a 200g servidos.',s:15,ag:30}
       ]}
     ]
   },
@@ -1272,6 +1298,24 @@ const RECETAS = {
         {t:'BLOOM',d:'<strong>44g de agua</strong>. El doble del café.',s:40,ag:44},
         {t:'VERTIDO 1',d:'<strong>150g más</strong>.',s:50,ag:150},
         {t:'VERTIDO 2',d:'<strong>86g finales</strong>.',s:65,ag:86}
+      ]},
+      {nombre:'James Hoffmann Chemex',desc:'30g de café, 95°C y la misma lógica que su V60: bloom generoso, dos vertidos amplios y un par de revueltas al final para asentar el lecho.',ratio:16.7,temp:'95°C',tiempo:'04:10',sabor:{d:3,a:3,c:2},pasos:[
+        {t:'BLOOM',d:'Vierte <strong>60g de agua</strong> en círculos lentos para humedecer todo el café.',s:45,ag:60},
+        {t:'VERTIDO 1',d:'Vierte en círculos hasta sumar <strong>240g más</strong> (300g totales).',s:30,ag:240},
+        {t:'VERTIDO 2',d:'Continúa vertiendo hasta los <strong>200g finales</strong> (500g totales).',s:30,ag:200},
+        {t:'REMOVER + DRENAR',d:'Con una cuchara, revuelve una vez en sentido horario y otra antihorario. Agita suavemente el Chemex y deja drenar.',s:145,ag:0}
+      ]},
+      {nombre:'Stumptown Clásica',desc:'La receta oficial de Stumptown: 42g de café a ratio 1:17, tres vertidos amplios sobre filtro Chemex bien enjuagado.',ratio:16.7,temp:'96°C',tiempo:'04:00',sabor:{d:3,a:3,c:2},pasos:[
+        {t:'BLOOM',d:'Vierte <strong>150g de agua</strong> o hasta saturar todo el café. Revuelve para que no quede café seco.',s:45,ag:150},
+        {t:'SEGUNDO VERTIDO',d:'Vierte <strong>300g más</strong> con movimiento de muñeca, reintegrando café y agua.',s:60,ag:300},
+        {t:'TERCER VERTIDO',d:'Vierte los <strong>250g finales</strong> en movimientos circulares.',s:45,ag:250},
+        {t:'DRENAR',d:'Deja drenar por completo hasta los 4 minutos.',s:90,ag:0}
+      ]},
+      {nombre:'Onyx Coffee Lab',desc:'Cuatro vertidos iguales después del bloom, dejando drenar un par de centímetros entre cada uno. Taza limpia, brillante y con acidez balanceada.',ratio:17.5,temp:'96°C',tiempo:'04:00',sabor:{d:3,a:4,c:2},pasos:[
+        {t:'BLOOM',d:'Vierte <strong>100g de agua</strong> en el centro, en movimiento circular hacia afuera. Deja que el bloom dure entre 45 y 55 segundos.',s:50,ag:100},
+        {t:'VERTIDO 2',d:'Vierte <strong>200g más</strong> en espiral, del centro hacia afuera y de vuelta. Deja drenar unos 2cm.',s:65,ag:200},
+        {t:'VERTIDO 3',d:'Repite: <strong>200g más</strong> en espiral. Deja drenar de nuevo.',s:65,ag:200},
+        {t:'VERTIDO 4',d:'Último vertido: los <strong>200g finales</strong>. Deja drenar por completo.',s:60,ag:200}
       ]}
     ]
   },
