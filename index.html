@@ -840,6 +840,9 @@ const WHY = {
   'V60 Clásico': 'Este método es la <strong>referencia universal del pour over</strong>. Los cuatro vertidos en proporción creciente (bloom pequeño → vertidos medios → cierre) imitan el protocolo SCAA de extracción óptima. Funciona con casi cualquier origen porque no extrema ninguna variable.',
   'Hoffmann 4:6': 'El método de James Hoffmann divide la extracción en <strong>dos fases</strong>: los primeros dos vertidos (40% del agua) controlan dulzor y acidez. Los tres siguientes (60% restante) controlan la concentración. Cambiar el tamaño del primer vertido cambia el perfil sin tocar la molienda.',
   'Lento & Constante': 'Un vertido continuo de exactamente <strong>2 minutos</strong> produce la extracción más uniforme posible porque la velocidad constante evita puntos de sobreextracción. Ideal para cafés equilibrados que no necesitan énfasis en ninguna característica.',
+  'Dulce 800': 'El <strong>ratio alto (1:16.7) combinado con 92°C</strong> reduce la extracción de compuestos amargos mientras la molienda media-fina (16-18 clics) mantiene suficiente contacto para extraer azúcares complejos. Solo dos vertidos después del bloom dan tiempo a que el lecho de café libere panela y fruta madura sin pasarse de punto.',
+  'Brillante 800': 'La <strong>temperatura alta (96°C)</strong> acelera la extracción de los compuestos más volátiles y ácidos antes de que aparezca el amargor. El vertido único y continuo, sin pausas, evita interrupciones que ralenticen el flujo y permitan sobreextraer — clave para que la acidez cítrica y floral se mantenga limpia.',
+  'Balanceado 800': 'El punto medio entre temperatura (94°C) y ratio (1:16) busca extraer dulzor y acidez en proporciones similares. Los dos vertidos después del bloom, de tamaño parecido, evitan que ninguna fase de la extracción domine sobre la otra, resultando en una taza limpia y armónica.',
 
   // AeroPress
   'Tropical Invertido': 'La <strong>técnica invertida</strong> elimina el goteo prematuro durante el reposo, logrando un tiempo de contacto total controlado. La temperatura baja (88°C) resalta los azúcares sin extraer los amargos. El resultado es más parecido a una inmersión que a un filtrado.',
@@ -1081,6 +1084,11 @@ const RECETAS = {
         {t:'VERTIDO 1',d:'<strong>85g de agua</strong> en espiral lenta.',s:30,ag:85},
         {t:'VERTIDO 2',d:'<strong>85g más</strong> en espiral lenta.',s:30,ag:85},
         {t:'VERTIDO 3',d:'<strong>90g finales</strong>. El tiempo total debe estar entre 2:30 y 2:45.',s:55,ag:90}
+      ]},
+      {nombre:'Dulce 800',desc:'15g de café, molienda media-fina (C3 16-18 clics) y 92°C para resaltar miel, panela y frutas maduras con más cuerpo.',ratio:16.7,temp:'92°C',tiempo:'03:15',sabor:{d:4,a:2,c:4},pasos:[
+        {t:'BLOOM',d:'Vierte <strong>35g de agua</strong> sobre los 15g de café. El <span class="gterm" onclick="showTip(\'bloom\')">bloom</span> libera el CO₂.',s:30,ag:35},
+        {t:'PRIMER VERTIDO',d:'Vierte <strong>105g más</strong> en espiral lenta desde el centro.',s:50,ag:105},
+        {t:'SEGUNDO VERTIDO',d:'Agrega los <strong>110g finales</strong>. El tiempo total debe estar entre 3:00 y 3:30.',s:80,ag:110}
       ]}
     ],
     acido:[
@@ -1099,6 +1107,10 @@ const RECETAS = {
         {t:'BLOOM',d:'<strong>30g de agua a 84°C</strong>.',s:20,ag:30},
         {t:'VERTIDO RÁPIDO',d:'Vierte los <strong>310g restantes</strong> en 40 segundos continuos.',s:40,ag:310},
         {t:'DRENAR',d:'Si está astringente, baja la temperatura.',s:50,ag:0}
+      ]},
+      {nombre:'Brillante 800',desc:'15g de café, molienda fina (C3 12-14 clics) y 96°C para máxima intensidad: acidez cítrica, flores y notas tropicales.',ratio:15,temp:'96°C',tiempo:'02:45',sabor:{d:2,a:5,c:2},pasos:[
+        {t:'BLOOM',d:'Vierte <strong>30g de agua</strong> sobre los 15g de café.',s:25,ag:30},
+        {t:'VERTIDO ÚNICO',d:'Vierte los <strong>195g restantes</strong> en un chorro continuo y constante, sin pausas, para no opacar la acidez.',s:95,ag:195}
       ]}
     ],
     balanceado:[
@@ -1119,6 +1131,11 @@ const RECETAS = {
         {t:'BLOOM',d:'<strong>40g</strong>. Espera.',s:30,ag:40},
         {t:'VERTIDO ÚNICO',d:'Vierte los <strong>260g restantes</strong> en exactamente 2 minutos. Sin parar.',s:120,ag:260},
         {t:'DRENAR',d:'Si pasa de 3 min, muele más grueso.',s:45,ag:0}
+      ]},
+      {nombre:'Balanceado 800',desc:'15g de café, molienda media (C3 14-16 clics) y 94°C para un equilibrio entre dulzor, acidez y claridad.',ratio:16,temp:'94°C',tiempo:'03:00',sabor:{d:3,a:3,c:3},pasos:[
+        {t:'BLOOM',d:'Vierte <strong>35g de agua</strong> sobre los 15g de café.',s:30,ag:35},
+        {t:'VERTIDO 1',d:'<strong>100g más</strong> en espiral lenta.',s:45,ag:100},
+        {t:'VERTIDO 2',d:'Agrega los <strong>105g finales</strong>. El tiempo total debe estar entre 2:45 y 3:15.',s:75,ag:105}
       ]}
     ]
   },
