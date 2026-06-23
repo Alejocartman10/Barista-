@@ -843,6 +843,9 @@ const WHY = {
   'Dulce 800': 'El <strong>ratio alto (1:16.7) combinado con 92°C</strong> reduce la extracción de compuestos amargos mientras la molienda media-fina (16-18 clics) mantiene suficiente contacto para extraer azúcares complejos. Solo dos vertidos después del bloom dan tiempo a que el lecho de café libere panela y fruta madura sin pasarse de punto.',
   'Brillante 800': 'La <strong>temperatura alta (96°C)</strong> acelera la extracción de los compuestos más volátiles y ácidos antes de que aparezca el amargor. El vertido único y continuo, sin pausas, evita interrupciones que ralenticen el flujo y permitan sobreextraer — clave para que la acidez cítrica y floral se mantenga limpia.',
   'Balanceado 800': 'El punto medio entre temperatura (94°C) y ratio (1:16) busca extraer dulzor y acidez en proporciones similares. Los dos vertidos después del bloom, de tamaño parecido, evitan que ninguna fase de la extracción domine sobre la otra, resultando en una taza limpia y armónica.',
+  'Kasuya 4:6 Original': 'El método de Tetsu Kasuya divide el agua en dos fases con funciones distintas: el primer <strong>40% (dos vertidos)</strong> controla el balance dulzor/acidez — un primer vertido más chico que el segundo extrae más dulzor, uno más grande extrae más acidez. El <strong>60% restante (tres vertidos)</strong> controla la fuerza: más vertidos mantienen el lecho de café activo por más tiempo, aumentando la concentración.',
+  'Scott Rao (Vertido Único)': 'El <strong>"Rao Spin"</strong> (agitar suavemente durante el vertido principal) reduce el channeling y nivela el lecho de café sin necesidad de múltiples vertidos discretos. Verter en un solo flujo continuo después del pre-humectado acelera y uniformiza la extracción — ideal para servicio rápido sin sacrificar calidad.',
+  'Matt Perger Competición': 'Esta receta popularizada por Matt Perger usa solo tres vertidos simples sin técnica de agitación compleja. El objetivo de drenaje en <strong>2:20</strong> exige una molienda más fina que la mayoría de las recetas V60, lo que concentra la extracción en menos tiempo y produce una taza limpia y brillante.',
 
   // AeroPress
   'Tropical Invertido': 'La <strong>técnica invertida</strong> elimina el goteo prematuro durante el reposo, logrando un tiempo de contacto total controlado. La temperatura baja (88°C) resalta los azúcares sin extraer los amargos. El resultado es más parecido a una inmersión que a un filtrado.',
@@ -1136,6 +1139,22 @@ const RECETAS = {
         {t:'BLOOM',d:'Vierte <strong>35g de agua</strong> sobre los 15g de café.',s:30,ag:35},
         {t:'VERTIDO 1',d:'<strong>100g más</strong> en espiral lenta.',s:45,ag:100},
         {t:'VERTIDO 2',d:'Agrega los <strong>105g finales</strong>. El tiempo total debe estar entre 2:45 y 3:15.',s:75,ag:105}
+      ]},
+      {nombre:'Kasuya 4:6 Original',desc:'El método auténtico de Tetsu Kasuya, campeón mundial Brewers Cup 2016. 20g de café, molienda gruesa, 5 vertidos: el primer 40% del agua ajusta dulzor/acidez, el 60% restante ajusta la fuerza.',ratio:15,temp:'92°C',tiempo:'03:30',sabor:{d:4,a:2,c:3},pasos:[
+        {t:'PRIMER VERTIDO',d:'Vierte <strong>50g de agua</strong>. Un primer vertido más chico que el segundo extrae más dulzor.',s:45,ag:50},
+        {t:'SEGUNDO VERTIDO',d:'Vierte <strong>70g más</strong>. Junto con el anterior completa el 40% que define el balance dulzor/acidez.',s:45,ag:70},
+        {t:'TERCER VERTIDO',d:'Vierte <strong>60g más</strong>. Arranca la fase del 60% que define la fuerza.',s:45,ag:60},
+        {t:'CUARTO VERTIDO',d:'Vierte <strong>60g más</strong>.',s:45,ag:60},
+        {t:'QUINTO VERTIDO',d:'Vierte los <strong>60g finales</strong>. Deja drenar hasta 3:30.',s:30,ag:60}
+      ]},
+      {nombre:'Scott Rao (Vertido Único)',desc:'Técnica de un solo vertido principal de Scott Rao. Tras un breve pre-humectado, se vierte el resto en un flujo continuo con agitación suave ("Rao Spin") para extracción uniforme.',ratio:16.4,temp:'94°C',tiempo:'03:00',sabor:{d:3,a:3,c:4},pasos:[
+        {t:'PRE-HUMECTADO',d:'Vierte <strong>66g de agua</strong> (cerca del triple del peso del café). Agita suavemente.',s:45,ag:66},
+        {t:'VERTIDO ÚNICO',d:'Vierte los <strong>294g restantes</strong> en un solo flujo continuo, hasta completar 360g totales. Agita suave para que no quede café pegado en las paredes.',s:135,ag:294}
+      ]},
+      {nombre:'Matt Perger Competición',desc:'Receta base de Matt Perger, campeón mundial Brewers Cup 2012. Tres vertidos simples con objetivo de drenaje en 2:20 — una de las recetas más replicadas como punto de partida.',ratio:16.7,temp:'90°C',tiempo:'02:20',sabor:{d:3,a:4,c:2},pasos:[
+        {t:'BLOOM',d:'Vierte <strong>50g de agua</strong> y revuelve para humectar parejo.',s:30,ag:50},
+        {t:'VERTIDO 2',d:'Vierte <strong>50g más</strong> en espiral.',s:30,ag:50},
+        {t:'VERTIDO 3',d:'Vierte los <strong>100g finales</strong>. El drenaje debe completarse cerca de los 2:20.',s:80,ag:100}
       ]}
     ]
   },
