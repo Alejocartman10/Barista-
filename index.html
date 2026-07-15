@@ -347,7 +347,10 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
 .rec-option-hint{font-size:.6em;color:var(--text-dim);letter-spacing:.3px;margin-top:4px;line-height:1.5}
 .rec-result{margin:24px 20px 0;background:#1a1a1a;border:1px solid rgba(197,160,89,0.3);border-radius:20px;padding:22px;display:none}
 .rec-result.visible{display:block}
-.rec-result-label{font-size:.55em;letter-spacing:3px;color:rgba(197,160,89,0.55);margin-bottom:10px}
+.rec-result-label{font-size:.55em;letter-spacing:3px;color:rgba(197,160,89,0.55);margin-bottom:14px}
+.rec-option-card{background:#1e1c18;border:1px solid rgba(197,160,89,0.2);border-radius:16px;padding:18px;margin-bottom:12px}
+.rec-option-card:last-child{margin-bottom:0}
+.rec-option-card-tag{font-size:.55em;letter-spacing:2px;color:rgba(197,160,89,0.5);margin-bottom:8px}
 .rec-result-method{font-family:'Playfair Display',serif;font-size:1.7em;color:#ede8e0;margin-bottom:3px}
 .rec-result-recipe{font-family:'Playfair Display',serif;font-style:italic;font-size:1.05em;color:#c5a059;margin-bottom:0}
 .rec-result-why{font-family:'Playfair Display',serif;font-style:italic;font-size:.84em;color:rgba(237,232,224,.65);line-height:1.75;margin:14px 0 16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06)}
@@ -866,11 +869,8 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
     </div>
   </div>
   <div class="rec-result" id="rec-result">
-    <div class="rec-result-label">RECOMENDACIÓN · <span id="rec-res-variedad"></span></div>
-    <div class="rec-result-method" id="rec-res-method"></div>
-    <div class="rec-result-recipe" id="rec-res-recipe"></div>
-    <div class="rec-result-why" id="rec-res-why"></div>
-    <button class="btn-rec-go" onclick="goToRecFromRec()">IR A LA RECETA →</button>
+    <div class="rec-result-label">RECOMENDACIONES · <span id="rec-res-variedad"></span></div>
+    <div id="rec-result-cards"></div>
     <button class="btn-rec-reset" onclick="resetRec()">PROBAR OTRA COMBINACIÓN</button>
   </div>
 </div>
@@ -2512,85 +2512,274 @@ const REC_VARIEDADES = [
 
 const REC_REGLAS = [
   // GESHA / GEISHA
-  {v:['gesha'],p:['lavado'],t:['claro'],m:'V60',o:'acido',r:'Cítrico Etíope',por:'El Gesha lavado es la variedad más delicada del mundo. El V60 a 86°C preserva los terpenos florales y la bergamota que se pierden a temperaturas más altas. Cualquier otro método taparía esos aromas únicos.'},
-  {v:['gesha'],p:['lavado'],t:['medio'],m:'Chemex',o:'acido',r:'Floral Etíope',por:'A tueste medio el Gesha gana cuerpo sin perder su floral. El filtro grueso del Chemex mantiene la limpieza del perfil mientras la temperatura de 88°C cuida los ésteres.'},
-  {v:['gesha'],p:['natural'],t:['claro'],m:'AeroPress',o:'balanceado',r:'James Hoffmann (Ultimate AeroPress)',por:'El Gesha natural tiene fruta intensa que puede volverse confitada en pour over. El AeroPress de Hoffmann, con su vacío y sin agitación agresiva, captura esa fruta sin exagerarla.'},
-  {v:['gesha'],p:['natural'],t:['medio'],m:'Chemex',o:'dulce',r:'Caramelo Lento',por:'El Gesha natural medio desarrolla fruta deshidratada y caramelo. El filtro Chemex y los múltiples vertidos extraen ese dulzor con precisión.'},
-  {v:['gesha'],p:['honey'],t:['claro'],m:'V60',o:'acido',r:'Frambuesa Kenia',por:'El Gesha honey tiene lo floral del lavado y la fruta del natural. El doble bloom del V60 activa esa acidez en capas que distingue al honey de sus extremos.'},
+  {v:['gesha'],p:['lavado'],t:['claro'],opciones:[
+    {m:'V60',o:'acido',r:'Cítrico Etíope',por:'El Gesha lavado es la variedad más delicada del mundo. El V60 a 86°C preserva los terpenos florales y la bergamota que se pierden a temperaturas más altas.'},
+    {m:'Chemex',o:'acido',r:'Floral Etíope',por:'El filtro grueso del Chemex da aún más claridad al floral del Gesha, sin la sensibilidad al vertido que exige el V60. Buena opción si recién empezás con esta variedad.'}
+  ]},
+  {v:['gesha'],p:['lavado'],t:['medio'],opciones:[
+    {m:'Chemex',o:'acido',r:'Floral Etíope',por:'A tueste medio el Gesha gana cuerpo sin perder su floral. El filtro grueso del Chemex mantiene la limpieza del perfil mientras la temperatura de 88°C cuida los ésteres.'},
+    {m:'V60',o:'balanceado',r:'Balanceado 800',por:'El tueste medio suaviza los extremos del Gesha. El V60 balanceado a 94°C deja que el dulzor y la acidez floral convivan sin que ninguno domine.'}
+  ]},
+  {v:['gesha'],p:['natural'],t:['claro'],opciones:[
+    {m:'AeroPress',o:'balanceado',r:'James Hoffmann (Ultimate AeroPress)',por:'El Gesha natural tiene fruta intensa que puede volverse confitada en pour over. El AeroPress de Hoffmann, con su vacío y sin agitación agresiva, captura esa fruta sin exagerarla.'},
+    {m:'V60',o:'acido',r:'Maracuyá & Té',por:'Si preferís pour over, la extracción rápida a 84°C captura el tropical del Gesha natural antes de que se vuelva empalagoso.'}
+  ]},
+  {v:['gesha'],p:['natural'],t:['medio'],opciones:[
+    {m:'Chemex',o:'dulce',r:'Caramelo Lento',por:'El Gesha natural medio desarrolla fruta deshidratada y caramelo. El filtro Chemex y los múltiples vertidos extraen ese dulzor con precisión.'},
+    {m:'Prensa',o:'dulce',r:'Terciopelo',por:'La inmersión total de la prensa francesa muestra el cuerpo y la fruta madura del Gesha natural sin el filtrado que el papel les quita.'}
+  ]},
+  {v:['gesha'],p:['honey'],t:['claro'],opciones:[
+    {m:'V60',o:'acido',r:'Frambuesa Kenia',por:'El Gesha honey tiene lo floral del lavado y la fruta del natural. El doble bloom del V60 activa esa acidez en capas que distingue al honey de sus extremos.'},
+    {m:'EvaSolo',o:'acido',r:'Otoño Cítrico',por:'La manga de la Eva Solo aporta algo de cuerpo al Gesha honey sin tapar su rango floral y cítrico — una alternativa con más textura en boca.'}
+  ]},
   // WUSH WUSH
-  {v:['wushwush'],p:['lavado'],t:['claro'],m:'V60',o:'acido',r:'Maracuyá & Té',por:'El Wush Wush lavado es extremadamente floral y delicado. El agua a 84°C y el vertido ultrarrápido capturan solo los compuestos más volátiles, como el té japonés.'},
-  {v:['wushwush'],p:['natural'],t:['claro'],m:'V60',o:'acido',r:'Frambuesa Kenia',por:'Natural de Wush Wush tiene notas intensas a frutos rojos. El doble bloom activa esas capas sin confitar el perfil.'},
-  {v:['wushwush'],p:['natural'],t:['medio'],m:'AeroPress',o:'dulce',r:'Tropical Invertido',por:'A tueste medio el Wush Wush natural desarrolla tropical dulce. La técnica invertida a 88°C extrae ese perfil sin la aspereza de temperaturas más altas.'},
-  {v:['wushwush'],p:['honey'],t:['medio'],m:'Chemex',o:'acido',r:'Floral Etíope',por:'Wush Wush honey combina floral limpio con algo de cuerpo. El Chemex entrega claridad con leve textura, el balance ideal para esta variedad.'},
+  {v:['wushwush'],p:['lavado'],t:['claro'],opciones:[
+    {m:'V60',o:'acido',r:'Maracuyá & Té',por:'El Wush Wush lavado es extremadamente floral y delicado. El agua a 84°C y el vertido ultrarrápido capturan solo los compuestos más volátiles, como el té japonés.'},
+    {m:'Chemex',o:'acido',r:'Floral Etíope',por:'El Chemex ofrece la misma preservación floral con más margen de error en el vertido — ideal si el V60 te resulta muy exigente con esta variedad.'}
+  ]},
+  {v:['wushwush'],p:['natural'],t:['claro'],opciones:[
+    {m:'V60',o:'acido',r:'Frambuesa Kenia',por:'Natural de Wush Wush tiene notas intensas a frutos rojos. El doble bloom activa esas capas sin confitar el perfil.'},
+    {m:'AeroPress',o:'acido',r:'Etíope Flash',por:'La extracción en menos de 60 segundos captura esos frutos rojos antes de que el calor prolongado los vuelva empalagosos.'}
+  ]},
+  {v:['wushwush'],p:['natural'],t:['medio'],opciones:[
+    {m:'AeroPress',o:'dulce',r:'Tropical Invertido',por:'A tueste medio el Wush Wush natural desarrolla tropical dulce. La técnica invertida a 88°C extrae ese perfil sin la aspereza de temperaturas más altas.'},
+    {m:'Chemex',o:'dulce',r:'Caramelo Lento',por:'Si preferís pour over, el bloom largo del Chemex saca ese mismo dulzor tropical con una taza más limpia y menos cuerpo.'}
+  ]},
+  {v:['wushwush'],p:['honey'],t:['medio'],opciones:[
+    {m:'Chemex',o:'acido',r:'Floral Etíope',por:'Wush Wush honey combina floral limpio con algo de cuerpo. El Chemex entrega claridad con leve textura, el balance ideal para esta variedad.'},
+    {m:'EvaSolo',o:'dulce',r:'Nórdico Dulce',por:'La Eva Solo deja pasar más aceites que el Chemex, dando más cuerpo al honey sin perder del todo su floral — una opción más redonda en boca.'}
+  ]},
   // SIDRA
-  {v:['sidra'],p:['lavado'],t:['claro'],m:'V60',o:'acido',r:'Cítrico Etíope',por:'El Sidra lavado es aromático y complejo. El V60 a temperatura baja preserva sus compuestos únicos sin que la claridad del filtro los tape.'},
-  {v:['sidra'],p:['natural'],t:['claro'],m:'AeroPress',o:'balanceado',r:'James Hoffmann (Ultimate AeroPress)',por:'Sidra natural tiene fermentados complejos que necesitan extracción controlada. El vacío de Hoffmann frena el goteo prematuro que arruinaría ese perfil.'},
-  {v:['sidra'],p:['honey'],t:['medio'],m:'V60',o:'balanceado',r:'Hoffmann 4:6',por:'El 4:6 permite ajustar el balance del Sidra honey cambiando el primer vertido. Una variedad tan compleja merece ese control sobre el perfil final.'},
+  {v:['sidra'],p:['lavado'],t:['claro'],opciones:[
+    {m:'V60',o:'acido',r:'Cítrico Etíope',por:'El Sidra lavado es aromático y complejo. El V60 a temperatura baja preserva sus compuestos únicos sin que la claridad del filtro los tape.'},
+    {m:'Chemex',o:'acido',r:'Té de Hibisco',por:'El ratio muy alto de esta receta produce una taza casi translúcida que deja que la complejidad aromática del Sidra se exprese sin interferencia de cuerpo.'}
+  ]},
+  {v:['sidra'],p:['natural'],t:['claro'],opciones:[
+    {m:'AeroPress',o:'balanceado',r:'James Hoffmann (Ultimate AeroPress)',por:'Sidra natural tiene fermentados complejos que necesitan extracción controlada. El vacío de Hoffmann frena el goteo prematuro que arruinaría ese perfil.'},
+    {m:'V60',o:'acido',r:'Maracuyá & Té',por:'Para pour over, la extracción rápida a 84°C captura esos fermentados frutales sin dejar que se vuelvan dominantes.'}
+  ]},
+  {v:['sidra'],p:['honey'],t:['medio'],opciones:[
+    {m:'V60',o:'balanceado',r:'Hoffmann 4:6',por:'El 4:6 permite ajustar el balance del Sidra honey cambiando el primer vertido. Una variedad tan compleja merece ese control sobre el perfil final.'},
+    {m:'EvaSolo',o:'dulce',r:'Dulzor Nublado',por:'La pre-saturación de la Eva Solo humedece parejo un café tan complejo como el Sidra honey, evitando puntos secos que distorsionen su perfil.'}
+  ]},
   // ETHIOPIAN HEIRLOOM
-  {v:['heirloom'],p:['lavado'],t:['claro'],m:'V60',o:'acido',r:'Cítrico Etíope',por:'Los Heirloom lavados etíopes son el origen del café tal como lo conocemos. El V60 a baja temperatura es el método que más respeta esa historia floral y cítrica.'},
-  {v:['heirloom'],p:['natural'],t:['claro'],m:'AeroPress',o:'acido',r:'Etíope Flash',por:'Heirloom natural tiene aromas florales que se evaporan rápido. La extracción Flash en menos de 60 segundos los captura antes de que el calor los destruya.'},
-  {v:['heirloom'],p:['natural'],t:['medio'],m:'Chemex',o:'acido',r:'Floral Etíope',por:'A tueste medio los Heirloom naturales ganan cuerpo y chocolate oscuro. El Chemex balancea eso con claridad.'},
-  {v:['heirloom'],p:['honey'],t:['medio'],m:'AeroPress',o:'dulce',r:'Tropical Invertido',por:'Heirloom honey tiene el dulzor del natural y la acidez limpia del lavado. La técnica invertida extrae ambos sin extremar ninguno.'},
+  {v:['heirloom'],p:['lavado'],t:['claro'],opciones:[
+    {m:'V60',o:'acido',r:'Cítrico Etíope',por:'Los Heirloom lavados etíopes son el origen del café tal como lo conocemos. El V60 a baja temperatura es el método que más respeta esa historia floral y cítrica.'},
+    {m:'AeroPress',o:'acido',r:'Etíope Flash',por:'Si buscás algo más rápido, la extracción Flash en menos de 60 segundos captura esos mismos aromas florales antes de que se disipen.'}
+  ]},
+  {v:['heirloom'],p:['natural'],t:['claro'],opciones:[
+    {m:'AeroPress',o:'acido',r:'Etíope Flash',por:'Heirloom natural tiene aromas florales que se evaporan rápido. La extracción Flash en menos de 60 segundos los captura antes de que el calor los destruya.'},
+    {m:'V60',o:'acido',r:'Maracuyá & Té',por:'Para pour over, este vertido ultrarrápido logra el mismo objetivo: capturar la fruta del natural sin dejar que domine el amargor.'}
+  ]},
+  {v:['heirloom'],p:['natural'],t:['medio'],opciones:[
+    {m:'Chemex',o:'acido',r:'Floral Etíope',por:'A tueste medio los Heirloom naturales ganan cuerpo y chocolate oscuro. El Chemex balancea eso con claridad.'},
+    {m:'Prensa',o:'dulce',r:'Terciopelo',por:'La inmersión total de la prensa muestra el cuerpo completo y la fruta madura del Heirloom natural, algo que el filtro de papel del Chemex recorta.'}
+  ]},
+  {v:['heirloom'],p:['honey'],t:['medio'],opciones:[
+    {m:'AeroPress',o:'dulce',r:'Tropical Invertido',por:'Heirloom honey tiene el dulzor del natural y la acidez limpia del lavado. La técnica invertida extrae ambos sin extremar ninguno.'},
+    {m:'Chemex',o:'dulce',r:'Caramelo Lento',por:'Para pour over, el bloom largo del Chemex extrae ese mismo balance dulzor/acidez con una taza más clara y menos cuerpo.'}
+  ]},
   // SL28 / SL34
-  {v:['sl28','sl34'],p:['lavado'],t:['claro'],m:'V60',o:'acido',r:'Frambuesa Kenia',por:'SL28/SL34 son las variedades con más acidez del mundo. El doble bloom activa esa acidez en capas, característica del Kenia AA que las volvió famosas.'},
-  {v:['sl28','sl34'],p:['lavado'],t:['medio'],m:'V60',o:'balanceado',r:'Balanceado 800',por:'A tueste medio el SL28/SL34 pierde parte de su acidez extrema y gana dulzor. El ratio 1:16 a 94°C equilibra bien esa transición.'},
-  {v:['sl28','sl34'],p:['natural'],t:['medio'],m:'Chemex',o:'dulce',r:'Panela Colombiana',por:'Las variedades SL naturales son raras pero tienen fruta negra intensa. El bloom largo del Chemex libera ese perfil de forma controlada.'},
+  {v:['sl28','sl34'],p:['lavado'],t:['claro'],opciones:[
+    {m:'V60',o:'acido',r:'Frambuesa Kenia',por:'SL28/SL34 son las variedades con más acidez del mundo. El doble bloom activa esa acidez en capas, característica del Kenia AA que las volvió famosas.'},
+    {m:'Chemex',o:'acido',r:'Naranja & Bergamota',por:'El ratio extremo de esta receta produce una taza casi de té que deja que la acidez cítrica intensa del SL28/34 se exprese sin saturar.'}
+  ]},
+  {v:['sl28','sl34'],p:['lavado'],t:['medio'],opciones:[
+    {m:'V60',o:'balanceado',r:'Balanceado 800',por:'A tueste medio el SL28/SL34 pierde parte de su acidez extrema y gana dulzor. El ratio 1:16 a 94°C equilibra bien esa transición.'},
+    {m:'Chemex',o:'balanceado',r:'Chemex Clásico',por:'Si preferís más claridad, el Chemex Clásico mantiene ese mismo balance con una taza más limpia y menos cuerpo.'}
+  ]},
+  {v:['sl28','sl34'],p:['natural'],t:['medio'],opciones:[
+    {m:'Chemex',o:'dulce',r:'Panela Colombiana',por:'Las variedades SL naturales son raras pero tienen fruta negra intensa. El bloom largo del Chemex libera ese perfil de forma controlada.'},
+    {m:'Prensa',o:'dulce',r:'Panela & Roble',por:'La inmersión con temperatura alta extrae los compuestos de fruta negra y madera del SL naturales con más cuerpo que cualquier filtro de papel.'}
+  ]},
   // PINK BOURBON
-  {v:['pinkbourbon'],p:['lavado'],t:['claro'],m:'V60',o:'acido',r:'Brillante 800',por:'El Pink Bourbon lavado claro es tropical y cítrico. El V60 a 96°C con vertido continuo captura esa acidez brillante que lo hace tan especial.'},
-  {v:['pinkbourbon'],p:['lavado'],t:['medio'],m:'Chemex',o:'dulce',r:'Panela Colombiana',por:'A tueste medio el Pink Bourbon lavado desarrolla panela y fruta amarilla. El bloom largo del Chemex extrae eso con claridad.'},
-  {v:['pinkbourbon'],p:['natural'],t:['claro'],m:'AeroPress',o:'dulce',r:'Tropical Invertido',por:'Pink Bourbon natural claro tiene tropical muy intenso. La técnica invertida a 88°C es perfecta para capturar ese dulzor sin confitarlo.'},
-  {v:['pinkbourbon'],p:['natural'],t:['medio'],m:'Chemex',o:'dulce',r:'Caramelo Lento',por:'Natural medio de Pink Bourbon tiene fruta madura y caramelo. El filtro grueso y los múltiples vertidos del Chemex lo extraen con precisión.'},
-  {v:['pinkbourbon'],p:['honey'],t:['medio'],m:'EvaSolo',o:'dulce',r:'Verano Caramelizado',por:'Pink Bourbon honey es el proceso ideal para esta variedad. Los 5 minutos de la Eva Solo en sistema cerrado maximizan su dulzor tropical característico.'},
-  {v:['pinkbourbon'],p:['honey'],t:['claro'],m:'V60',o:'dulce',r:'Dulce 800',por:'Honey claro de Pink Bourbon tiene floral limpio y fruta sutil. El V60 a 92°C con ratio alto extrae el dulzor sin opacar los aromas.'},
+  {v:['pinkbourbon'],p:['lavado'],t:['claro'],opciones:[
+    {m:'V60',o:'acido',r:'Brillante 800',por:'El Pink Bourbon lavado claro es tropical y cítrico. El V60 a 96°C con vertido continuo captura esa acidez brillante que lo hace tan especial.'},
+    {m:'Chemex',o:'acido',r:'Naranja & Bergamota',por:'El ratio extremo de esta receta acentúa el perfil cítrico del Pink Bourbon lavado en una taza casi transparente, ideal para explorar sus aromas.'}
+  ]},
+  {v:['pinkbourbon'],p:['lavado'],t:['medio'],opciones:[
+    {m:'Chemex',o:'dulce',r:'Panela Colombiana',por:'A tueste medio el Pink Bourbon lavado desarrolla panela y fruta amarilla. El bloom largo del Chemex extrae eso con claridad.'},
+    {m:'V60',o:'balanceado',r:'Balanceado 800',por:'Para algo más directo, el V60 balanceado logra ese mismo equilibrio panela/fruta con menos pasos y más rapidez.'}
+  ]},
+  {v:['pinkbourbon'],p:['natural'],t:['claro'],opciones:[
+    {m:'AeroPress',o:'dulce',r:'Tropical Invertido',por:'Pink Bourbon natural claro tiene tropical muy intenso. La técnica invertida a 88°C es perfecta para capturar ese dulzor sin confitarlo.'},
+    {m:'V60',o:'acido',r:'Frambuesa Kenia',por:'Si preferís pour over, el doble bloom activa ese tropical en capas sin dejar que se vuelva empalagoso.'}
+  ]},
+  {v:['pinkbourbon'],p:['natural'],t:['medio'],opciones:[
+    {m:'Chemex',o:'dulce',r:'Caramelo Lento',por:'Natural medio de Pink Bourbon tiene fruta madura y caramelo. El filtro grueso y los múltiples vertidos del Chemex lo extraen con precisión.'},
+    {m:'Prensa',o:'dulce',r:'Terciopelo',por:'La inmersión total de la prensa entrega más cuerpo y fruta madura, sin el recorte que hace el filtro de papel del Chemex.'}
+  ]},
+  {v:['pinkbourbon'],p:['honey'],t:['medio'],opciones:[
+    {m:'EvaSolo',o:'dulce',r:'Verano Caramelizado',por:'Pink Bourbon honey es el proceso ideal para esta variedad. Los 5 minutos de la Eva Solo en sistema cerrado maximizan su dulzor tropical característico.'},
+    {m:'Chemex',o:'dulce',r:'Panela Colombiana',por:'Para pour over, el bloom largo del Chemex logra ese mismo dulzor tropical con una taza más clara y menos cuerpo que la Eva Solo.'}
+  ]},
+  {v:['pinkbourbon'],p:['honey'],t:['claro'],opciones:[
+    {m:'V60',o:'dulce',r:'Dulce 800',por:'Honey claro de Pink Bourbon tiene floral limpio y fruta sutil. El V60 a 92°C con ratio alto extrae el dulzor sin opacar los aromas.'},
+    {m:'EvaSolo',o:'acido',r:'Otoño Cítrico',por:'La manga de la Eva Solo aporta cuerpo extra manteniendo el rango floral y cítrico — una alternativa con más textura.'}
+  ]},
   // CHIROSO
-  {v:['chiroso'],p:['lavado'],t:['claro'],m:'V60',o:'acido',r:'Brillante 800',por:'El Chiroso lavado tiene acidez floral única de los climas fríos del Eje Cafetero. Alta temperatura y vertido continuo capturan esos aromas antes de que se disipen.'},
-  {v:['chiroso'],p:['lavado'],t:['medio'],m:'V60',o:'dulce',r:'Dulce 800',por:'A tueste medio el Chiroso desarrolla panela y flores. El V60 a 92°C con dos vertidos amplios extrae ese dulzor floral característico.'},
-  {v:['chiroso'],p:['natural'],t:['claro'],m:'AeroPress',o:'balanceado',r:'James Hoffmann (Ultimate AeroPress)',por:'Chiroso natural claro tiene tropical delicado. El método Hoffmann sin agitación agresiva capta esos matices sin exagerarlos.'},
-  {v:['chiroso'],p:['honey'],t:['medio'],m:'V60',o:'balanceado',r:'Balanceado 800',por:'Chiroso honey medio es muy versátil. El V60 a 94°C y ratio 1:16 equilibra bien sus características florales y dulces.'},
+  {v:['chiroso'],p:['lavado'],t:['claro'],opciones:[
+    {m:'V60',o:'acido',r:'Brillante 800',por:'El Chiroso lavado tiene acidez floral única de los climas fríos del Eje Cafetero. Alta temperatura y vertido continuo capturan esos aromas antes de que se disipen.'},
+    {m:'Chemex',o:'acido',r:'Floral Etíope',por:'El Chemex preserva ese mismo floral con más margen de error, ideal si estás empezando a explorar esta variedad.'}
+  ]},
+  {v:['chiroso'],p:['lavado'],t:['medio'],opciones:[
+    {m:'V60',o:'dulce',r:'Dulce 800',por:'A tueste medio el Chiroso desarrolla panela y flores. El V60 a 92°C con dos vertidos amplios extrae ese dulzor floral característico.'},
+    {m:'Chemex',o:'dulce',r:'Panela Colombiana',por:'Para una taza más limpia, el bloom largo del Chemex saca ese mismo dulzor floral con menos cuerpo.'}
+  ]},
+  {v:['chiroso'],p:['natural'],t:['claro'],opciones:[
+    {m:'AeroPress',o:'balanceado',r:'James Hoffmann (Ultimate AeroPress)',por:'Chiroso natural claro tiene tropical delicado. El método Hoffmann sin agitación agresiva capta esos matices sin exagerarlos.'},
+    {m:'V60',o:'acido',r:'Maracuyá & Té',por:'Para pour over, la extracción rápida a 84°C logra el mismo objetivo con una taza más translúcida.'}
+  ]},
+  {v:['chiroso'],p:['honey'],t:['medio'],opciones:[
+    {m:'V60',o:'balanceado',r:'Balanceado 800',por:'Chiroso honey medio es muy versátil. El V60 a 94°C y ratio 1:16 equilibra bien sus características florales y dulces.'},
+    {m:'EvaSolo',o:'dulce',r:'Dulzor Nublado',por:'La pre-saturación de la Eva Solo humedece parejo este café complejo, evitando puntos secos que distorsionen su perfil floral y dulce.'}
+  ]},
   // CATURRA
-  {v:['caturra'],p:['lavado'],t:['claro'],m:'V60',o:'acido',r:'Kasuya 4:6 Original',por:'Caturra lavado claro tiene acidez limpia y estructura definida. El 4:6 de Kasuya permite ajustar el balance dulzor/acidez cambiando el primer vertido sin tocar la molienda.'},
-  {v:['caturra'],p:['lavado'],t:['medio'],m:'V60',o:'balanceado',r:'Balanceado 800',por:'Caturra lavado medio es el café de especialidad más versátil. El V60 balanceado a 94°C es su método por excelencia.'},
-  {v:['caturra'],p:['natural'],t:['medio'],m:'Chemex',o:'dulce',r:'Domingo en Casa',por:'Caturra natural tiene fruta agradable sin ser extrema. El Chemex para varios es ideal para este perfil accesible.'},
-  {v:['caturra'],p:['honey'],t:['medio'],m:'V60',o:'dulce',r:'Miel Tostada',por:'Caturra honey medio es clásico. Temperatura reducida a 90°C y molienda más gruesa extraen solo los azúcares.'},
+  {v:['caturra'],p:['lavado'],t:['claro'],opciones:[
+    {m:'V60',o:'balanceado',r:'Kasuya 4:6 Original',por:'Caturra lavado claro tiene acidez limpia y estructura definida. El 4:6 de Kasuya permite ajustar el balance dulzor/acidez cambiando el primer vertido sin tocar la molienda.'},
+    {m:'Chemex',o:'acido',r:'Floral Etíope',por:'Para más claridad en taza, el Chemex preserva esa acidez limpia con un perfil más translúcido.'}
+  ]},
+  {v:['caturra'],p:['lavado'],t:['medio'],opciones:[
+    {m:'V60',o:'balanceado',r:'Balanceado 800',por:'Caturra lavado medio es el café de especialidad más versátil. El V60 balanceado a 94°C es su método por excelencia.'},
+    {m:'Chemex',o:'balanceado',r:'Chemex Clásico',por:'Para varios o una taza más limpia, el Chemex Clásico logra ese mismo equilibrio con más volumen.'}
+  ]},
+  {v:['caturra'],p:['natural'],t:['medio'],opciones:[
+    {m:'Chemex',o:'balanceado',r:'Domingo en Casa',por:'Caturra natural tiene fruta agradable sin ser extrema. El Chemex para varios es ideal para este perfil accesible.'},
+    {m:'Prensa',o:'dulce',r:'Terciopelo',por:'La inmersión total de la prensa francesa entrega más cuerpo y fruta madura de este Caturra natural, sin el recorte del filtro de papel.'}
+  ]},
+  {v:['caturra'],p:['honey'],t:['medio'],opciones:[
+    {m:'V60',o:'dulce',r:'Miel Tostada',por:'Caturra honey medio es clásico. Temperatura reducida a 90°C y molienda más gruesa extraen solo los azúcares.'},
+    {m:'EvaSolo',o:'dulce',r:'Dulzor Nublado',por:'La Eva Solo con pre-saturación logra ese mismo dulzor con más cuerpo, gracias a la manga filtrante que retiene menos aceites que el papel.'}
+  ]},
   // CASTILLO
-  {v:['castillo'],p:['lavado'],t:['claro'],m:'V60',o:'acido',r:'V60 Clásico',por:'Castillo lavado claro resulta fresco y limpio. El V60 clásico — el método de referencia — es el punto de partida ideal para explorar esta variedad.'},
-  {v:['castillo'],p:['lavado'],t:['medio'],m:'V60',o:'balanceado',r:'Balanceado 800',por:'El Castillo lavado es el café más consumido de Colombia. Equilibrado por naturaleza — el V60 balanceado lo trata con justicia.'},
-  {v:['castillo'],p:['lavado'],t:['oscuro'],m:'Prensa',o:'balanceado',r:'Prensa Clásica',por:'Castillo oscuro necesita la inmersión completa de la prensa francesa para extraer su cuerpo sin amargarlo con agua demasiado caliente.'},
-  {v:['castillo'],p:['natural'],t:['medio'],m:'AeroPress',o:'balanceado',r:'Todo Terreno',por:'Castillo natural tiene fruta suave y accesible. El Todo Terreno del AeroPress perdona variaciones y extrae bien ese perfil.'},
+  {v:['castillo'],p:['lavado'],t:['claro'],opciones:[
+    {m:'V60',o:'balanceado',r:'V60 Clásico',por:'Castillo lavado claro resulta fresco y limpio. El V60 clásico — el método de referencia — es el punto de partida ideal para explorar esta variedad.'},
+    {m:'AeroPress',o:'balanceado',r:'AeroPress Clásico',por:'Si buscás algo más rápido y con menos curva de aprendizaje, el AeroPress Clásico logra un perfil muy similar en la mitad del tiempo.'}
+  ]},
+  {v:['castillo'],p:['lavado'],t:['medio'],opciones:[
+    {m:'V60',o:'balanceado',r:'Balanceado 800',por:'El Castillo lavado es el café más consumido de Colombia. Equilibrado por naturaleza — el V60 balanceado lo trata con justicia.'},
+    {m:'Chemex',o:'balanceado',r:'Chemex Clásico',por:'Para más volumen o una taza más limpia, el Chemex Clásico logra ese mismo equilibrio con menos cuerpo.'}
+  ]},
+  {v:['castillo'],p:['lavado'],t:['oscuro'],opciones:[
+    {m:'Prensa',o:'balanceado',r:'Prensa Clásica',por:'Castillo oscuro necesita la inmersión completa de la prensa francesa para extraer su cuerpo sin amargarlo con agua demasiado caliente.'},
+    {m:'Moka',o:'dulce',r:'Italiana Clásica',por:'Para un perfil más concentrado y tradicional, la Moka extrae el cuerpo pleno de este tueste oscuro con dulzor intenso.'}
+  ]},
+  {v:['castillo'],p:['natural'],t:['medio'],opciones:[
+    {m:'AeroPress',o:'balanceado',r:'Todo Terreno',por:'Castillo natural tiene fruta suave y accesible. El Todo Terreno del AeroPress perdona variaciones y extrae bien ese perfil.'},
+    {m:'Chemex',o:'dulce',r:'Chocolate & Nuez',por:'Para pour over, esta receta con vertidos pausados extrae bien el chocolate y la fruta suave sin volverse amarga.'}
+  ]},
   // COLOMBIA (VARIETAL)
-  {v:['colombia'],p:['lavado'],t:['claro'],m:'V60',o:'acido',r:'Frambuesa Kenia',por:'La variedad Colombia lavada claro tiene acidez intensa similar al Kenia. El doble bloom activa esas capas ácidas que la hacen especial.'},
-  {v:['colombia'],p:['lavado'],t:['medio'],m:'Chemex',o:'dulce',r:'Panela Colombiana',por:'Colombia lavada media es clásico colombiano: panela, fruta seca y acidez equilibrada. El Chemex con bloom de 60 segundos es su hogar natural.'},
-  {v:['colombia'],p:['natural'],t:['medio'],m:'AeroPress',o:'dulce',r:'Agave & Vainilla',por:'Colombia natural tiene dulzor suave y frutal. El tiempo de contacto largo del AeroPress extrae los azúcares complejos que necesita esta variedad.'},
+  {v:['colombia'],p:['lavado'],t:['claro'],opciones:[
+    {m:'V60',o:'acido',r:'Frambuesa Kenia',por:'La variedad Colombia lavada claro tiene acidez intensa similar al Kenia. El doble bloom activa esas capas ácidas que la hacen especial.'},
+    {m:'Chemex',o:'acido',r:'Naranja & Bergamota',por:'Para una taza más translúcida, el ratio extremo de esta receta acentúa esos cítricos sin saturar el paladar.'}
+  ]},
+  {v:['colombia'],p:['lavado'],t:['medio'],opciones:[
+    {m:'Chemex',o:'dulce',r:'Panela Colombiana',por:'Colombia lavada media es clásico colombiano: panela, fruta seca y acidez equilibrada. El Chemex con bloom de 60 segundos es su hogar natural.'},
+    {m:'V60',o:'balanceado',r:'Balanceado 800',por:'Para algo más directo, el V60 balanceado logra ese mismo perfil panela/acidez con menos pasos.'}
+  ]},
+  {v:['colombia'],p:['natural'],t:['medio'],opciones:[
+    {m:'AeroPress',o:'dulce',r:'Agave & Vainilla',por:'Colombia natural tiene dulzor suave y frutal. El tiempo de contacto largo del AeroPress extrae los azúcares complejos que necesita esta variedad.'},
+    {m:'Prensa',o:'dulce',r:'Cacao & Roca',por:'La inmersión total de la prensa francesa entrega más cuerpo y dulzor a este natural, especialmente si el tueste es un poco más oscuro.'}
+  ]},
   // TYPICA
-  {v:['typica'],p:['lavado'],t:['claro'],m:'Chemex',o:'acido',r:'Floral Etíope',por:'La Typica lavada es la variedad más antigua de América. Delicada, floral, con acidez suave — el Chemex le da la claridad que merece.'},
-  {v:['typica'],p:['lavado'],t:['medio'],m:'V60',o:'balanceado',r:'V60 Clásico',por:'Typica lavada media es un café de referencia histórico. El V60 clásico — sin técnicas complejas — respeta esa elegancia simple.'},
-  {v:['typica'],p:['natural'],t:['medio'],m:'EvaSolo',o:'dulce',r:'Nórdico Dulce',por:'Typica natural tiene dulzor suave y floral. La Eva Solo en sistema cerrado mantiene la temperatura constante para extraer ese perfil sin acidez dominante.'},
+  {v:['typica'],p:['lavado'],t:['claro'],opciones:[
+    {m:'Chemex',o:'acido',r:'Floral Etíope',por:'La Typica lavada es la variedad más antigua de América. Delicada, floral, con acidez suave — el Chemex le da la claridad que merece.'},
+    {m:'V60',o:'acido',r:'Cítrico Etíope',por:'Para pour over de un solo dripper, el V60 a temperatura baja preserva esa misma delicadeza floral.'}
+  ]},
+  {v:['typica'],p:['lavado'],t:['medio'],opciones:[
+    {m:'V60',o:'balanceado',r:'V60 Clásico',por:'Typica lavada media es un café de referencia histórico. El V60 clásico — sin técnicas complejas — respeta esa elegancia simple.'},
+    {m:'Chemex',o:'balanceado',r:'Chemex Clásico',por:'Para más volumen, el Chemex Clásico mantiene esa misma elegancia simple con una taza más limpia.'}
+  ]},
+  {v:['typica'],p:['natural'],t:['medio'],opciones:[
+    {m:'EvaSolo',o:'dulce',r:'Nórdico Dulce',por:'Typica natural tiene dulzor suave y floral. La Eva Solo en sistema cerrado mantiene la temperatura constante para extraer ese perfil sin acidez dominante.'},
+    {m:'Chemex',o:'dulce',r:'Chocolate & Nuez',por:'Para pour over, esta receta con vertidos pausados extrae ese mismo dulzor suave con una taza más clara.'}
+  ]},
   // BOURBON
-  {v:['bourbon'],p:['lavado'],t:['claro'],m:'Chemex',o:'acido',r:'Floral Etíope',por:'Bourbon lavado claro tiene dulzor elegante y acidez fina. El Chemex preserva esa limpieza — ningún método le da más claridad.'},
-  {v:['bourbon'],p:['lavado'],t:['medio'],m:'Chemex',o:'dulce',r:'Panela Colombiana',por:'Bourbon lavado medio desarrolla su dulzor característico: panela y caramelo. El bloom largo de 60 segundos del Chemex libera ese azúcar de forma gradual.'},
-  {v:['bourbon'],p:['natural'],t:['medio'],m:'Prensa',o:'dulce',r:'Terciopelo',por:'Bourbon natural es quizás el mejor café para prensa francesa: cuerpo completo, fruta madura y sin la acidez que la inmersión total podría exagerar.'},
-  {v:['bourbon'],p:['natural'],t:['oscuro'],m:'Prensa',o:'dulce',r:'Cacao & Roca',por:'Bourbon natural oscuro desarrolla cacao profundo. 5 minutos completos de inmersión extraen ese cuerpo que ningún filtro de papel podría dar.'},
-  {v:['bourbon'],p:['honey'],t:['medio'],m:'EvaSolo',o:'dulce',r:'Dulzor Nublado',por:'Bourbon honey es la combinación de dulzor y acidez que mejor aprovecha la Eva Solo: la manga aporta cuerpo mientras la temperatura constante extrae el caramelo.'},
+  {v:['bourbon'],p:['lavado'],t:['claro'],opciones:[
+    {m:'Chemex',o:'acido',r:'Floral Etíope',por:'Bourbon lavado claro tiene dulzor elegante y acidez fina. El Chemex preserva esa limpieza — ningún método le da más claridad.'},
+    {m:'V60',o:'acido',r:'Cítrico Etíope',por:'Si preferís un solo dripper, el V60 a temperatura baja logra ese mismo perfil delicado con menos agua total.'}
+  ]},
+  {v:['bourbon'],p:['lavado'],t:['medio'],opciones:[
+    {m:'Chemex',o:'dulce',r:'Panela Colombiana',por:'Bourbon lavado medio desarrolla su dulzor característico: panela y caramelo. El bloom largo de 60 segundos del Chemex libera ese azúcar de forma gradual.'},
+    {m:'V60',o:'balanceado',r:'Balanceado 800',por:'Para algo más rápido, el V60 balanceado logra ese mismo dulzor panela con menos pasos.'}
+  ]},
+  {v:['bourbon'],p:['natural'],t:['medio'],opciones:[
+    {m:'Prensa',o:'dulce',r:'Terciopelo',por:'Bourbon natural es quizás el mejor café para prensa francesa: cuerpo completo, fruta madura y sin la acidez que la inmersión total podría exagerar.'},
+    {m:'Chemex',o:'dulce',r:'Chocolate & Nuez',por:'Si preferís una taza más limpia, el Chemex extrae ese mismo dulzor frutal con menos cuerpo.'}
+  ]},
+  {v:['bourbon'],p:['natural'],t:['oscuro'],opciones:[
+    {m:'Prensa',o:'dulce',r:'Cacao & Roca',por:'Bourbon natural oscuro desarrolla cacao profundo. 5 minutos completos de inmersión extraen ese cuerpo que ningún filtro de papel podría dar.'},
+    {m:'Moka',o:'dulce',r:'Dulce Napolitano',por:'Para un perfil más concentrado, la Moka extrae ese mismo cacao con más intensidad y menos volumen.'}
+  ]},
+  {v:['bourbon'],p:['honey'],t:['medio'],opciones:[
+    {m:'EvaSolo',o:'dulce',r:'Dulzor Nublado',por:'Bourbon honey es la combinación de dulzor y acidez que mejor aprovecha la Eva Solo: la manga aporta cuerpo mientras la temperatura constante extrae el caramelo.'},
+    {m:'V60',o:'dulce',r:'Miel Tostada',por:'Para pour over, la temperatura reducida de esta receta extrae ese mismo caramelo sin amargor.'}
+  ]},
   // PACAMARA
-  {v:['pacamara'],p:['lavado'],t:['claro'],m:'V60',o:'balanceado',r:'Hoffmann 4:6',por:'El Pacamara lavado tiene gran cuerpo y acidez pronunciada simultáneamente. El 4:6 permite ajustar ese balance cambiando el tamaño del primer vertido.'},
-  {v:['pacamara'],p:['lavado'],t:['medio'],m:'Chemex',o:'balanceado',r:'Chemex Clásico',por:'Pacamara medio tiene complejidad que necesita tiempo. El drenaje lento del Chemex clásico extrae esa complejidad sin sobre-extraer el cuerpo.'},
-  {v:['pacamara'],p:['natural'],t:['medio'],m:'AeroPress',o:'dulce',r:'Agave & Vainilla',por:'Pacamara natural medio tiene dulzor tropical denso. Los 2 minutos de contacto del AeroPress extraen los azúcares complejos que esta variedad esconde.'},
+  {v:['pacamara'],p:['lavado'],t:['claro'],opciones:[
+    {m:'V60',o:'balanceado',r:'Hoffmann 4:6',por:'El Pacamara lavado tiene gran cuerpo y acidez pronunciada simultáneamente. El 4:6 permite ajustar ese balance cambiando el tamaño del primer vertido.'},
+    {m:'Chemex',o:'balanceado',r:'Chemex Clásico',por:'Para más claridad, el Chemex Clásico maneja ese mismo cuerpo grande con una taza más limpia.'}
+  ]},
+  {v:['pacamara'],p:['lavado'],t:['medio'],opciones:[
+    {m:'Chemex',o:'balanceado',r:'Chemex Clásico',por:'Pacamara medio tiene complejidad que necesita tiempo. El drenaje lento del Chemex clásico extrae esa complejidad sin sobre-extraer el cuerpo.'},
+    {m:'Prensa',o:'balanceado',r:'Prensa Clásica',por:'Para sacar el máximo de cuerpo de este grano grande, la prensa francesa es la opción más generosa en textura.'}
+  ]},
+  {v:['pacamara'],p:['natural'],t:['medio'],opciones:[
+    {m:'AeroPress',o:'dulce',r:'Agave & Vainilla',por:'Pacamara natural medio tiene dulzor tropical denso. Los 2 minutos de contacto del AeroPress extraen los azúcares complejos que esta variedad esconde.'},
+    {m:'Prensa',o:'dulce',r:'Cacao & Roca',por:'La inmersión total de la prensa entrega aún más cuerpo y dulzor tropical, aprovechando el tamaño grande de este grano.'}
+  ]},
   // JAVA
-  {v:['java'],p:['lavado'],t:['medio'],m:'EvaSolo',o:'balanceado',r:'Eva Classic',por:'Java lavado medio es limpio y suave, sin extremos. La Eva Solo es el método perfecto para un café que no quiere protagonismo sino consistencia.'},
-  {v:['java'],p:['natural'],t:['oscuro'],m:'Prensa',o:'dulce',r:'Cacao & Roca',por:'Java natural oscuro desarrolla tierra, madera y cacao. La prensa francesa con 5 minutos es el único método que extrae eso sin perder el cuerpo.'},
-  {v:['java'],p:['natural'],t:['medio'],m:'Prensa',o:'dulce',r:'Terciopelo',por:'Java natural medio tiene cuerpo notable. La prensa con toda su inmersión es el método adecuado para una variedad que da café denso y sedoso.'},
+  {v:['java'],p:['lavado'],t:['medio'],opciones:[
+    {m:'EvaSolo',o:'balanceado',r:'Eva Classic',por:'Java lavado medio es limpio y suave, sin extremos. La Eva Solo es el método perfecto para un café que no quiere protagonismo sino consistencia.'},
+    {m:'V60',o:'balanceado',r:'V60 Clásico',por:'Para pour over, el V60 clásico logra ese mismo perfil suave y consistente sin necesitar equipo adicional.'}
+  ]},
+  {v:['java'],p:['natural'],t:['oscuro'],opciones:[
+    {m:'Prensa',o:'dulce',r:'Cacao & Roca',por:'Java natural oscuro desarrolla tierra, madera y cacao. La prensa francesa con 5 minutos es el único método que extrae eso sin perder el cuerpo.'},
+    {m:'Moka',o:'dulce',r:'Italiana Clásica',por:'Para algo más concentrado, la Moka extrae esa misma madera y cacao con más intensidad.'}
+  ]},
+  {v:['java'],p:['natural'],t:['medio'],opciones:[
+    {m:'Prensa',o:'dulce',r:'Terciopelo',por:'Java natural medio tiene cuerpo notable. La prensa con toda su inmersión es el método adecuado para una variedad que da café denso y sedoso.'},
+    {m:'Chemex',o:'dulce',r:'Chocolate & Nuez',por:'Si preferís una taza más limpia, el Chemex extrae ese cuerpo denso con menos untuosidad.'}
+  ]},
 ];
 
 const REC_FALLBACK = [
-  {p:'lavado',t:'claro',m:'V60',o:'acido',r:'Cítrico Etíope',por:'Cafés lavados claros tienen acidez y aromas florales delicados. El V60 a 86°C es el método que mejor los preserva.'},
-  {p:'lavado',t:'medio',m:'V60',o:'balanceado',r:'Balanceado 800',por:'Lavado medio es el perfil más versátil del café. El V60 balanceado a 94°C y ratio 1:16 es el punto de partida ideal.'},
-  {p:'lavado',t:'oscuro',m:'Prensa',o:'balanceado',r:'Prensa Clásica',por:'Lavado oscuro necesita la inmersión total de la prensa para extraer su cuerpo sin amargarlo con agua demasiado caliente.'},
-  {p:'natural',t:'claro',m:'AeroPress',o:'balanceado',r:'James Hoffmann (Ultimate AeroPress)',por:'Naturales claros tienen fruta delicada. El AeroPress de Hoffmann sin agitación agresiva la capta sin exagerarla.'},
-  {p:'natural',t:'medio',m:'Chemex',o:'dulce',r:'Caramelo Lento',por:'Naturales medios tienen dulzor frutal complejo. El filtro grueso del Chemex y los vertidos pausados lo extraen con claridad.'},
-  {p:'natural',t:'oscuro',m:'Prensa',o:'dulce',r:'Cacao & Roca',por:'Naturales oscuros tienen cuerpo completo y fruta densa. La prensa con 5 minutos de inmersión es el método que más les favorece.'},
-  {p:'honey',t:'claro',m:'V60',o:'dulce',r:'Dulce 800',por:'Honey claros tienen floral limpio con algo de fruta. El V60 a temperatura baja extrae el dulzor sin opacar los aromas.'},
-  {p:'honey',t:'medio',m:'EvaSolo',o:'dulce',r:'Verano Caramelizado',por:'Honey medios equilibran dulzor y acidez. La Eva Solo en sistema cerrado es perfecta para ese balance.'},
-  {p:'honey',t:'oscuro',m:'Prensa',o:'dulce',r:'Panela & Roble',por:'Honey oscuros tienen caramelo denso. La prensa extrae ese cuerpo con temperatura alta y tiempo largo.'},
+  {p:'lavado',t:'claro',opciones:[
+    {m:'V60',o:'acido',r:'Cítrico Etíope',por:'Cafés lavados claros tienen acidez y aromas florales delicados. El V60 a 86°C es el método que mejor los preserva.'},
+    {m:'Chemex',o:'acido',r:'Floral Etíope',por:'El Chemex logra esa misma preservación floral con más margen de error en el vertido.'}
+  ]},
+  {p:'lavado',t:'medio',opciones:[
+    {m:'V60',o:'balanceado',r:'Balanceado 800',por:'Lavado medio es el perfil más versátil del café. El V60 balanceado a 94°C y ratio 1:16 es el punto de partida ideal.'},
+    {m:'Chemex',o:'balanceado',r:'Chemex Clásico',por:'Para más volumen o una taza más limpia, el Chemex Clásico logra ese mismo equilibrio.'}
+  ]},
+  {p:'lavado',t:'oscuro',opciones:[
+    {m:'Prensa',o:'balanceado',r:'Prensa Clásica',por:'Lavado oscuro necesita la inmersión total de la prensa para extraer su cuerpo sin amargarlo con agua demasiado caliente.'},
+    {m:'Moka',o:'dulce',r:'Italiana Clásica',por:'Para un perfil más concentrado, la Moka extrae ese cuerpo con más intensidad y menos volumen.'}
+  ]},
+  {p:'natural',t:'claro',opciones:[
+    {m:'AeroPress',o:'balanceado',r:'James Hoffmann (Ultimate AeroPress)',por:'Naturales claros tienen fruta delicada. El AeroPress de Hoffmann sin agitación agresiva la capta sin exagerarla.'},
+    {m:'V60',o:'acido',r:'Maracuyá & Té',por:'Para pour over, la extracción rápida a 84°C logra ese mismo objetivo sin dejar que la fruta se vuelva dominante.'}
+  ]},
+  {p:'natural',t:'medio',opciones:[
+    {m:'Chemex',o:'dulce',r:'Caramelo Lento',por:'Naturales medios tienen dulzor frutal complejo. El filtro grueso del Chemex y los vertidos pausados lo extraen con claridad.'},
+    {m:'Prensa',o:'dulce',r:'Terciopelo',por:'La inmersión total de la prensa entrega más cuerpo y fruta madura, sin el recorte del filtro de papel.'}
+  ]},
+  {p:'natural',t:'oscuro',opciones:[
+    {m:'Prensa',o:'dulce',r:'Cacao & Roca',por:'Naturales oscuros tienen cuerpo completo y fruta densa. La prensa con 5 minutos de inmersión es el método que más les favorece.'},
+    {m:'Moka',o:'dulce',r:'Dulce Napolitano',por:'Para algo más concentrado, la Moka extrae ese mismo cuerpo con más intensidad.'}
+  ]},
+  {p:'honey',t:'claro',opciones:[
+    {m:'V60',o:'dulce',r:'Dulce 800',por:'Honey claros tienen floral limpio con algo de fruta. El V60 a temperatura baja extrae el dulzor sin opacar los aromas.'},
+    {m:'EvaSolo',o:'acido',r:'Mañana Brillante',por:'La Eva Solo con tapa entreabierta enfría el sistema más rápido, deteniendo la extracción antes de que dominen los amargos.'}
+  ]},
+  {p:'honey',t:'medio',opciones:[
+    {m:'EvaSolo',o:'dulce',r:'Verano Caramelizado',por:'Honey medios equilibran dulzor y acidez. La Eva Solo en sistema cerrado es perfecta para ese balance.'},
+    {m:'Chemex',o:'dulce',r:'Panela Colombiana',por:'Para pour over, el bloom largo del Chemex logra ese mismo balance con una taza más clara.'}
+  ]},
+  {p:'honey',t:'oscuro',opciones:[
+    {m:'Prensa',o:'dulce',r:'Panela & Roble',por:'Honey oscuros tienen caramelo denso. La prensa extrae ese cuerpo con temperatura alta y tiempo largo.'},
+    {m:'Moka',o:'dulce',r:'Seda & Canela',por:'Para algo más concentrado y aromático, la Moka con canela realza ese caramelo denso del honey oscuro.'}
+  ]},
 ];
 
 let recState = {variedad:null,variedadNombre:null,proceso:null,tueste:null,resultado:null};
@@ -2654,27 +2843,34 @@ function findRecRule(variedad, proceso, tueste) {
 
 function showRecResult() {
   const rule = findRecRule(recState.variedad, recState.proceso, recState.tueste);
-  recState.resultado = rule;
+  recState.resultado = rule.opciones;
   const mNames = {V60:'Hario V60',AeroPress:'AeroPress',Chemex:'Chemex',Prensa:'Prensa Francesa',EvaSolo:'Eva Solo',Espresso:'Espresso',Moka:'Moka Italiana'};
   document.getElementById('rec-res-variedad').textContent = recState.variedadNombre.toUpperCase();
-  document.getElementById('rec-res-method').textContent = mNames[rule.m]||rule.m;
-  document.getElementById('rec-res-recipe').textContent = '→ ' + rule.r;
-  document.getElementById('rec-res-why').textContent = rule.por;
+  const cont = document.getElementById('rec-result-cards');
+  cont.innerHTML = rule.opciones.map((op,i)=>`
+    <div class="rec-option-card">
+      <div class="rec-option-card-tag">OPCIÓN ${i+1}</div>
+      <div class="rec-result-method">${mNames[op.m]||op.m}</div>
+      <div class="rec-result-recipe">→ ${op.r}</div>
+      <div class="rec-result-why">${op.por}</div>
+      <button class="btn-rec-go" onclick="goToRecFromRec(${i})">IR A LA RECETA →</button>
+    </div>`).join('');
   document.getElementById('rec-result').classList.add('visible');
   setTimeout(()=>document.getElementById('rec-result').scrollIntoView({behavior:'smooth',block:'nearest'}),100);
 }
 
-function goToRecFromRec() {
-  const rule = recState.resultado; if (!rule) return;
+function goToRecFromRec(idx) {
+  const opciones = recState.resultado; if (!opciones) return;
+  const rule = opciones[idx]; if (!rule) return;
   state.method = rule.m; state.obj = rule.o;
   const list = (RECETAS[rule.m]||{})[rule.o]||[];
-  const idx = list.findIndex(r=>r.nombre===rule.r);
+  const ridx = list.findIndex(r=>r.nombre===rule.r);
   const mL={V60:'Hario V60',AeroPress:'AeroPress',Chemex:'Chemex',Prensa:'Prensa Francesa',EvaSolo:'Eva Solo',Espresso:'Espresso',Moka:'Moka Italiana'};
   const oL={dulce:'Dulce 🍯',acido:'Ácido 🍋',balanceado:'Balanceado ⚖️'};
   document.getElementById('lc-method').textContent = mL[rule.m]||rule.m;
   document.getElementById('lc-obj').textContent = oL[rule.o]||rule.o;
   renderCuratedList(); renderUserListForCombo();
-  if (idx>=0) openDetail('c',idx); else goTo('screen-list');
+  if (ridx>=0) openDetail('c',ridx); else goTo('screen-list');
 }
 
 function resetRec() {
