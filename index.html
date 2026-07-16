@@ -424,6 +424,7 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
     <button class="method-btn" onclick="selectMethod(this,'Espresso')">Espresso</button>
     <button class="method-btn" onclick="selectMethod(this,'Moka')">Moka Italiana</button>
     <button class="method-btn" onclick="selectMethod(this,'ColdBrew')">Cold Brew</button>
+    <button class="method-btn" onclick="selectMethod(this,'SobreHielo')">Sobre Hielo ❄️</button>
   </div>
   <div class="step-label">OBJETIVO</div>
   <div class="objectives">
@@ -588,6 +589,7 @@ input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;b
         <option value="Chemex">Chemex</option><option value="Prensa">Prensa Francesa</option>
         <option value="EvaSolo">Eva Solo</option><option value="Espresso">Espresso</option>
         <option value="Moka">Moka Italiana</option>
+        <option value="SobreHielo">Sobre Hielo ❄️</option>
       </select>
     </div>
     <div class="fgroup"><label class="flabel-form">OBJETIVO</label>
@@ -931,6 +933,11 @@ const GRIND_DETAIL = {
     tipo: 'Gruesa',
     ref: 'Como sal marina gruesa',
     cal: 'La molienda fina en cold brew produce sabores amargos y dificulta el filtrado. Siempre gruesa.'
+  },
+  SobreHielo: {
+    tipo: 'Media-fina a Media',
+    ref: 'Depende del método base de cada receta',
+    cal: 'Cada receta indica su dripper base (V60, Chemex, AeroPress, Prensa o Eva Solo) — usa la molienda de ese método como referencia.'
   }
 };
 
@@ -1035,6 +1042,17 @@ const WHY = {
   'Cold Brew Tonic': 'El <strong>amargor de la quinina</strong> en el agua tónica y el amargor natural del café se combinan de forma paradójica: dos amargos juntos se perciben como menos amargos que cada uno por separado, pero más complejos.',
   'Maple Pecan Cold Brew': 'El <strong>jarabe de arce</strong> tiene compuestos de caramelo (furanos, maltol) que se encuentran naturalmente en cafés de tueste medio. Añadirlo es técnicamente amplificar notas que ya existen en el café, no agregar algo ajeno.',
   'Honey Lavender Cold Brew': 'La <strong>lavanda contiene linalool</strong>, el mismo compuesto floral que aparece en los cafés etíopes washed. Combinarlos crea resonancia aromática: el aroma se percibe más intenso porque el cerebro recibe la misma señal desde dos fuentes distintas.',
+
+  // Sobre Hielo (Flash Brew)
+  'V60 Flash Dulce': 'El <strong>hielo en el servidor</strong> baja la temperatura del café en el instante que lo toca, deteniendo la extracción de golpe. Eso evita el amargor que aparece cuando un café caliente se enfría lento, y preserva los azúcares que ya se extrajeron durante el vertido.',
+  'AeroPress Sobre Hielo': 'Prensar un concentrado <strong>directo sobre hielo</strong> combina lo mejor de ambos mundos: la extracción rápida y completa del agua caliente, con el enfriamiento instantáneo que preserva aromas volátiles que un cold brew de 12-24 horas nunca captura.',
+  'Prensa Sobre Hielo': 'La inmersión total ya da mucho cuerpo; concentrar la dosis (agua reducida antes del hielo) compensa la dilución que viene después, resultando en un cold brew instantáneo con la textura densa característica de la prensa.',
+  'Chemex Flash Ácido': 'El hielo en la base del Chemex actúa como un <strong>freno térmico</strong>: en cuanto el café cae sobre el hielo, la temperatura baja de golpe y la extracción se detiene antes de que aparezcan los compuestos amargos, dejando solo la acidez cítrica más brillante.',
+  'V60 Flash Brillante': 'Un solo vertido rápido reduce el tiempo total de contacto agua-café. Sumado al <strong>choque térmico del hielo</strong>, esto maximiza la acidez percibida — la misma lógica que las recetas ácidas calientes, llevada al extremo.',
+  'EvaSolo Sobre Hielo Cítrico': 'Los 3 minutos de infusión sin tapa dejan que la temperatura empiece a bajar antes de tocar el hielo, lo que acelera aún más el enfriamiento final y preserva la acidez cítrica de la manga filtrante.',
+  'V60 Flash Clásico': 'Tomar la receta clásica del V60 y <strong>reemplazar una porción del agua por hielo</strong> mantiene el perfil de sabor original — el hielo es agua fría, no un ingrediente que cambia el sabor, solo el momento en que se agrega.',
+  'AeroPress Concentrado Sobre Hielo': 'El AeroPress ya es un método de extracción por presión más eficiente que la gravedad. Concentrar la dosis y <strong>prensar directo sobre hielo</strong> aprovecha esa eficiencia para lograr un balance completo en menos de dos minutos.',
+  'Chemex Flash Balanceado': 'Los vertidos progresivos del Chemex ya buscan balance por diseño. Poner <strong>hielo en la base</strong> en vez de servir caliente y enfriar después evita la sobreextracción que ocurriría si el café se quedara caliente sobre el lecho unos minutos más de la cuenta.',
 };
 
 function toggleWhy() {
@@ -1704,13 +1722,75 @@ const RECETAS = {
         {t:'DECORAR',d:'Flores de lavanda secas encima.',s:10,ag:0}
       ]}
     ]
+  },
+  SobreHielo:{
+    dulce:[
+      {nombre:'V60 Flash Dulce',desc:'V60 sobre hielo: la misma extracción caliente, con hielo esperando en el servidor. Panela y caramelo, servido frío al instante.',ratio:16,temp:'95°C',tiempo:'02:30',sabor:{d:5,a:1,c:3},pasos:[
+        {t:'HIELO EN EL SERVIDOR',d:'Coloca <strong>110g de hielo</strong> en el servidor, debajo del dripper.',s:15,ag:110},
+        {t:'BLOOM',d:'Vierte <strong>40g de agua a 95°C</strong> sobre los 20g de café.',s:30,ag:40},
+        {t:'VERTIDO 1',d:'<strong>90g más</strong> en espiral lenta.',s:30,ag:90},
+        {t:'VERTIDO 2',d:'<strong>80g finales</strong>. El hielo se derrite al instante y enfría la taza.',s:35,ag:80}
+      ]},
+      {nombre:'AeroPress Sobre Hielo',desc:'Concentrado de AeroPress prensado directo sobre hielo. Cuerpo pleno y dulzor intacto, sin las 12-24 horas de un cold brew tradicional.',ratio:16.7,temp:'92°C',tiempo:'02:00',sabor:{d:4,a:1,c:4},pasos:[
+        {t:'CAFÉ + AGUA',d:'<strong>18g de café</strong>. Vierte <strong>150g de agua a 92°C</strong>. Revuelve 5 veces.',s:15,ag:150},
+        {t:'REPOSAR',d:'Deja reposar <strong>1 minuto</strong>.',s:60,ag:0},
+        {t:'HIELO EN EL VASO',d:'Llena un vaso con <strong>150g de hielo</strong>.',s:15,ag:150},
+        {t:'PRENSAR SOBRE HIELO',d:'Presiona directo sobre el hielo en 20 segundos. Se derrite al instante y diluye justo a punto.',s:20,ag:0}
+      ]},
+      {nombre:'Prensa Sobre Hielo',desc:'Prensa francesa concentrada, servida directo sobre hielo. El cuerpo denso de la inmersión total se mantiene incluso diluido.',ratio:15,temp:'94°C',tiempo:'04:30',sabor:{d:4,a:1,c:5},pasos:[
+        {t:'CAFÉ + AGUA',d:'<strong>24g de café</strong>. Vierte <strong>240g de agua a 94°C</strong>.',s:15,ag:240},
+        {t:'REPOSAR',d:'<strong>4 minutos completos</strong>.',s:240,ag:0},
+        {t:'HIELO EN EL VASO',d:'Llena un vaso grande con <strong>120g de hielo</strong>.',s:15,ag:120},
+        {t:'SERVIR',d:'Presiona suave y sirve directo sobre el hielo.',s:20,ag:0}
+      ]}
+    ],
+    acido:[
+      {nombre:'Chemex Flash Ácido',desc:'Vertido rápido y caliente sobre hielo en la base del Chemex. La acidez cítrica se mantiene viva gracias al enfriamiento instantáneo.',ratio:17,temp:'96°C',tiempo:'03:00',sabor:{d:2,a:5,c:1},pasos:[
+        {t:'HIELO',d:'Arma el filtro Chemex y coloca <strong>130g de hielo</strong> en la base.',s:20,ag:130},
+        {t:'BLOOM',d:'Vierte <strong>50g de agua a 96°C</strong> sobre los 20g de café.',s:30,ag:50},
+        {t:'VERTIDO 1',d:'<strong>90g más</strong> en espiral.',s:35,ag:90},
+        {t:'VERTIDO 2',d:'<strong>70g finales</strong>. El hielo se derrite mientras el café cae.',s:35,ag:70}
+      ]},
+      {nombre:'V60 Flash Brillante',desc:'Vertido único y rápido sobre hielo para capturar la acidez cítrica antes de que el calor la opaque.',ratio:16,temp:'96°C',tiempo:'02:15',sabor:{d:1,a:5,c:1},pasos:[
+        {t:'HIELO EN EL SERVIDOR',d:'Coloca <strong>100g de hielo</strong> en el servidor.',s:15,ag:100},
+        {t:'BLOOM',d:'Vierte <strong>30g de agua a 96°C</strong>.',s:20,ag:30},
+        {t:'VERTIDO ÚNICO',d:'Vierte los <strong>190g restantes</strong> en un chorro continuo y rápido.',s:60,ag:190}
+      ]},
+      {nombre:'EvaSolo Sobre Hielo Cítrico',desc:'Infusión corta y caliente, servida directo sobre hielo en la manga de la Eva Solo. Acidez viva sin el tiempo de un cold brew tradicional.',ratio:17,temp:'90°C',tiempo:'03:30',sabor:{d:1,a:5,c:2},pasos:[
+        {t:'AGUA',d:'<strong>20g de café</strong>. Vierte <strong>240g de agua a 90°C</strong>.',s:15,ag:240},
+        {t:'REPOSAR',d:'<strong>3 minutos</strong>, sin tapar, para que baje algo la temperatura.',s:180,ag:0},
+        {t:'HIELO EN EL VASO',d:'Sirve sobre un vaso con <strong>100g de hielo</strong>.',s:15,ag:100}
+      ]}
+    ],
+    balanceado:[
+      {nombre:'V60 Flash Clásico',desc:'La versión helada del V60 clásico. Mismo perfil equilibrado, servido frío al instante.',ratio:16,temp:'94°C',tiempo:'02:45',sabor:{d:3,a:3,c:3},pasos:[
+        {t:'HIELO EN EL SERVIDOR',d:'Coloca <strong>110g de hielo</strong> en el servidor.',s:15,ag:110},
+        {t:'BLOOM',d:'Vierte <strong>40g de agua a 94°C</strong>.',s:30,ag:40},
+        {t:'VERTIDO 1',d:'<strong>90g más</strong> en espiral.',s:30,ag:90},
+        {t:'VERTIDO 2',d:'<strong>80g finales</strong>.',s:40,ag:80}
+      ]},
+      {nombre:'AeroPress Concentrado Sobre Hielo',desc:'Concentrado equilibrado prensado directo sobre hielo. Cuerpo redondo sin extremos.',ratio:16.1,temp:'90°C',tiempo:'02:00',sabor:{d:3,a:3,c:4},pasos:[
+        {t:'CAFÉ + AGUA',d:'<strong>18g de café</strong>. Vierte <strong>170g de agua a 90°C</strong>. Revuelve 8 veces.',s:15,ag:170},
+        {t:'REPOSAR',d:'<strong>1 minuto</strong>.',s:60,ag:0},
+        {t:'HIELO EN EL VASO',d:'Llena un vaso con <strong>120g de hielo</strong>.',s:15,ag:120},
+        {t:'PRENSAR SOBRE HIELO',d:'Presiona en 25 segundos directo sobre el hielo.',s:25,ag:0}
+      ]},
+      {nombre:'Chemex Flash Balanceado',desc:'El equilibrio del Chemex, ahora frío. Hielo en la base para un choque térmico limpio sin perder complejidad.',ratio:16,temp:'93°C',tiempo:'03:15',sabor:{d:3,a:3,c:2},pasos:[
+        {t:'HIELO',d:'Arma el filtro y coloca <strong>120g de hielo</strong> en la base del Chemex.',s:20,ag:120},
+        {t:'BLOOM',d:'Vierte <strong>50g de agua a 93°C</strong>.',s:35,ag:50},
+        {t:'VERTIDO 1',d:'<strong>90g más</strong>.',s:40,ag:90},
+        {t:'VERTIDO 2',d:'<strong>60g finales</strong>.',s:45,ag:60}
+      ]}
+    ]
   }
 
 };
 
+
 const GRIND_INFO = {
   V60:'Media-fina', AeroPress:'Media-fina a Media', Chemex:'Media a Media-gruesa',
-  Prensa:'Gruesa', EvaSolo:'Media', Espresso:'Muy fina', Moka:'Fina a Media-fina'
+  Prensa:'Gruesa', EvaSolo:'Media', Espresso:'Muy fina', Moka:'Fina a Media-fina',
+  ColdBrew:'Gruesa', SobreHielo:'Según el método base'
 };
 
 const state = { method:null, obj:null };
@@ -1775,7 +1855,7 @@ function updateCTA() {
 }
 function goToList() {
   if (!state.method||!state.obj) return;
-  const mL={V60:'Hario V60',AeroPress:'AeroPress',Chemex:'Chemex',Prensa:'Prensa Francesa',EvaSolo:'Eva Solo',Espresso:'Espresso',Moka:'Moka Italiana'};
+  const mL={V60:'Hario V60',AeroPress:'AeroPress',Chemex:'Chemex',Prensa:'Prensa Francesa',EvaSolo:'Eva Solo',Espresso:'Espresso',Moka:'Moka Italiana',ColdBrew:'Cold Brew',SobreHielo:'Sobre Hielo ❄️'};
   const oL={dulce:'Dulce 🍯',acido:'Ácido 🍋',balanceado:'Balanceado ⚖️'};
   document.getElementById('lc-method').textContent=mL[state.method];
   document.getElementById('lc-obj').textContent=oL[state.obj];
@@ -2226,7 +2306,7 @@ function renderMyRecipes(){
   const all=getUser();
   const cont=document.getElementById('all-user-cards');
   if (!all.length){cont.innerHTML=`<div class="empty">Aún no tienes recetas guardadas.<br><br>Crea la primera con el botón +</div>`;return}
-  const mL={V60:'V60',AeroPress:'AeroPress',Chemex:'Chemex',Prensa:'Prensa Francesa',EvaSolo:'Eva Solo',Espresso:'Espresso',Moka:'Moka'};
+  const mL={V60:'V60',AeroPress:'AeroPress',Chemex:'Chemex',Prensa:'Prensa Francesa',EvaSolo:'Eva Solo',Espresso:'Espresso',Moka:'Moka',ColdBrew:'Cold Brew',SobreHielo:'Sobre Hielo ❄️'};
   const oE={dulce:'🍯',acido:'🍋',balanceado:'⚖️'};
   cont.innerHTML=all.map((r,i)=>`
     <div class="rcard user-card" onclick="openDetailFromMine(${i})">
@@ -2844,7 +2924,7 @@ function findRecRule(variedad, proceso, tueste) {
 function showRecResult() {
   const rule = findRecRule(recState.variedad, recState.proceso, recState.tueste);
   recState.resultado = rule.opciones;
-  const mNames = {V60:'Hario V60',AeroPress:'AeroPress',Chemex:'Chemex',Prensa:'Prensa Francesa',EvaSolo:'Eva Solo',Espresso:'Espresso',Moka:'Moka Italiana'};
+  const mNames = {V60:'Hario V60',AeroPress:'AeroPress',Chemex:'Chemex',Prensa:'Prensa Francesa',EvaSolo:'Eva Solo',Espresso:'Espresso',Moka:'Moka Italiana',ColdBrew:'Cold Brew',SobreHielo:'Sobre Hielo ❄️'};
   document.getElementById('rec-res-variedad').textContent = recState.variedadNombre.toUpperCase();
   const cont = document.getElementById('rec-result-cards');
   cont.innerHTML = rule.opciones.map((op,i)=>`
@@ -2865,7 +2945,7 @@ function goToRecFromRec(idx) {
   state.method = rule.m; state.obj = rule.o;
   const list = (RECETAS[rule.m]||{})[rule.o]||[];
   const ridx = list.findIndex(r=>r.nombre===rule.r);
-  const mL={V60:'Hario V60',AeroPress:'AeroPress',Chemex:'Chemex',Prensa:'Prensa Francesa',EvaSolo:'Eva Solo',Espresso:'Espresso',Moka:'Moka Italiana'};
+  const mL={V60:'Hario V60',AeroPress:'AeroPress',Chemex:'Chemex',Prensa:'Prensa Francesa',EvaSolo:'Eva Solo',Espresso:'Espresso',Moka:'Moka Italiana',ColdBrew:'Cold Brew',SobreHielo:'Sobre Hielo ❄️'};
   const oL={dulce:'Dulce 🍯',acido:'Ácido 🍋',balanceado:'Balanceado ⚖️'};
   document.getElementById('lc-method').textContent = mL[rule.m]||rule.m;
   document.getElementById('lc-obj').textContent = oL[rule.o]||rule.o;
