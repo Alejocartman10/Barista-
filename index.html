@@ -1267,8 +1267,8 @@ const RECETAS = {
       ]},
       {nombre:'Balanceado 800',desc:'15g de café, molienda media (C3 14-16 clics) y 94°C para un equilibrio entre dulzor, acidez y claridad.',ratio:16,temp:'94°C',tiempo:'03:00',sabor:{d:3,a:3,c:3},pasos:[
         {t:'BLOOM',d:'Vierte <strong>35g de agua</strong> sobre los 15g de café.',s:30,ag:35},
-        {t:'VERTIDO 1',d:'<strong>100g más</strong> en espiral lenta.',s:45,ag:100},
-        {t:'VERTIDO 2',d:'Agrega los <strong>105g finales</strong>. El tiempo total debe estar entre 2:45 y 3:15.',s:75,ag:105}
+        {t:'VERTIDO 1',d:'<strong>100g más</strong> en espiral lenta.',s:60,ag:100},
+        {t:'VERTIDO 2',d:'Agrega los <strong>105g finales</strong>. El tiempo total debe estar entre 2:45 y 3:15.',s:90,ag:105}
       ]},
       {nombre:'Kasuya 4:6 Original',desc:'El método auténtico de Tetsu Kasuya, campeón mundial Brewers Cup 2016. 20g de café, molienda gruesa, 5 vertidos: el primer 40% del agua ajusta dulzor/acidez, el 60% restante ajusta la fuerza.',ratio:15,temp:'92°C',tiempo:'03:30',sabor:{d:4,a:2,c:3},pasos:[
         {t:'PRIMER VERTIDO',d:'Vierte <strong>50g de agua</strong>. Un primer vertido más chico que el segundo extrae más dulzor.',s:45,ag:50},
@@ -2046,7 +2046,7 @@ function renderStepCards() {
         </div>
         <div class="step-right">
           <div class="step-duration">${rangeLabel}</div>
-          ${cumWater > 0 ? `<div style="font-size:.55em;letter-spacing:1px;color:rgba(197,160,89,0.55);margin-top:1px">↑ ${cumWater}ml</div>` : ''}
+          ${cumWater > 0 ? `<div style="font-size:.72em;letter-spacing:1px;color:rgba(197,160,89,0.75);margin-top:2px;font-weight:500">↑ ${cumWater}ml</div>` : ''}
           <div class="step-countdown" id="cd-${i}">—</div>
           <div class="step-check">✓</div>
         </div>
